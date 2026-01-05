@@ -10,14 +10,17 @@
 
 ## Citation
 
+Source:
+[`DESCRIPTION`](https://github.com/pepijn-devries/CopernicusDataspace/blob/main/DESCRIPTION)
+
 de Vries P (2026). *CopernicusDataspace: Search Download and Handle Data
 from the Copernicus Data Space Ecosystem*. R package version 0.0.0.9000,
-<https://pepijn-devries.github.io/CopernicusDataspace/>.
+<https://github.com/pepijn-devries/CopernicusDataspace>.
 
     @Manual{,
       title = {CopernicusDataspace: Search Download and Handle Data from the Copernicus Data Space Ecosystem},
       author = {Pepijn {de Vries}},
       year = {2026},
       note = {R package version 0.0.0.9000},
-      url = {https://pepijn-devries.github.io/CopernicusDataspace/},
+      url = {https://github.com/pepijn-devries/CopernicusDataspace},
     }
