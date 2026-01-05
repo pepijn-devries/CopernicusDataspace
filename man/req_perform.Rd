@@ -32,10 +32,9 @@ around \code{\link[httr2:req_verbose]{req_verbose()}} that uses an integer to co
 Use \code{\link[httr2:with_verbosity]{with_verbosity()}} to control the verbosity of requests that
 you can't affect directly.}
 
-\item{mock}{A mocking function. If supplied, this function is called
-with the request. It should return either \code{NULL} (if it doesn't want to
-handle the request) or a \link[httr2]{response} (if it does). See \code{\link[httr2:with_mock]{with_mock()}}/
-\code{local_mock()} for more details.}
+\item{mock}{A mocking function. If supplied, this function is called with the
+request. It should return either NULL (if it doesn't want to handle the request)
+or a response (if it does). See \code{\link[httr2:with_mocked_responses]{httr2::with_mock()}}/ local_mock() for more details.}
 
 \item{error_call}{The execution environment of a currently
 running function, e.g. \code{caller_env()}. The function will be

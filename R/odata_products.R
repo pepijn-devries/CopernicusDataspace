@@ -78,6 +78,9 @@ dse_odata_products_request <- function(expand, ...) {
 #' class object. The latter can be created with [dse_odata_products_request()] and
 #' [dse_odata_bursts_request()].
 #' @inheritParams httr2::req_perform
+#' @param mock A mocking function. If supplied, this function is called with the
+#' request. It should return either NULL (if it doesn't want to handle the request)
+#' or a response (if it does). See [httr2::with_mock()]/ local_mock() for more details.
 #' @returns Returns a `httr2::response` class object
 #' @export
 req_perform <- function(
