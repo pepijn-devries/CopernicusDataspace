@@ -3,7 +3,7 @@
     lapply(tidyr::pivot_wider, names_from = "name", values_from = "value") |>
     dplyr:: bind_rows()
   unnest_col <-
-    lapply(x, \(x) lengths(x) == 1) |>
+    lapply(x, \(x) lengths(x) <= 1) |>
     lapply(all) |>
     unlist()
   tidyr::unnest(x, names(unnest_col)[unnest_col])
