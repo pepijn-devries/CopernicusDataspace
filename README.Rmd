@@ -11,9 +11,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-# CopernicusDataspace
+# CopernicusDataspace <img src="man/figures/logo.svg" align="right" height="139" alt="logo" />
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/pepijn-devries/CopernicusDataspace/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pepijn-devries/CopernicusDataspace/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The [Copernicus Data Space Ecosystem](https://dataspace.copernicus.eu/),
