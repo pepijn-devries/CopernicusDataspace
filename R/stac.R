@@ -62,11 +62,52 @@ dse_stac_client <- memoise::memoise(.dse_stac_client)
 #' @export
 dse_stac_collections <- memoise::memoise(.dse_stac_collections)
 
+.dse_fix_list <- function(target, source, api) {
+  lapply(names(target), \(nm) {
+    print(nm) #TODO
+    types <- target[[nm]]$anyOf |> .simplify()
+    if (is.null(source[[nm]]) && "null" %in% types$type) {
+      if ("array" %in% types$type) {
+        itms_nm  <- c("prefixItems", "items")
+        itms_nm  <- itms_nm[itms_nm %in% names(types)]
+        itms_idx <- which(types$type == "array")
+        itms <- types[[itms_nm]]
+        if (!any(c("$ref", "type") %in% names(itms))) {
+          types <- itms |>
+            lapply(\(x) {
+              lapply(x, `[[`, "anyOf") |>
+                lapply(\(y) {
+                  gsub("number|integer", "as.numeric", unlist(y)) |>
+                    unique()
+                }) |>
+                unlist()
+            })
+          types <- types[[1]]
+          target[[nm]] <- rep(NA, length(types)) #TODO check type!
+        } else {
+          if ("string" %in% itms)
+            target[[nm]] <- NA else {
+              target[[nm]] <- NA #TODO other types? or always NA?
+            }
+        }
+      } else {
+        ## object e.g. intersects
+        target[[nm]] <- NA
+      }
+    } else {
+      browser() #TODO
+    }
+  })
+}
+
 .dse_stac_search_filter <- function(...) {
-  filt <-
-    .stac_get("api")$components$schemas$SearchPostRequest$properties
+  api_props <- .stac_get("api")
+  filt <- api_props$components$schemas$SearchPostRequest$properties
   ##TODO replace elements with dots
-  filt
+  args <- list(...)
+  result <- .dse_fix_list(filt, args, api_props)
+  names(result) <- names(filt)
+  result
 }
 
 #' TODO
@@ -85,7 +126,8 @@ dse_stac_search <- function(..., token = dse_access_token()) {
 
   filt <- .dse_stac_search_filter(...)
   filt$intersects <- NULL #TODO
-  browser() #TODO
+  filt$bbox <- NULL #TODO
+  jsonlite::toJSON(filt, pretty = TRUE) # TODO for debugging
   items <-
     .stac_base_url |>
     paste("search", sep = "/") |>
