@@ -43,6 +43,15 @@ library(CopernicusDataspace)
 ## TODO
 ```
 
+## More of Copernicus
+
+More R packages for exploring other Copernicus data services:
+
+ * [CopernicusClimate](https://github.com/pepijn-devries/CopernicusClimate)
+ Dedicated to climate change datasets
+ * [CopernicusMarine](https://github.com/pepijn-devries/CopernicusMarine)
+ Dedicated to marine datasets
+
 ## Code of Conduct
 
 Please note that the CopernicusDataspace project is released with a
