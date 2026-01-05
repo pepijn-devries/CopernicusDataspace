@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/pepijn-devries/CopernicusDataspace/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pepijn-devries/CopernicusDataspace/actions/workflows/R-CMD-check.yaml)
 [![version](https://www.r-pkg.org/badges/version/CopernicusDataspace)](https://CRAN.R-project.org/package=CopernicusDataspace)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 The [Copernicus Data Space Ecosystem](https://dataspace.copernicus.eu/),
