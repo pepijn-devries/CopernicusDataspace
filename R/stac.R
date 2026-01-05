@@ -127,7 +127,7 @@ dse_stac_search <- function(..., token = dse_access_token()) {
   filt <- .dse_stac_search_filter(...)
   filt$intersects <- NULL #TODO
   filt$bbox <- NULL #TODO
-  jsonlite::toJSON(filt, pretty = TRUE) # TODO for debugging
+  # jsonlite::toJSON(filt, pretty = TRUE) # TODO for debugging
   items <-
     .stac_base_url |>
     paste("search", sep = "/") |>
