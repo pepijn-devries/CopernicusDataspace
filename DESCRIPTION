@@ -51,3 +51,4 @@ Collate:
     'sentinelhub.R'
     'stac.R'
 Config/testthat/edition: 3
+URL: https://pepijn-devries.github.io/CopernicusDataspace/
