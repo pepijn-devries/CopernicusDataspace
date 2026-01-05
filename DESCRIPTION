@@ -1,0 +1,53 @@
+Package: CopernicusDataspace
+Title: Search Download and Handle Data from the Copernicus Data Space Ecosystem
+Version: 0.0.0.9000
+Authors@R: 
+    c(
+      person("Pepijn", "de Vries", role = c("aut", "cre"),
+             email = "pepijn.devries@outlook.com",
+             comment = c(ORCID = "0000-0002-7961-6646")),
+      person("WMR (Wageningen Marine Research)", , , , role = "fnd",
+             comment = c(ROR = "013dzwk66"))
+    )
+Description:
+    The Copernicus Data Space Ecosystem, is an open
+    ecosystem that provides free instant access to a wide range
+    of data and services from the Copernicus Sentinel missions and
+    more on our planet’s land, oceans and atmosphere. This package
+    provides entry points to several APIs allowing users to access
+    the data directly in R.
+Depends:
+    R (>= 4.1.0)
+Imports:
+    dplyr,
+    httr2,
+    lubridate,
+    memoise,
+    methods,
+    paws,
+    rlang,
+    sf,
+    stringr,
+    tibble,
+    tidyr
+Suggests:
+    rstudioapi,
+    testthat (>= 3.0.0)
+License: GPL (>= 3)
+Encoding: UTF-8
+Language: en-GB
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Collate: 
+    'CopernicusDataspace-package.R'
+    'helpers.R'
+    'account.R'
+    'init.R'
+    'geometry.R'
+    'login.R'
+    'tidyverse.R'
+    'odata_products.R'
+    'odata_bursts.R'
+    'sentinelhub.R'
+    'stac.R'
+Config/testthat/edition: 3
