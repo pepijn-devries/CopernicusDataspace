@@ -133,7 +133,7 @@ dse_stac_collections <- memoise::memoise(.dse_stac_collections)
 }
 
 .dse_stac_search_filter <- function(...) {
-  api_props <- dse_stac_api_specs()
+  api_props <- .dse_stac_api_specs()
   filt <- api_props$components$schemas$SearchPostRequest$properties
   args <- list(...)
   if (any(!names(args) %in% names(filt)))
@@ -151,6 +151,8 @@ dse_stac_collections <- memoise::memoise(.dse_stac_collections)
 #' TODO
 #' 
 #' TODO
+#' @param collections TODO
+#' @param ids TODO
 #' @param ... TODO
 #' @returns TODO
 #' @examples
@@ -164,9 +166,9 @@ dse_stac_collections <- memoise::memoise(.dse_stac_collections)
 #' @export
 dse_stac_search_request <- function(collections, ids, ...) {
   
-  filt <- .dse_stac_search_filter(...)
-  filt$intersects <- NULL #TODO
-  filt$bbox <- NULL #TODO
+  filt <- .dse_stac_search_filter(collections, ids, ...)
+  filt$intersects <- NULL #TODO complete from st_intersects
+  filt$bbox <- NULL #TODO complete from st_intersects
   result <-
     .stac_base_url |>
     paste("search", sep = "/") |>

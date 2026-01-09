@@ -7,6 +7,10 @@
 dse_stac_search_request(collections, ids, ...)
 }
 \arguments{
+\item{collections}{TODO}
+
+\item{ids}{TODO}
+
 \item{...}{TODO}
 }
 \value{
