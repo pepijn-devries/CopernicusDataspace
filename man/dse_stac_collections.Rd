@@ -2,21 +2,26 @@
 % Please edit documentation in R/stac.R
 \name{dse_stac_collections}
 \alias{dse_stac_collections}
-\title{TODO}
+\title{Get a Summary of all Data Space Ecosystem Collections}
 \usage{
-dse_stac_collections(...)
+dse_stac_collections(collection, ...)
 }
 \arguments{
+\item{collection}{A specific collection for which to obtain summary information.
+If missing (default), all collections are returned.}
+
 \item{...}{Ignored}
 }
 \value{
-TODO
+Returns a \code{data.frame} with the requested information
 }
 \description{
-TODO
+Use the STAC API to get a summary of all collections available
+from the interface.
 }
 \examples{
 if (interactive()) {
   dse_stac_collections()
+  dse_stac_collections("sentinel-2-l2a")
 }
 }

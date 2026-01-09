@@ -4,7 +4,7 @@
 \alias{dse_stac_search_request}
 \title{TODO}
 \usage{
-dse_stac_search_request(...)
+dse_stac_search_request(collections, ids, ...)
 }
 \arguments{
 \item{...}{TODO}

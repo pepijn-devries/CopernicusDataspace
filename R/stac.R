@@ -37,11 +37,11 @@ NULL
   }
 }
 
-#' TODO
+#' Obtain Information About the STAC Client
 #' 
-#' TODO
+#' Returns information about the STAC client used in the Data Space Ecosystem
 #' @param ... Ignored
-#' @returns TODO
+#' @returns Returns a `data.frame` with the requested information
 #' @examples
 #' if (interactive()) {
 #'   dse_stac_client()
@@ -49,41 +49,37 @@ NULL
 #' @export
 dse_stac_client <- memoise::memoise(.dse_stac_client)
 
-.dse_stac_collections <- function(...) {
-  result  <- .stac_get("collections")
-  attribs <- result[names(result) != "collections"]
-  result  <- result$collections |> .simplify()
-  attr(result, "request") <- attribs
+.dse_stac_collections <- function(collection, ...) {
+  arg <- "collections"
+  if (!missing(collection)) arg <- paste(arg, collection, sep = "/")
+  result  <- .stac_get(arg)
+  if (any(names(result) == "collections")) {
+    attribs <- result[names(result) != "collections"]
+    result  <- result$collections |> .simplify(do_unnest = FALSE)
+    attr(result, "request") <- attribs
+  } else {
+    result <- .simplify(result, do_unnest = FALSE)
+  }
   result
 }
 
-#' TODO
+#' Get a Summary of all Data Space Ecosystem Collections
 #' 
-#' TODO
+#' Use the STAC API to get a summary of all collections available
+#' from the interface.
+#' @param collection A specific collection for which to obtain summary information.
+#' If missing (default), all collections are returned.
 #' @param ... Ignored
-#' @returns TODO
+#' @returns Returns a `data.frame` with the requested information
 #' @examples
 #' if (interactive()) {
 #'   dse_stac_collections()
+#'   dse_stac_collections("sentinel-2-l2a")
 #' }
 #' @export
 dse_stac_collections <- memoise::memoise(.dse_stac_collections)
 
 .dse_stac_api_specs <- function(...) .stac_get("api")
-.dse_stac_queryables <- function(...) .stac_get("queryables")
-.dse_stac_conformance <- function(...) .stac_get("conformance")
-
-#' Get STAC API Specifications
-#' 
-#' TODO
-#' @param ... Ignored
-#' @returns TODO
-#' @examples
-#' if (interactive()) {
-#'   dse_stac_api_specs()
-#' }
-#' @export
-dse_stac_api_specs <- memoise::memoise(.dse_stac_api_specs)
 
 .get_schema <- function(ref, api) {
   ref <- gsub("#", "api", ref)
@@ -101,11 +97,11 @@ dse_stac_api_specs <- memoise::memoise(.dse_stac_api_specs)
         itms_idx <- which(types$type == "array")
         itms <- do.call(c, types[[itms_nm]])
         if (!any(c("$ref", "type") %in% names(itms))) {
-          return(rep(NA, length(types))) #TODO check type!
+          return(rep(NA, length(types)))
         } else {
           if ("string" %in% itms)
             return(NA) else {
-              return(NA) #TODO other types? or always NA?
+              return(NA)
             }
         }
       } else {
@@ -113,7 +109,6 @@ dse_stac_api_specs <- memoise::memoise(.dse_stac_api_specs)
         return(NA)
       }
     } else {
-      #TODO check types!
       target[[nm]] <- source[[nm]]
       if (grepl("date", nm)) {
         target[[nm]] <- lubridate::as_datetime(target[[nm]], tz = "")
@@ -167,12 +162,11 @@ dse_stac_api_specs <- memoise::memoise(.dse_stac_api_specs)
 #'     collect()
 #' }
 #' @export
-dse_stac_search_request <- function(...) {
+dse_stac_search_request <- function(collections, ids, ...) {
   
   filt <- .dse_stac_search_filter(...)
   filt$intersects <- NULL #TODO
   filt$bbox <- NULL #TODO
-  # jsonlite::toJSON(filt, pretty = TRUE) # TODO for debugging
   result <-
     .stac_base_url |>
     paste("search", sep = "/") |>
@@ -199,3 +193,30 @@ dse_stac_search_request <- function(...) {
 dse_stac_download <- function(..., destination, token = dse_access_token()) {
   browser() #TODO
 }
+
+.dse_stac_queryables <- function(collection, ...) {
+  result <-
+    .stac_base_url |>
+    paste("collections", collection, "queryables", sep = "/") |>
+    httr2::request() |>
+    httr2::req_error(body = .stac_error) |>
+    httr2::req_perform() |>
+    httr2::resp_body_json()
+}
+
+#' Get Queryables for a STAC collection
+#' 
+#' When searching through a collection with [dse_stac_search_request()], it
+#' can be helpful to know which elements can be used to filter the search
+#' results (using [dplyr::filter()]). Calling [dse_stac_queryables()] tells
+#' you which aspects are available for querying and expected formats.
+#' @param collection Name of the collection for which to get the queryables.
+#' @param ... Ignored
+#' @returns Returns a named list with information about elements that can be used
+#' to query the `collection`
+#' @examples
+#' if (interactive()) {
+#'   dse_stac_queryables("sentinel-1-grd")
+#' }
+#' @export
+dse_stac_queryables <- memoise::memoise(.dse_stac_queryables)
