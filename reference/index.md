@@ -32,6 +32,8 @@
   [`dse_s3_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
   [`` `dse_s3_secret<-`() ``](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
   : Setup Amazon Simple Storage Service for the Data Space Ecosystem
+- [`dse_s3_download()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3_download.md)
+  : Download Asset Through Uniform Resource Identifier
 - [`dse_sh_collections()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_collections.md)
   [`dse_sh_queryables()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_collections.md)
   : List Sentinel hub collections
@@ -42,11 +44,11 @@
 - [`dse_stac_collections()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_collections.md)
   : Get a Summary of all Data Space Ecosystem Collections
 - [`dse_stac_download()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_download.md)
-  : TODO
+  : Download Asset From STAC Catalogue
 - [`dse_stac_queryables()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_queryables.md)
   : Get Queryables for a STAC collection
 - [`dse_stac_search_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_search_request.md)
-  : TODO
+  : Create a Request for a STAC Search in the Data Space Ecosystem
 - [`dse_usage()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)
   [`dse_user_statistics()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)
   : Get Dataspace Account Information

@@ -1,6 +1,18 @@
-# TODO
+# Create a Request for a STAC Search in the Data Space Ecosystem
 
-TODO
+In order to perform a search using the STAC API, you first need to
+create a request using `dse_stac_search_request()`. This creates a
+[`httr2::request()`](https://httr2.r-lib.org/reference/request.html) to
+which tidy verbs
+[`?tidy_verbs`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+can be applied (e.g.,
+[`dplyr::select()`](https://dplyr.tidyverse.org/reference/select.html),
+[`dplyr::filter()`](https://dplyr.tidyverse.org/reference/filter.html)
+and
+[`dplyr::arrange()`](https://dplyr.tidyverse.org/reference/arrange.html).
+Results are retrieved by calling
+[`dplyr::collect()`](https://dplyr.tidyverse.org/reference/compute.html)
+on the request.
 
 ## Usage
 
@@ -12,19 +24,24 @@ dse_stac_search_request(collections, ids, ...)
 
 - collections:
 
-  TODO
+  Restrict the search to the collections listed here.
 
 - ids:
 
-  TODO
+  Restrict the search to ids listed here.
 
 - ...:
 
-  TODO
+  Ignored
 
 ## Value
 
-TODO
+Returns a `data.frame` with search results.
+
+## Details
+
+If you prefer a graphical user interface, you can alternatively use the
+[STAC web browser](https://browser.stac.dataspace.copernicus.eu/).
 
 ## Examples
 
@@ -41,7 +58,13 @@ library(dplyr)
 #>     intersect, setdiff, setequal, union
 
 if (interactive()) {
-  dse_stac_search_request() |>
+  dse_stac_search_request("sentinel-2-l1c") |>
+    filter(`eo:cloud_cover` < 10) |>
+    collect()
+
+  dse_stac_search_request("sentinel-1-grd") |>
+    filter(`sat:orbit_state` == "ascending") |>
+    arrange("id") |>
     collect()
 }
 ```
