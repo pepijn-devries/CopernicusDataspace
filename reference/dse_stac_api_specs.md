@@ -1,11 +1,11 @@
-# TODO
+# Get STAC API Specifications
 
 TODO
 
 ## Usage
 
 ``` r
-dse_stac_client(...)
+dse_stac_api_specs(...)
 ```
 
 ## Arguments
@@ -22,6 +22,6 @@ TODO
 
 ``` r
 if (interactive()) {
-  dse_stac_client()
+  dse_stac_api_specs()
 }
 ```

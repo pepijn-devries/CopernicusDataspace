@@ -6,21 +6,32 @@ are produced by
 [`dse_odata_products_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_products_request.md)
 and
 [`dse_odata_bursts_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_bursts.md).
+TODO: document stac_request as well
 
 ## Usage
 
 ``` r
 filter.odata_request(.data, ..., .by = NULL, .preserve = FALSE)
 
+filter.stac_request(.data, ..., .by = NULL, .preserve = FALSE)
+
 compute.odata_request(x, skip = 0L, ...)
 
 collect.odata_request(x, skip = 0L, ...)
 
+collect.stac_request(x, ...)
+
 arrange.odata_request(.data, ..., .by_group = FALSE)
+
+arrange.stac_request(.data, ..., .by_group = FALSE)
 
 slice_head.odata_request(.data, ..., n, prop, by = NULL)
 
+slice_head.stac_request(.data, ..., n, prop, by = NULL)
+
 select.odata_request(.data, ...)
+
+select.stac_request(.data, ...)
 ```
 
 ## Arguments
@@ -104,14 +115,6 @@ from its tidy standards. Most notably:
 
 ``` r
 library(dplyr)
-#> 
-#> Attaching package: ‘dplyr’
-#> The following objects are masked from ‘package:stats’:
-#> 
-#>     filter, lag
-#> The following objects are masked from ‘package:base’:
-#> 
-#>     intersect, setdiff, setequal, union
 if (interactive()) {
   dse_odata_products_request() |>
     filter(contains(Name, "WRR")) |>

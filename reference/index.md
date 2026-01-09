@@ -37,13 +37,15 @@
   : List Sentinel hub collections
 - [`dse_sh_process()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_process.md)
   : Process satelite data and download result
+- [`dse_stac_api_specs()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_api_specs.md)
+  : Get STAC API Specifications
 - [`dse_stac_client()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_client.md)
   : TODO
 - [`dse_stac_collections()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_collections.md)
   : TODO
 - [`dse_stac_download()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_download.md)
   : TODO
-- [`dse_stac_search()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_search.md)
+- [`dse_stac_search_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_search_request.md)
   : TODO
 - [`dse_usage()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)
   [`dse_user_statistics()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)
@@ -53,9 +55,14 @@
 - [`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
   : Perform a Request to Get a Response
 - [`filter.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`filter.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
   [`compute.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
   [`collect.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`collect.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
   [`arrange.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`arrange.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
   [`slice_head.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`slice_head.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
   [`select.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`select.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
   : Tidy Verbs for OData API Requests

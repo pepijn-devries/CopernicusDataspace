@@ -14,6 +14,10 @@ dse_stac_collections(...)
 
   Ignored
 
+## Value
+
+TODO
+
 ## Examples
 
 ``` r

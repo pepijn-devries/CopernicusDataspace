@@ -24,7 +24,11 @@ Useful links:
 
 Other contributors:
 
+- Alicia Hamer <alicia.hamer@wur.nl>
+  ([ORCID](https://orcid.org/0000-0001-6809-622X)) \[research team
+  member\]
+
 - LVVN (Ministerie van Landbouw, Visserij, Voedselzekerheid en Natuur)
   (03b1hdw57) \[funder\]
 
-- WMR (Wageningen Marine Research) (013dzwk66) \[funder\]
+- WMR (Wageningen Marine Research) (013dzwk66) \[contractor\]

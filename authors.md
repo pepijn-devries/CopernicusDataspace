@@ -5,11 +5,14 @@
 - **Pepijn de Vries**. Author, maintainer.
   [](https://orcid.org/0000-0002-7961-6646)
 
+- **Alicia Hamer**. Research team member.
+  [](https://orcid.org/0000-0001-6809-622X)
+
 - **LVVN (Ministerie van Landbouw, Visserij, Voedselzekerheid en
   Natuur)**. Funder.
   [![ROR](https://raw.githubusercontent.com/ror-community/ror-logos/main/ror-icon-rgb.svg)](https://ror.org/03b1hdw57)
 
-- **WMR (Wageningen Marine Research)**. Funder.
+- **WMR (Wageningen Marine Research)**. Contractor.
   [![ROR](https://raw.githubusercontent.com/ror-community/ror-logos/main/ror-icon-rgb.svg)](https://ror.org/013dzwk66)
 
 ## Citation
