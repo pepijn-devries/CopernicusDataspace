@@ -10,6 +10,14 @@ dse_stac_search_request(collections, ids, ...)
 
 ## Arguments
 
+- collections:
+
+  TODO
+
+- ids:
+
+  TODO
+
 - ...:
 
   TODO
