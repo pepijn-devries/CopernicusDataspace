@@ -1,6 +1,7 @@
-# TODO
+# Obtain Information About the STAC Client
 
-TODO
+Returns information about the STAC client used in the Data Space
+Ecosystem
 
 ## Usage
 
@@ -16,7 +17,7 @@ dse_stac_client(...)
 
 ## Value
 
-TODO
+Returns a `data.frame` with the requested information
 
 ## Examples
 

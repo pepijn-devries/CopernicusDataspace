@@ -5,7 +5,7 @@ TODO
 ## Usage
 
 ``` r
-dse_stac_search_request(...)
+dse_stac_search_request(collections, ids, ...)
 ```
 
 ## Arguments

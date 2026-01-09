@@ -1,12 +1,13 @@
-# Tidy Verbs for OData API Requests
+# Tidy Verbs for OData API and STAC Requests
 
-Implementation of tidy generics for features supported by OData API
-requests. They can be called on objects of class `odata_request`, which
-are produced by
+Implementation of tidy generics for features supported by either OData
+or STAC API requests. They can be called on objects of either class:
+`odata_request` or `stac_request`. The first is produced by
 [`dse_odata_products_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_products_request.md)
 and
-[`dse_odata_bursts_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_bursts.md).
-TODO: document stac_request as well
+[`dse_odata_bursts_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_bursts.md);
+the latter by
+[`dse_stac_search_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_search_request.md).
 
 ## Usage
 
@@ -38,10 +39,12 @@ select.stac_request(.data, ...)
 
 - .data, x:
 
-  An object of class `odata_request`. These are produced by
-  [`dse_odata_products_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_products_request.md)
-  and
+  An object of either class `odata_request` or `stac_request`. These are
+  produced by
+  [`dse_odata_products_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_products_request.md),
   [`dse_odata_bursts_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_bursts.md)
+  and
+  [`dse_stac_search_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_search_request.md)
 
 - ...:
 
@@ -65,25 +68,33 @@ select.stac_request(.data, ...)
 
 ## Value
 
-All functions (except `collect()`) return a modified `odata_request`
-object, containing the lazy tidy operations. `collect()` will return a
+All functions (except `collect()`) return a modified
+`stac_request`/`odata_request` object, containing the lazy tidy
+operations. `collect()` will return a
 [`data.frame()`](https://rdrr.io/r/base/data.frame.html) yielding the
 result of the request.
 
 ## Details
 
-The `odata_request` class objects use lazy evaluation. This means that
-functions are only evaluated after calling
+The `odata_request` and `stac_request` class objects use lazy
+evaluation. This means that functions are only evaluated after calling
 [`dplyr::collect()`](https://dplyr.tidyverse.org/reference/compute.html)
-on a request. Note that you should not call the functions exported in
-this package directly. Instead, call the generics as declared in the
-`dplyr` package. This is illustrated by the examples.
+on a request.
 
-### 20 Rows
+Note that you should not call the functions exported in this package
+directly. Instead, call the generics as declared in the `dplyr` package.
+This is illustrated by the examples.
+
+### Slice Head
 
 In order to manage server traffic, the OData API never returns more than
 20 rows. If you want to obtain results beyond the first 20 rows, you
 need to specify the `skip` argument.
+
+The STAC API limits its results to the first 10 rows. You can expand
+that limit with
+[`dplyr::slice_head()`](https://dplyr.tidyverse.org/reference/slice.html).
+For STAC the number of rows is capped at 10,000 records.
 
 ### Deviations
 
@@ -105,11 +116,11 @@ from its tidy standards. Most notably:
 - Grouping is not supported
 
 - Only tidy methods documented on this page are supported for
-  `odata_request` objects. If you want to apply the full spectrum of
-  tidyverse methods, call
+  `odata_request` and `stac_request` objects. If you want to apply the
+  full spectrum of tidyverse methods, call
   [`dplyr::collect()`](https://dplyr.tidyverse.org/reference/compute.html)
-  on the `odata_request` object first. That will return a normal
-  `data.frame`, which can be manipulated further.
+  on the `stac_request`/`odata_request` object first. That will return a
+  normal `data.frame`, which can be manipulated further.
 
 ## Examples
 
@@ -122,5 +133,7 @@ if (interactive()) {
     arrange(Id, desc(Name)) |>
     slice_head(n = 5) |>
     collect()
+
+  #TODO stac example
 }
 ```
