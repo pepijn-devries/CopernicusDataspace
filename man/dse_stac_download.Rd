@@ -2,14 +2,29 @@
 % Please edit documentation in R/stac.R
 \name{dse_stac_download}
 \alias{dse_stac_download}
-\title{TODO}
+\title{Download Asset From STAC Catalogue}
 \usage{
-dse_stac_download(..., destination, token = dse_access_token())
+dse_stac_download(
+  id,
+  asset,
+  destination,
+  ...,
+  s3_key = dse_s3_key(),
+  s3_secret = dse_s3_secret(),
+  token = dse_access_token()
+)
 }
 \arguments{
-\item{...}{TODO}
+\item{id}{STAC id, used for locating the asset download details.}
 
-\item{destination}{TODO}
+\item{asset}{Name of the asset to download}
+
+\item{destination}{Directory path where to store the downloaded file.}
+
+\item{...}{Ignored}
+
+\item{s3_key, s3_secret}{The s3 key and secret registered under your Data Space
+Ecosystem account}
 
 \item{token}{For authentication, many of the Dataspace Ecosystem uses
 an access token. Either provide your access token, or obtain one automatically
@@ -17,13 +32,18 @@ with \code{\link[=dse_access_token]{dse_access_token()}} (default). Without a va
 an "access denied" error.}
 }
 \value{
-TODO
+Returns \code{NULL} invisibly.
 }
 \description{
-TODO
+Use \code{\link[=dse_stac_search_request]{dse_stac_search_request()}} to identify assets that can be downloaded.
+Use \code{\link[=dse_stac_download]{dse_stac_download()}} to download an asset by its STAC id and asset name.
 }
 \examples{
-if (interactive() && dse_has_client_info()) {
-  dse_stac_download(destination = tempdir()) #TODO
+if (interactive() && (dse_has_s3_secret() || dse_has_client_info())) {
+  dse_stac_download(
+    id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
+    asset = "B01",
+    destination = tempdir()
+  )
 }
 }

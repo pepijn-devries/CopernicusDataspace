@@ -90,7 +90,7 @@ dse_stac_collections <- memoise::memoise(.dse_stac_collections)
 .dse_fix_list <- function(target, source, api) {
   lapply(names(target), \(nm) {
     types <- target[[nm]]$anyOf |> .simplify()
-    if (is.null(source[[nm]]) && "null" %in% types$type) {
+    if ((is.null(source[[nm]]) || all(is.na(source[[nm]]))) && "null" %in% types$type) {
       if ("array" %in% types$type) {
         itms_nm  <- c("prefixItems", "items")
         itms_nm  <- itms_nm[itms_nm %in% names(types)]
@@ -148,25 +148,39 @@ dse_stac_collections <- memoise::memoise(.dse_stac_collections)
   result
 }
 
-#' TODO
+#' Create a Request for a STAC Search in the Data Space Ecosystem
 #' 
-#' TODO
-#' @param collections TODO
-#' @param ids TODO
-#' @param ... TODO
-#' @returns TODO
+#' In order to perform a search using the STAC API, you first need to
+#' create a request using [dse_stac_search_request()]. This creates
+#' a [httr2::request()] to which tidy verbs `?tidy_verbs` can be applied
+#' (e.g., [dplyr::select()], [dplyr::filter()] and [dplyr::arrange()].
+#' Results are retrieved by calling [dplyr::collect()] on the request.
+#' 
+#' If you prefer a graphical user interface, you can alternatively use
+#' the [STAC web browser](https://browser.stac.dataspace.copernicus.eu/).
+#' @param collections Restrict the search to the collections listed here.
+#' @param ids Restrict the search to ids listed here.
+#' @param ... Ignored
+#' @returns Returns a `data.frame` with search results.
 #' @examples
 #' # TODO
 #' library(dplyr)
 #' 
 #' if (interactive()) {
-#'   dse_stac_search_request() |>
+#'   dse_stac_search_request("sentinel-2-l1c") |>
+#'     filter(`eo:cloud_cover` < 10) |>
+#'     collect()
+#'
+#'   dse_stac_search_request("sentinel-1-grd") |>
+#'     filter(`sat:orbit_state` == "ascending") |>
+#'     arrange("id") |>
 #'     collect()
 #' }
 #' @export
 dse_stac_search_request <- function(collections, ids, ...) {
-  
-  filt <- .dse_stac_search_filter(collections, ids, ...)
+  if (missing(collections)) collections <- NA
+  if (missing(ids)) ids <- NA
+  filt <- .dse_stac_search_filter(collections = collections, ids = ids, ...)
   filt$intersects <- NULL #TODO complete from st_intersects
   filt$bbox <- NULL #TODO complete from st_intersects
   result <-
@@ -180,20 +194,57 @@ dse_stac_search_request <- function(collections, ids, ...) {
   result
 }
 
-#' TODO
+#' Download Asset From STAC Catalogue
 #' 
-#' TODO
-#' @param ... TODO
-#' @param destination TODO
+#' Use [dse_stac_search_request()] to identify assets that can be downloaded.
+#' Use [dse_stac_download()] to download an asset by its STAC id and asset name.
+#' @param id STAC id, used for locating the asset download details.
+#' @param asset Name of the asset to download
+#' @param destination Directory path where to store the downloaded file.
+#' @param ... Ignored
 #' @inheritParams dse_usage
-#' @returns TODO
+#' @inheritParams dse_s3
+#' @returns Returns `NULL` invisibly.
 #' @examples
-#' if (interactive() && dse_has_client_info()) {
-#'   dse_stac_download(destination = tempdir()) #TODO
+#' if (interactive() && (dse_has_s3_secret() || dse_has_client_info())) {
+#'   dse_stac_download(
+#'     id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
+#'     asset = "B01",
+#'     destination = tempdir()
+#'   )
 #' }
 #' @export
-dse_stac_download <- function(..., destination, token = dse_access_token()) {
-  browser() #TODO
+dse_stac_download <- function(
+    id, asset, destination, ...,
+    s3_key    = dse_s3_key(),
+    s3_secret = dse_s3_secret(),
+    token     = dse_access_token()) {
+  asset_info <-
+    dse_stac_search_request(ids = id) |>
+    dplyr::select(!!paste0("assets.", asset)) |>
+    dplyr::arrange("id") |>
+    dplyr::collect() |>
+    dplyr::pull("assets") |>
+    dplyr::bind_rows()
+  
+  local_path <- asset_info[[paste0(asset, ".file:local_path")]]
+  if (s3_key != "" && s3_secret != "") {
+    dse_s3_download(asset_info[[paste0(asset, ".href")]], destination,
+                    s3_key = s3_key, s3_secret = s3_secret)
+  } else if (token != "") {
+    asset_info[[paste0(asset, ".alternate.https.href")]] |>
+      httr2::request() |>
+      .add_token(token) |>
+      httr2::req_perform(path = file.path(
+        destination, basename(local_path)
+      ))
+    return(invisible())
+  } else {
+    rlang::abort(c(
+      x = "Need authentication details in order to download asset",
+      i = ("Pass either S3 key and secret or OData access token")
+    ))
+  }
 }
 
 .dse_stac_queryables <- function(collection, ...) {
