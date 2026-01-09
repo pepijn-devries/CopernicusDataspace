@@ -7,6 +7,8 @@
 [![version](https://www.r-pkg.org/badges/version/CopernicusDataspace)](https://CRAN.R-project.org/package=CopernicusDataspace)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Codecov test
+coverage](https://codecov.io/gh/pepijn-devries/CopernicusDataspace/graph/badge.svg)](https://app.codecov.io/gh/pepijn-devries/CopernicusDataspace)
 <!-- badges: end -->
 
 The [Copernicus Data Space Ecosystem](https://dataspace.copernicus.eu/),
