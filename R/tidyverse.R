@@ -359,9 +359,10 @@ select.stac_request <-
 
 ## STAC uses cq2-json schema.
 .stac_operators <- dplyr::tibble(
-  r_code = list(`==`, `!=`, `>`, `>=`, `<`, `<=`, `&`, `|`, `!`, is.na, `%in%`),
+  r_code = list(`==`, `!=`, `>`, `>=`, `<`, `<=`, `&`, `|`, `!`, is.na, `%in%`,
+                dplyr::between),
   api_code = c("=", "<>", ">", ">=", "<", "<=", "and", "or", "not",
-               "isNull", "in")
+               "isNull", "in", "between")
 )
 
 .match_function <- function(expr, format = "odata") {

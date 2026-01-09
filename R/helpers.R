@@ -1,4 +1,4 @@
-.simplify <- function(x) {
+.simplify <- function(x, do_unnest = TRUE) {
   if (any(c("Product", "product") %in% names(x))) {
     nm <- names(x)
     nm[nm == "Product"] <- "product"
@@ -33,12 +33,14 @@
         }
       })
     )
-  tibble_columns <-
-    lapply(result, \(y) lapply(y, tibble::is_tibble) |> unlist() |> all()) |> unlist()
-  tibble_columns[names(tibble_columns) %in%
-                   c("assets", "properties.cube:variables")] <- FALSE
-  if (any(tibble_columns)) {
-    tidyr::unnest(result, names(tibble_columns)[tibble_columns], names_sep = ".")
+  if (do_unnest) {
+    tibble_columns <-
+      lapply(result, \(y) lapply(y, tibble::is_tibble) |> unlist() |> all()) |> unlist()
+    tibble_columns[names(tibble_columns) %in%
+                     c("assets", "properties.cube:variables")] <- FALSE
+    if (any(tibble_columns)) {
+      tidyr::unnest(result, names(tibble_columns)[tibble_columns], names_sep = ".")
+    } else result
   } else result
 }
 

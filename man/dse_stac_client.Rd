@@ -2,7 +2,7 @@
 % Please edit documentation in R/stac.R
 \name{dse_stac_client}
 \alias{dse_stac_client}
-\title{TODO}
+\title{Obtain Information About the STAC Client}
 \usage{
 dse_stac_client(...)
 }
@@ -10,10 +10,10 @@ dse_stac_client(...)
 \item{...}{Ignored}
 }
 \value{
-TODO
+Returns a \code{data.frame} with the requested information
 }
 \description{
-TODO
+Returns information about the STAC client used in the Data Space Ecosystem
 }
 \examples{
 if (interactive()) {
