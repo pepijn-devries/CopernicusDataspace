@@ -1,12 +1,45 @@
 .simplify <- function(x) {
-  x <- lapply(x, tibble::enframe) |>
-    lapply(tidyr::pivot_wider, names_from = "name", values_from = "value") |>
-    dplyr:: bind_rows()
-  unnest_col <-
-    lapply(x, \(x) lengths(x) <= 1) |>
-    lapply(all) |>
-    unlist()
-  tidyr::unnest(x, names(unnest_col)[unnest_col])
+  if (any(c("Product", "product") %in% names(x))) {
+    nm <- names(x)
+    nm[nm == "Product"] <- "product"
+    names(x) <- nm
+  }
+  
+  if (rlang::is_named(x)) {
+    result <- tibble::enframe(x) |>
+      tidyr::pivot_wider(names_from = "name", values_from = "value")
+    
+  } else {
+    result <-
+      lapply(x, \(y) {
+        tibble::enframe(y) |>
+          tidyr::pivot_wider(names_from = "name", values_from = "value")
+      }) |>
+      dplyr::bind_rows()
+  }
+  result <- result |>
+    dplyr::mutate(
+      dplyr::across(dplyr::everything(), ~ {
+        if (lapply(.x, is.list) |> unlist() |> all()) {
+          if (lapply(.x, rlang::is_named) |> unlist() |> all()) {
+            lapply(.x, .simplify)
+          } else {
+            .x
+          }
+        } else {
+          if (all(lengths(.x) == 1))
+            unlist(.x) else
+              .x
+        }
+      })
+    )
+  tibble_columns <-
+    lapply(result, \(y) lapply(y, tibble::is_tibble) |> unlist() |> all()) |> unlist()
+  tibble_columns[names(tibble_columns) %in%
+                   c("assets", "properties.cube:variables")] <- FALSE
+  if (any(tibble_columns)) {
+    tidyr::unnest(result, names(tibble_columns)[tibble_columns], names_sep = ".")
+  } else result
 }
 
 .simplify2 <- function(x) {
@@ -28,6 +61,19 @@
   attribs <- x[attrib_names]
   x <- (x[setdiff(names(x), attrib_names)][[1]]) |>
     .simplify()
+  .x <- NULL
+  simplify_sub <- function(y, i) {
+    if (i %in% names(y)) {
+      dplyr::bind_cols(y |> dplyr::select(-.env$i),
+                       y[[i]] |> .simplify() |>
+                         dplyr::rename_with(~paste(i, .x, sep = ".")))
+    } else y
+  }
+
+  x <-
+    x |>
+    simplify_sub("properties")
+  
   attributes(x) <- c(attributes(x), x)
   x
   

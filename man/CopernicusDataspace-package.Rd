@@ -22,8 +22,9 @@ Useful links:
 
 Other contributors:
 \itemize{
+  \item Alicia Hamer \email{alicia.hamer@wur.nl} (\href{https://orcid.org/0000-0001-6809-622X}{ORCID}) [research team member]
   \item LVVN (Ministerie van Landbouw, Visserij, Voedselzekerheid en Natuur) (03b1hdw57) [funder]
-  \item WMR (Wageningen Marine Research) (013dzwk66) [funder]
+  \item WMR (Wageningen Marine Research) (013dzwk66) [contractor]
 }
 
 }

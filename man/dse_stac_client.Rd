@@ -9,6 +9,9 @@ dse_stac_client(...)
 \arguments{
 \item{...}{Ignored}
 }
+\value{
+TODO
+}
 \description{
 TODO
 }

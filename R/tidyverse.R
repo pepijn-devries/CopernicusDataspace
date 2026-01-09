@@ -6,6 +6,7 @@ NULL
 #' Implementation of tidy generics for features supported by OData API requests.
 #' They can be called on objects of class `odata_request`, which are produced
 #' by [dse_odata_products_request()] and [dse_odata_bursts_request()].
+#' TODO: document stac_request as well
 #' 
 #' The `odata_request` class objects use lazy evaluation. This means that
 #' functions are only evaluated after calling [dplyr::collect()] on a request.
@@ -70,6 +71,27 @@ filter.odata_request <-
   }
 
 #' @rdname tidy_verbs
+#' @name filter
+#' @export
+filter.stac_request <-
+  function (.data, ..., .by = NULL, .preserve = FALSE) {
+    old_filter <- .data$body$data$filter
+    if (length(old_filter) == 1 && is.na(old_filter)) old_filter <- NULL
+    new_filter <-
+      .translate_filters(rlang::enquos(..., .named = TRUE)[[1]], "stac")
+    if (!is.null(old_filter)) {
+      new_filter <- list(
+        args = c(old_filter, new_filter),
+        op = "and"
+      )
+    }
+    .data |>
+      httr2::req_body_json_modify(
+        filter = new_filter
+      )
+  }
+
+#' @rdname tidy_verbs
 #' @name compute
 #' @export
 compute.odata_request <-
@@ -113,6 +135,18 @@ collect.odata_request <-
   }
 
 #' @rdname tidy_verbs
+#' @name collect
+#' @export
+collect.stac_request <-
+  function(x, ...) {
+    browser() #TODO
+    items <- 
+      httr2::req_perform(x) |>
+      httr2::resp_body_json()
+    .stac_items(items)
+  }
+
+#' @rdname tidy_verbs
 #' @name arrange
 #' @export
 arrange.odata_request <-
@@ -120,6 +154,26 @@ arrange.odata_request <-
     new_arrange <- rlang::enquos(..., .named = TRUE)
     .data$odata$arrange <- c(.data$odata$arrange, new_arrange)
     .data
+  }
+
+#' @rdname tidy_verbs
+#' @name arrange
+#' @export
+arrange.stac_request <-
+  function(.data, ..., .by_group = FALSE) {
+    my_arrange <-
+      rlang::enquos(..., .named = TRUE) |>
+      .column_select(allow_desc = TRUE)
+    dsc <- attr(my_arrange, "is_desc")
+    my_arrange <- lapply(seq_len(length(my_arrange)), \(i){
+      list(field = my_arrange[[i]], direction = ifelse(dsc[[i]], "desc", "asc"))
+    })
+    
+    if (is.na(.data$body$data$sortby)) .data$body$data$sortby <- NULL
+    httr2::req_body_json_modify(
+      .data,
+      sortby = c(.data$body$data$sortby, my_arrange)
+    )
   }
 
 #' @rdname tidy_verbs
@@ -138,6 +192,19 @@ slice_head.odata_request <-
   }
 
 #' @rdname tidy_verbs
+#' @name slice_head
+#' @export
+slice_head.stac_request <-
+  function(.data, ..., n, prop, by = NULL) {
+    if (!missing(prop))
+      rlang::abort(c(
+        x = "'prop' argument is not implemented for STAC requests",
+        i = "Use 'n' instead."))
+    
+    httr2::req_body_json_modify(.data, limit = n)
+  }
+
+#' @rdname tidy_verbs
 #' @name select
 #' @export
 select.odata_request <-
@@ -145,6 +212,24 @@ select.odata_request <-
     new_select <- rlang::enquos(..., .named = TRUE)
     .data$odata$select <- c(.data$odata$select, new_select)
     .data
+  }
+
+#' @rdname tidy_verbs
+#' @name select
+#' @export
+select.stac_request <-
+  function(.data, ...) {
+    new_select <-
+      rlang::enquos(..., .named = TRUE) |>
+      .column_select()
+    if (is.na(.data$body$data$fields)) .data$body$data$fields <- NULL
+    new_select <- c(.data$body$data$fields$include, new_select)
+    .data |>
+      httr2::req_body_json_modify(
+        fields = list(
+          include = as.list(new_select)
+        )
+      )
   }
 
 .parse_filters <- function(.data) {
@@ -260,10 +345,19 @@ select.odata_request <-
                "%s and %s", "%s or %s", "not (%s)", "%s eq null", "contains(%s,%s)")
 )
 
-.match_function <- function(expr) {
+## STAC uses cq2-json schema.
+.stac_operators <- dplyr::tibble(
+  r_code = list(`==`, `!=`, `>`, `>=`, `<`, `<=`, `&`, `|`, `!`, is.na, `%in%`),
+  api_code = c("=", "<>", ">", ">=", "<", "<=", "and", "or", "not",
+               "isNull", "in")
+)
+
+.match_function <- function(expr, format = "odata") {
+  base <- if (format == "odata") .odata_operators else
+    if (format == "stac") .stac_operators
   result <- NA_integer_
-  for (i in seq_len(nrow(.odata_operators))) {
-    if (identical(.odata_operators$r_code[[i]], rlang::eval_tidy(expr))) {
+  for (i in seq_len(nrow(base))) {
+    if (identical(base$r_code[[i]], rlang::eval_tidy(expr))) {
       result <- i
       break
     }
@@ -271,17 +365,17 @@ select.odata_request <-
   return (result)
 }
 
-.translate_filters <- function(quo) {
+.translate_filters <- function(quo, format = "odata") {
   expr <- rlang::quo_get_expr(quo)
-  
   if (is.call(expr)) {
-    idx <- .match_function(expr[[1]])
+    idx <- .match_function(expr[[1]], format)
     op <- ""
     if (!is.na(idx)) {
-      op <- .odata_operators$api_code[idx]
+      op <- if (format == "odata") .odata_operators$api_code[idx] else
+        if (format == "stac") .stac_operators$api_code[idx]
       if (rlang::is_call(expr[[2]])) {
-        left <- "(%s)" |>
-          sprintf(.translate_filters(rlang::as_quosure(expr[[2]], environment())))
+        left <- .translate_filters(rlang::as_quosure(expr[[2]], environment()), format)
+        if (format == "odata") left <- sprintf("(%s)", left)
       } else {
         left <- as.character(expr[[2]])
       }
@@ -289,9 +383,13 @@ select.odata_request <-
     if (is.na(idx)) {
       if (identical(c, eval(expr[[1]]))) {
         result <- rlang::eval_tidy(expr)
-        if (is.character(result)) result <- sprintf("'%s'", result)
-        return(paste(result, collapse = ","))
-      } else if (identical(`%in%`, eval(expr[[1]]))) {
+        if (format == "odata") {
+          if (is.character(result)) result <- sprintf("'%s'", result)
+          return (paste(result, collapse = ","))
+        } else if (format == "stac") {
+          return (result)
+        }
+      } else if (identical(`%in%`, eval(expr[[1]])) && format == "odata") {
         paste(
           sprintf("%s eq %s", as.character(expr[[2]]), rlang::eval_tidy(expr[[3]])),
           collapse = " or ") |>
@@ -308,21 +406,44 @@ select.odata_request <-
       }
     } else {
       if (length(expr) < 3) {
+        browser() #TODO STAC!
         return(sprintf(op, left))
       } else {
         if (rlang::is_call(expr[[3]])) {
-          right <- .translate_filters(rlang::as_quosure(expr[[3]], environment()))
+          right <- .translate_filters(rlang::as_quosure(expr[[3]], environment()), format)
         } else {
           right <- eval(expr[[3]])
         }
-        if (grepl("date", left, ignore.case = TRUE)) {
+        left_check <- left
+        if (is.list(left_check)) left_check <- left_check$args[[1]]$property
+        if (is.null(left_check)) left_check <- ""
+        if (grepl("date", left_check, ignore.case = TRUE)) {
           right <- lubridate::as_datetime(right, tz = "")
           right <- lubridate::format_ISO8601(right, usetz = TRUE)
         }
-        if (is.character(right)) right <- sprintf("'%s'", right) else
+        if (is.character(right) && format == "odata")
           right <- sprintf("(%s)", right)
       }
-      return(sprintf(op, left, right))
+      if (format == "odata") {
+        return(sprintf(op, left, right))
+      } else if (format == "stac") {
+        if (is.character(left)) {
+          left <- strsplit(left, "[.]")[[1]]
+          domain <- "property"
+          if (length(left) > 1) {
+            if (left[[1]] != "properties") stop("Unknown domain")
+            left <- left[[2]]
+          }
+          left <- structure(list(left), names = domain)
+        }
+        list(
+          args = list(
+            left,
+            right
+          ),
+          op = op
+        )
+      }
     }
   }
 }
