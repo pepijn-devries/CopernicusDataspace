@@ -1,23 +1,30 @@
 #' @include geometry.R
 NULL
 
-#' Tidy Verbs for OData API Requests
+#' Tidy Verbs for OData API and STAC Requests
 #' 
-#' Implementation of tidy generics for features supported by OData API requests.
-#' They can be called on objects of class `odata_request`, which are produced
-#' by [dse_odata_products_request()] and [dse_odata_bursts_request()].
-#' TODO: document stac_request as well
+#' Implementation of tidy generics for features supported by either OData or STAC
+#' API requests.
+#' They can be called on objects of either class: `odata_request` or `stac_request`.
+#' The first is produced
+#' by [dse_odata_products_request()] and [dse_odata_bursts_request()];
+#' the latter by [dse_stac_search_request()].
 #' 
-#' The `odata_request` class objects use lazy evaluation. This means that
-#' functions are only evaluated after calling [dplyr::collect()] on a request.
+#' The `odata_request` and `stac_request` class objects use lazy evaluation.
+#' This means that functions are only evaluated after calling [dplyr::collect()]
+#' on a request.
+#' 
 #' Note that you should not call the functions exported in this package directly.
 #' Instead, call the generics as declared in the `dplyr` package. This is
 #' illustrated by the examples.
 #' 
-#' ## 20 Rows
+#' ## Slice Head
 #' In order to manage server traffic, the OData API never returns more than
 #' 20 rows. If you want to obtain results beyond the first 20 rows, you need
 #' to specify the `skip` argument.
+#' 
+#' The STAC API limits its results to the first 10 rows. You can expand that limit
+#' with [dplyr::slice_head()]. For STAC the number of rows is capped at 10,000 records.
 #' 
 #' ## Deviations
 #' Due to limitations posed by the OData API, some tidyverse verbs deviate
@@ -30,11 +37,14 @@ NULL
 #'    Adding more columns will produce a warning.
 #'  * Grouping is not supported
 #'  * Only tidy methods documented on this page are supported for `odata_request`
-#'    objects. If you want to apply the full spectrum of tidyverse methods,
-#'    call `dplyr::collect()` on the `odata_request` object first. That will return
-#'    a normal `data.frame`, which can be manipulated further.
-#' @param .data,x An object of class `odata_request`. These are produced by
-#' [dse_odata_products_request()] and [dse_odata_bursts_request()]
+#'    and `stac_request` objects. If you want to apply the full spectrum of
+#'    tidyverse methods, call `dplyr::collect()` on the `stac_request`/`odata_request`
+#'    object first. That will return a normal `data.frame`, which can be
+#'    manipulated further.
+#' @param .data,x An object of either class `odata_request` or `stac_request`.
+#' These are produced by
+#' [dse_odata_products_request()], [dse_odata_bursts_request()] and
+#' [dse_stac_search_request()]
 #' @param n Maximum number of rows to return.
 #' @param skip Number of rows to skip when collecting results. The API
 #' never returns more than 20 rows. Specify the number of rows to skip
@@ -43,7 +53,8 @@ NULL
 #' `dplyr` functions. Ignored in the current context as either grouping
 #' is not allowed for an OData API request or is otherwise not supported.
 #' @param ... Data masking expressions, or arguments passed to embedded functions
-#' @returns All functions (except `collect()`) return a modified `odata_request`
+#' @returns All functions (except `collect()`) return a modified
+#' `stac_request`/`odata_request`
 #' object, containing the lazy tidy operations. `collect()` will return a
 #' `data.frame()` yielding the result of the request.
 #' @examples
@@ -55,6 +66,8 @@ NULL
 #'     arrange(Id, desc(Name)) |>
 #'     slice_head(n = 5) |>
 #'     collect()
+#'
+#'   #TODO stac example
 #' }
 #' @name tidy_verbs
 #' @rdname tidy_verbs
@@ -139,7 +152,6 @@ collect.odata_request <-
 #' @export
 collect.stac_request <-
   function(x, ...) {
-    browser() #TODO
     items <- 
       httr2::req_perform(x) |>
       httr2::resp_body_json()
@@ -406,7 +418,9 @@ select.stac_request <-
       }
     } else {
       if (length(expr) < 3) {
-        browser() #TODO STAC!
+        return(
+          list( args = left, op = op )
+        )
         return(sprintf(op, left))
       } else {
         if (rlang::is_call(expr[[3]])) {

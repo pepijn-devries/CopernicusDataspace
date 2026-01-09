@@ -19,7 +19,7 @@
 \alias{select}
 \alias{select.odata_request}
 \alias{select.stac_request}
-\title{Tidy Verbs for OData API Requests}
+\title{Tidy Verbs for OData API and STAC Requests}
 \usage{
 filter.odata_request(.data, ..., .by = NULL, .preserve = FALSE)
 
@@ -44,8 +44,10 @@ select.odata_request(.data, ...)
 select.stac_request(.data, ...)
 }
 \arguments{
-\item{.data, x}{An object of class \code{odata_request}. These are produced by
-\code{\link[=dse_odata_products_request]{dse_odata_products_request()}} and \code{\link[=dse_odata_bursts_request]{dse_odata_bursts_request()}}}
+\item{.data, x}{An object of either class \code{odata_request} or \code{stac_request}.
+These are produced by
+\code{\link[=dse_odata_products_request]{dse_odata_products_request()}}, \code{\link[=dse_odata_bursts_request]{dse_odata_bursts_request()}} and
+\code{\link[=dse_stac_search_request]{dse_stac_search_request()}}}
 
 \item{...}{Data masking expressions, or arguments passed to embedded functions}
 
@@ -60,27 +62,35 @@ in order to get results beyond the first 20 rows.}
 is not allowed for an OData API request or is otherwise not supported.}
 }
 \value{
-All functions (except \code{collect()}) return a modified \code{odata_request}
+All functions (except \code{collect()}) return a modified
+\code{stac_request}/\code{odata_request}
 object, containing the lazy tidy operations. \code{collect()} will return a
 \code{data.frame()} yielding the result of the request.
 }
 \description{
-Implementation of tidy generics for features supported by OData API requests.
-They can be called on objects of class \code{odata_request}, which are produced
-by \code{\link[=dse_odata_products_request]{dse_odata_products_request()}} and \code{\link[=dse_odata_bursts_request]{dse_odata_bursts_request()}}.
-TODO: document stac_request as well
+Implementation of tidy generics for features supported by either OData or STAC
+API requests.
+They can be called on objects of either class: \code{odata_request} or \code{stac_request}.
+The first is produced
+by \code{\link[=dse_odata_products_request]{dse_odata_products_request()}} and \code{\link[=dse_odata_bursts_request]{dse_odata_bursts_request()}};
+the latter by \code{\link[=dse_stac_search_request]{dse_stac_search_request()}}.
 }
 \details{
-The \code{odata_request} class objects use lazy evaluation. This means that
-functions are only evaluated after calling \code{\link[dplyr:compute]{dplyr::collect()}} on a request.
+The \code{odata_request} and \code{stac_request} class objects use lazy evaluation.
+This means that functions are only evaluated after calling \code{\link[dplyr:compute]{dplyr::collect()}}
+on a request.
+
 Note that you should not call the functions exported in this package directly.
 Instead, call the generics as declared in the \code{dplyr} package. This is
 illustrated by the examples.
-\subsection{20 Rows}{
+\subsection{Slice Head}{
 
 In order to manage server traffic, the OData API never returns more than
 20 rows. If you want to obtain results beyond the first 20 rows, you need
 to specify the \code{skip} argument.
+
+The STAC API limits its results to the first 10 rows. You can expand that limit
+with \code{\link[dplyr:slice]{dplyr::slice_head()}}. For STAC the number of rows is capped at 10,000 records.
 }
 
 \subsection{Deviations}{
@@ -95,9 +105,10 @@ affact which columns are selected. Also, tidy selection helpers like
 Adding more columns will produce a warning.
 \item Grouping is not supported
 \item Only tidy methods documented on this page are supported for \code{odata_request}
-objects. If you want to apply the full spectrum of tidyverse methods,
-call \code{dplyr::collect()} on the \code{odata_request} object first. That will return
-a normal \code{data.frame}, which can be manipulated further.
+and \code{stac_request} objects. If you want to apply the full spectrum of
+tidyverse methods, call \code{dplyr::collect()} on the \code{stac_request}/\code{odata_request}
+object first. That will return a normal \code{data.frame}, which can be
+manipulated further.
 }
 }
 }
@@ -110,5 +121,7 @@ if (interactive()) {
     arrange(Id, desc(Name)) |>
     slice_head(n = 5) |>
     collect()
+
+  #TODO stac example
 }
 }
