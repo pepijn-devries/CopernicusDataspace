@@ -67,7 +67,10 @@ NULL
 #'     slice_head(n = 5) |>
 #'     collect()
 #'
-#'   #TODO stac example
+#'   dse_stac_search_request("sentinel-1-grd") |>
+#'     filter(`sat:orbit_state` == "ascending") |>
+#'     arrange("id") |>
+#'     collect()
 #' }
 #' @name tidy_verbs
 #' @rdname tidy_verbs

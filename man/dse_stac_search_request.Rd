@@ -2,29 +2,43 @@
 % Please edit documentation in R/stac.R
 \name{dse_stac_search_request}
 \alias{dse_stac_search_request}
-\title{TODO}
+\title{Create a Request for a STAC Search in the Data Space Ecosystem}
 \usage{
 dse_stac_search_request(collections, ids, ...)
 }
 \arguments{
-\item{collections}{TODO}
+\item{collections}{Restrict the search to the collections listed here.}
 
-\item{ids}{TODO}
+\item{ids}{Restrict the search to ids listed here.}
 
-\item{...}{TODO}
+\item{...}{Ignored}
 }
 \value{
-TODO
+Returns a \code{data.frame} with search results.
 }
 \description{
-TODO
+In order to perform a search using the STAC API, you first need to
+create a request using \code{\link[=dse_stac_search_request]{dse_stac_search_request()}}. This creates
+a \code{\link[httr2:request]{httr2::request()}} to which tidy verbs \code{?tidy_verbs} can be applied
+(e.g., \code{\link[dplyr:select]{dplyr::select()}}, \code{\link[dplyr:filter]{dplyr::filter()}} and \code{\link[dplyr:arrange]{dplyr::arrange()}}.
+Results are retrieved by calling \code{\link[dplyr:compute]{dplyr::collect()}} on the request.
+}
+\details{
+If you prefer a graphical user interface, you can alternatively use
+the \href{https://browser.stac.dataspace.copernicus.eu/}{STAC web browser}.
 }
 \examples{
 # TODO
 library(dplyr)
 
 if (interactive()) {
-  dse_stac_search_request() |>
+  dse_stac_search_request("sentinel-2-l1c") |>
+    filter(`eo:cloud_cover` < 10) |>
+    collect()
+
+  dse_stac_search_request("sentinel-1-grd") |>
+    filter(`sat:orbit_state` == "ascending") |>
+    arrange("id") |>
     collect()
 }
 }
