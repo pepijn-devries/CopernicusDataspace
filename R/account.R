@@ -41,9 +41,9 @@ dse_usage <- function(..., token = dse_access_token()) {
   nm <- names(result)
   result |>
     .simplify() |>
-    dplyr::mutate(dplyr::across(dplyr::everything(), as.numeric)) |>
-    dplyr::mutate(qualifier = nm) |>
-    dplyr::relocate("qualifier")
+    tidyr::pivot_longer(dplyr::everything(), names_sep = "[.]",
+                        names_to = c("qualifier", "name")) |>
+    tidyr::pivot_wider()
 }
 
 #' @rdname dse_usage
@@ -61,12 +61,16 @@ dse_user_statistics <- function(
   as.integer(range_check[[2]]) ## produces warnings/errors if second part isn't integer
   range_check <- match.arg(range_check[[1]], .range_args)
   
-  .accounting_url |>
+  result <-
+    .accounting_url |>
     paste("statistics/requests/statistics", sep = "/") |>
     httr2::request() |>
     httr2::req_url_query(range = range, resolution = resolution) |>
     .add_token(token) |>
     httr2::req_perform() |>
-    httr2::resp_body_json() |>
-    .simplify()
+    httr2::resp_body_json()
+  result$data |>
+    lapply(.simplify) |>
+    tibble::enframe() |>
+    tidyr::pivot_wider()
 }

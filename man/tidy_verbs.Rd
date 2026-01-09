@@ -4,29 +4,44 @@
 \alias{tidy_verbs}
 \alias{filter}
 \alias{filter.odata_request}
+\alias{filter.stac_request}
 \alias{compute}
 \alias{compute.odata_request}
 \alias{collect}
 \alias{collect.odata_request}
+\alias{collect.stac_request}
 \alias{arrange}
 \alias{arrange.odata_request}
+\alias{arrange.stac_request}
 \alias{slice_head}
 \alias{slice_head.odata_request}
+\alias{slice_head.stac_request}
 \alias{select}
 \alias{select.odata_request}
+\alias{select.stac_request}
 \title{Tidy Verbs for OData API Requests}
 \usage{
 filter.odata_request(.data, ..., .by = NULL, .preserve = FALSE)
+
+filter.stac_request(.data, ..., .by = NULL, .preserve = FALSE)
 
 compute.odata_request(x, skip = 0L, ...)
 
 collect.odata_request(x, skip = 0L, ...)
 
+collect.stac_request(x, ...)
+
 arrange.odata_request(.data, ..., .by_group = FALSE)
+
+arrange.stac_request(.data, ..., .by_group = FALSE)
 
 slice_head.odata_request(.data, ..., n, prop, by = NULL)
 
+slice_head.stac_request(.data, ..., n, prop, by = NULL)
+
 select.odata_request(.data, ...)
+
+select.stac_request(.data, ...)
 }
 \arguments{
 \item{.data, x}{An object of class \code{odata_request}. These are produced by
@@ -53,6 +68,7 @@ object, containing the lazy tidy operations. \code{collect()} will return a
 Implementation of tidy generics for features supported by OData API requests.
 They can be called on objects of class \code{odata_request}, which are produced
 by \code{\link[=dse_odata_products_request]{dse_odata_products_request()}} and \code{\link[=dse_odata_bursts_request]{dse_odata_bursts_request()}}.
+TODO: document stac_request as well
 }
 \details{
 The \code{odata_request} class objects use lazy evaluation. This means that

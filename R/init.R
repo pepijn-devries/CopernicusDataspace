@@ -1,6 +1,6 @@
 #' @importFrom memoise memoise
 #' @importFrom methods setOldClass
-#' @importFrom rlang .data
+#' @importFrom rlang .data .env
 NULL
 
 setOldClass("odata_request")
@@ -14,11 +14,16 @@ register_all_s3_methods = function() {
   ## vctrs
   ## dplyr
   register_s3_method("dplyr", "arrange",       "odata_request")
+  register_s3_method("dplyr", "arrange",        "stac_request")
   register_s3_method("dplyr", "filter",        "odata_request")
+  register_s3_method("dplyr", "filter",         "stac_request")
   register_s3_method("dplyr", "collect",       "odata_request")
+  register_s3_method("dplyr", "collect",        "stac_request")
   register_s3_method("dplyr", "compute",       "odata_request")
   register_s3_method("dplyr", "select",        "odata_request")
+  register_s3_method("dplyr", "select",         "stac_request")
   register_s3_method("dplyr", "slice_head",    "odata_request")
+  register_s3_method("dplyr", "slice_head",     "stac_request")
   register_s3_method("sf",    "st_intersects", "odata_request")
 }
 

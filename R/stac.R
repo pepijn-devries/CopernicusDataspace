@@ -1,7 +1,9 @@
 ## https://stac.dataspace.copernicus.eu/v1/api.html
 
+#' @include tidyverse.R
 #' @include helpers.R
 #' @include account.R
+#' @include req_perform.R
 NULL
 
 .stac_base_url <- "https://stac.dataspace.copernicus.eu/v1"
@@ -10,6 +12,7 @@ NULL
   .stac_base_url |>
     paste(endpoint, sep = "/") |>
     httr2::request() |>
+    httr2::req_error(body = .stac_error) |>
     httr2::req_perform() |>
     httr2::resp_body_json()
 }
@@ -24,6 +27,8 @@ NULL
     details <-
       resp |>
       httr2::resp_body_json()
+    if ("code" %in% names(details))
+      return (sprintf("%s: %s", details$code, details$description))
     loc <- lapply(details$detail, \(x) do.call(paste, c(x$loc, sep = "/"))) |> unlist()
     msg <- lapply(details$detail,`[[`, "msg") |> unlist()
     cbind(loc, msg) |> apply(1, paste, collapse = ": ", simplify = FALSE) |> unlist()
@@ -36,6 +41,7 @@ NULL
 #' 
 #' TODO
 #' @param ... Ignored
+#' @returns TODO
 #' @examples
 #' if (interactive()) {
 #'   dse_stac_client()
@@ -55,6 +61,7 @@ dse_stac_client <- memoise::memoise(.dse_stac_client)
 #' 
 #' TODO
 #' @param ... Ignored
+#' @returns TODO
 #' @examples
 #' if (interactive()) {
 #'   dse_stac_collections()
@@ -62,51 +69,87 @@ dse_stac_client <- memoise::memoise(.dse_stac_client)
 #' @export
 dse_stac_collections <- memoise::memoise(.dse_stac_collections)
 
+.dse_stac_api_specs <- function(...) .stac_get("api")
+.dse_stac_queryables <- function(...) .stac_get("queryables")
+.dse_stac_conformance <- function(...) .stac_get("conformance")
+
+#' Get STAC API Specifications
+#' 
+#' TODO
+#' @param ... Ignored
+#' @returns TODO
+#' @examples
+#' if (interactive()) {
+#'   dse_stac_api_specs()
+#' }
+#' @export
+dse_stac_api_specs <- memoise::memoise(.dse_stac_api_specs)
+
+.get_schema <- function(ref, api) {
+  ref <- gsub("#", "api", ref)
+  ref <- gsub("/", "$", ref)
+  rlang::parse_expr(ref) |> rlang::eval_tidy()
+}
+
 .dse_fix_list <- function(target, source, api) {
   lapply(names(target), \(nm) {
-    print(nm) #TODO
     types <- target[[nm]]$anyOf |> .simplify()
     if (is.null(source[[nm]]) && "null" %in% types$type) {
       if ("array" %in% types$type) {
         itms_nm  <- c("prefixItems", "items")
         itms_nm  <- itms_nm[itms_nm %in% names(types)]
         itms_idx <- which(types$type == "array")
-        itms <- types[[itms_nm]]
+        itms <- do.call(c, types[[itms_nm]])
         if (!any(c("$ref", "type") %in% names(itms))) {
-          types <- itms |>
-            lapply(\(x) {
-              lapply(x, `[[`, "anyOf") |>
-                lapply(\(y) {
-                  gsub("number|integer", "as.numeric", unlist(y)) |>
-                    unique()
-                }) |>
-                unlist()
-            })
-          types <- types[[1]]
-          target[[nm]] <- rep(NA, length(types)) #TODO check type!
+          return(rep(NA, length(types))) #TODO check type!
         } else {
           if ("string" %in% itms)
-            target[[nm]] <- NA else {
-              target[[nm]] <- NA #TODO other types? or always NA?
+            return(NA) else {
+              return(NA) #TODO other types? or always NA?
             }
         }
       } else {
         ## object e.g. intersects
-        target[[nm]] <- NA
+        return(NA)
       }
     } else {
-      browser() #TODO
+      #TODO check types!
+      target[[nm]] <- source[[nm]]
+      if (grepl("date", nm)) {
+        target[[nm]] <- lubridate::as_datetime(target[[nm]], tz = "")
+        target[[nm]] <- lubridate::format_ISO8601(target[[nm]], usetz = TRUE)
+      }
+      if ("integer" %in% types$type) target[[nm]] <-   as.integer(target[[nm]])
+      if ("number"  %in% types$type) target[[nm]] <-   as.numeric(target[[nm]])
+      if ("string"  %in% types$type) target[[nm]] <- as.character(target[[nm]])
+      if ("object"  %in% types$type) {
+        schema <-
+          .get_schema(types$additionalProperties[[1]]$propertyNames[["$ref"]], api)
+        target[[nm]] <- .dse_fix_list(schema, target[[nm]], api)
+      }
+      if ("array" %in% types$type) target[[nm]] <- as.list(target[[nm]]) else {
+        if (length(target[[nm]]) > 1)
+          rlang::abort(c(x = sprintf("'%s' should have a length of 1 not %i",
+                                     nm, length(target[[nm]]))))
+      }
+      return(target[[nm]])
     }
   })
 }
 
 .dse_stac_search_filter <- function(...) {
-  api_props <- .stac_get("api")
+  api_props <- dse_stac_api_specs()
   filt <- api_props$components$schemas$SearchPostRequest$properties
-  ##TODO replace elements with dots
   args <- list(...)
+  if (any(!names(args) %in% names(filt)))
+    rlang::warn(sprintf("Ignoring unknown filter arguments: %s",
+                        sprintf("'%s'", names(args)[!names(args) %in% names(filt)]) |>
+                          paste(collapse = ", ")))
   result <- .dse_fix_list(filt, args, api_props)
   names(result) <- names(filt)
+  result[["filter-lang"]] <- "cql2-json"
+  result[["filter-crs"]] <- "EPSG:4326"
+  class(result) <- union("stac_search", class(result))
   result
 }
 
@@ -114,31 +157,31 @@ dse_stac_collections <- memoise::memoise(.dse_stac_collections)
 #' 
 #' TODO
 #' @param ... TODO
-#' @inheritParams dse_usage
 #' @returns TODO
 #' @examples
+#' # TODO
+#' library(dplyr)
+#' 
 #' if (interactive()) {
-#'   dse_stac_search_filter() #TODO
-#'   dse_stac_search() #TODO
+#'   dse_stac_search_request() |>
+#'     collect()
 #' }
 #' @export
-dse_stac_search <- function(..., token = dse_access_token()) {
-
+dse_stac_search_request <- function(...) {
+  
   filt <- .dse_stac_search_filter(...)
   filt$intersects <- NULL #TODO
   filt$bbox <- NULL #TODO
   # jsonlite::toJSON(filt, pretty = TRUE) # TODO for debugging
-  items <-
+  result <-
     .stac_base_url |>
     paste("search", sep = "/") |>
     httr2::request() |>
     httr2::req_method("POST") |>
     httr2::req_body_json(filt) |>
-    httr2::req_error(body = .stac_error) |>
-    httr2::req_perform() |>
-    httr2::resp_body_json()
-  .stac_items(items)
-
+    httr2::req_error(body = .stac_error)
+  class(result) <- union("stac_request", class(result))
+  result
 }
 
 #' TODO
@@ -155,7 +198,4 @@ dse_stac_search <- function(..., token = dse_access_token()) {
 #' @export
 dse_stac_download <- function(..., destination, token = dse_access_token()) {
   browser() #TODO
-  items <- dse_stac_search(..., token)
-  s3 <- items$assets[[1]]$href
-#  aws.s3::get_bucket(measurement_url[[1]])
 }
