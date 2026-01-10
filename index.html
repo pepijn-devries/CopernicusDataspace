@@ -38,6 +38,15 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="articles/Authentication.html">Authentication</a></li>
+    <li><a class="dropdown-item" href="articles/OData.html">Using the OData API</a></li>
+    <li><a class="dropdown-item" href="articles/SentinelHub.html">Using SentinelHub</a></li>
+    <li><a class="dropdown-item" href="articles/STAC.html">Using the STAC Catalogue</a></li>
+  </ul>
+</li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -63,9 +72,49 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>Install latest developmental version from R-Universe:</p>
+<p>At the moment, the package is still only experimental. It can therefore only be installed from GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"CopernicusDataspace"</span>, repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'https://pepijn-devries.r-universe.dev'</span>, <span class="st">'https://cloud.r-project.org'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CopernicusDataspace"</span>, username <span class="op">=</span> <span class="st">"pepijn-devries"</span><span class="op">)</span></span></code></pre></div>
+<!-- TODO update installation procedure once available -->
+<!--
+Install CRAN release:
+&#10;
+``` r
+install.packages("CopernicusDataspace")
+```
+&#10;Install latest developmental version from R-Universe:
+&#10;
+``` r
+install.packages("CopernicusDataspace", repos = c('https://pepijn-devries.r-universe.dev', 'https://cloud.r-project.org'))
+```
+-->
+</div>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p>The Copernicus Data Space Ecosystem offers access to its services through several <a href="https://documentation.dataspace.copernicus.eu/APIs.html" class="external-link">APIs</a>. This package offers access via the following APIs:</p>
+<ul>
+<li>
+<a href="https://documentation.dataspace.copernicus.eu/APIs/OData.html" class="external-link">OData</a>;</li>
+<li>
+<a href="https://documentation.dataspace.copernicus.eu/APIs/STAC.html" class="external-link">STAC</a>; and</li>
+<li>
+<a href="https://documentation.dataspace.copernicus.eu/APIs/SentinelHub.html" class="external-link">SentinelHub</a>.</li>
+</ul>
+<p>This README shows only essential methods for downloading data. For more detailed information consult the respective vignettes:</p>
+<ul>
+<li>
+<code>?vignette("OData")</code>;</li>
+<li>
+<code>?vignette("STAC")</code>; and</li>
+<li><code>?vignette("SentinelHub")</code></li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="authentication">Authentication<a class="anchor" aria-label="anchor" href="#authentication"></a>
+</h2>
+<p>TODO</p>
+<p>For more details consult <code>?vignette("Authentication")</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="downloading-using-stac-catalogue">Downloading Using STAC Catalogue<a class="anchor" aria-label="anchor" href="#downloading-using-stac-catalogue"></a>
@@ -82,11 +131,21 @@
 <span>  <span class="va">asset</span> <span class="op">&lt;-</span> <span class="st">"data"</span></span>
 <span></span>
 <span>  <span class="va">filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dse_stac_download.html">dse_stac_download</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">asset</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">tile</span> <span class="op">&lt;-</span> <span class="fu">read_stars</span><span class="op">(</span><span class="va">filename</span><span class="op">)</span></span>
+<span>  <span class="va">tile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/read_stars.html" class="external-link">read_stars</a></span><span class="op">(</span><span class="va">filename</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tile</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">hcl.colors</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, axes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>  </span>
 <span><span class="op">}</span></span></code></pre></div>
 <p><img src="reference/figures/README-download-stac-1.png" alt="Example of downloading with STAC API" width="100%"></p>
+</div>
+<div class="section level2">
+<h2 id="downloading-using-odata-api">Downloading Using OData API<a class="anchor" aria-label="anchor" href="#downloading-using-odata-api"></a>
+</h2>
+<p>TODO</p>
+</div>
+<div class="section level2">
+<h2 id="downloading-using-sentinelhub">Downloading Using SentinelHub<a class="anchor" aria-label="anchor" href="#downloading-using-sentinelhub"></a>
+</h2>
+<p>TODO</p>
 </div>
 <div class="section level2">
 <h2 id="more-of-copernicus">More of Copernicus<a class="anchor" aria-label="anchor" href="#more-of-copernicus"></a>
