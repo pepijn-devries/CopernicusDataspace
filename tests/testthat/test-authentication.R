@@ -14,3 +14,9 @@ test_that("Access S3 client can be initiated", {
     ds3$get_bucket_location("")
   })
 })
+
+test_that("Roxygen function produces text", {
+  testthat::expect_type({
+    CopernicusDataspace:::.roxygen_account()
+  }, "character")
+})

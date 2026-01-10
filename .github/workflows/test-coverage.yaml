@@ -14,6 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      CDSE_API_CLIENTID: ${{ secrets.CDSE_API_CLIENTID }}
+      CDSE_API_CLIENTSECRET: ${{ secrets.CDSE_API_CLIENTSECRET }}
+      CDSE_API_S3ID: ${{ secrets.CDSE_API_S3ID }}
+      CDSE_API_S3SECRET: ${{ secrets.CDSE_API_S3SECRET }}
 
     steps:
       - uses: actions/checkout@v4
