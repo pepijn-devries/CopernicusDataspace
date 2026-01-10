@@ -2,7 +2,7 @@
 % Please edit documentation in R/sentinelhub.R
 \name{dse_sh_process}
 \alias{dse_sh_process}
-\title{Process satelite data and download result}
+\title{Process Satellite Data and Download Result}
 \usage{
 dse_sh_process(
   input,

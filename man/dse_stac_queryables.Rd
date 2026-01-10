@@ -2,7 +2,7 @@
 % Please edit documentation in R/stac.R
 \name{dse_stac_queryables}
 \alias{dse_stac_queryables}
-\title{Get Queryables for a STAC collection}
+\title{Get Queryables for a STAC Collection}
 \usage{
 dse_stac_queryables(collection, ...)
 }
