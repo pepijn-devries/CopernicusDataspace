@@ -36,7 +36,10 @@ Imports:
     tibble,
     tidyr
 Suggests:
+    knitr,
+    rmarkdown,
     rstudioapi,
+    stars,
     testthat (>= 3.0.0)
 License: GPL (>= 3)
 Encoding: UTF-8
@@ -59,3 +62,4 @@ Collate:
 Config/testthat/edition: 3
 URL: https://github.com/pepijn-devries/CopernicusDataspace, https://pepijn-devries.github.io/CopernicusDataspace/
 BugReports: https://github.com/pepijn-devries/CopernicusDataspace/issues
+VignetteBuilder: knitr

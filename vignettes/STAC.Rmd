@@ -1,0 +1,21 @@
+---
+title: "Using the STAC Catalogue"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using the STAC Catalogue}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(CopernicusDataspace)
+```
+
+TODO

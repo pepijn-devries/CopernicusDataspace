@@ -19,11 +19,52 @@ points to several APIs allowing users to access the data directly in R.
 
 ## Installation
 
-Install latest developmental version from R-Universe:
+At the moment, the package is still only experimental. It can therefore
+only be installed from GitHub:
 
+``` r
+devtools::install_github("CopernicusDataspace", username = "pepijn-devries")
+```
+
+<!-- TODO update installation procedure once available -->
+
+<!--
+Install CRAN release:
+&#10;
+``` r
+install.packages("CopernicusDataspace")
+```
+&#10;Install latest developmental version from R-Universe:
+&#10;
 ``` r
 install.packages("CopernicusDataspace", repos = c('https://pepijn-devries.r-universe.dev', 'https://cloud.r-project.org'))
 ```
+-->
+
+## Introduction
+
+The Copernicus Data Space Ecosystem offers access to its services
+through several
+[APIs](https://documentation.dataspace.copernicus.eu/APIs.html). This
+package offers access via the following APIs:
+
+- [OData](https://documentation.dataspace.copernicus.eu/APIs/OData.html);
+- [STAC](https://documentation.dataspace.copernicus.eu/APIs/STAC.html);
+  and
+- [SentinelHub](https://documentation.dataspace.copernicus.eu/APIs/SentinelHub.html).
+
+This README shows only essential methods for downloading data. For more
+detailed information consult the respective vignettes:
+
+- `?vignette("OData")`;
+- `?vignette("STAC")`; and
+- `?vignette("SentinelHub")`
+
+## Authentication
+
+TODO
+
+For more details consult `?vignette("Authentication")`.
 
 ## Downloading Using STAC Catalogue
 
@@ -47,6 +88,14 @@ if (dse_has_s3_secret()) {
 ```
 
 <img src="man/figures/README-download-stac-1.png" alt="Example of downloading with STAC API" width="100%" />
+
+## Downloading Using OData API
+
+TODO
+
+## Downloading Using SentinelHub
+
+TODO
 
 ## More of Copernicus
 
