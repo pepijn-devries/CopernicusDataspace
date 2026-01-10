@@ -32,7 +32,7 @@ with \code{\link[=dse_access_token]{dse_access_token()}} (default). Without a va
 an "access denied" error.}
 }
 \value{
-Returns \code{NULL} invisibly.
+Returns the path to the downloaded file.
 }
 \description{
 Use \code{\link[=dse_stac_search_request]{dse_stac_search_request()}} to identify assets that can be downloaded.

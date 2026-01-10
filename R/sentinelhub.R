@@ -22,7 +22,7 @@ NULL
   collections
 }
 
-#' List Sentinel hub collections
+#' List Sentinel Hub Collections
 #' 
 #' TODO
 #' 
@@ -87,7 +87,7 @@ dse_sh_queryables <- memoise::memoise(.dse_sh_queryables)
   writeBin(data, destination)
 }
 
-#' Process satelite data and download result
+#' Process Satellite Data and Download Result
 #' 
 #' TODO
 #' @param input TODO

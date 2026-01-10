@@ -406,8 +406,10 @@ select.stac_request <-
           return (result)
         }
       } else if (identical(`%in%`, eval(expr[[1]])) && format == "odata") {
+        right <- rlang::eval_tidy(expr[[3]])
+        if (is.character(right)) right <- sprintf("'%s'", right)
         paste(
-          sprintf("%s eq %s", as.character(expr[[2]]), rlang::eval_tidy(expr[[3]])),
+          sprintf("%s eq %s", as.character(expr[[2]]), right),
           collapse = " or ") |>
           sprintf(fmt = "(%s)")
       } else if (identical(`$`, eval(expr[[1]])) || identical(`[[`, eval(expr[[1]]))) {
@@ -415,10 +417,17 @@ select.stac_request <-
           return(rlang::as_string(expr[[3]]))
         } else if (rlang::as_string(expr[[2]]) == ".env") {
           expr <- rlang::as_quosure(expr[[3]], .GlobalEnv)
+        } else {
+          result <- rlang::eval_tidy(expr)
+          if (format == "odata" && is.character(result))
+            result <- sprintf("'%s'", result)
+          result
         }
-        rlang::eval_tidy(expr)
       } else {
-        rlang::eval_tidy(expr)
+        result <- rlang::eval_tidy(expr)
+        if (format == "odata" && is.character(result))
+          result <- sprintf("'%s'", result)
+        result
       }
     } else {
       if (length(expr) < 3) {
@@ -440,7 +449,7 @@ select.stac_request <-
           right <- lubridate::format_ISO8601(right, usetz = TRUE)
         }
         if (is.character(right) && format == "odata")
-          right <- sprintf("(%s)", right)
+          right <- sprintf("'%s'", right)
       }
       if (format == "odata") {
         return(sprintf(op, left, right))

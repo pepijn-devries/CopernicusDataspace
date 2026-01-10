@@ -204,7 +204,7 @@ dse_stac_search_request <- function(collections, ids, ...) {
 #' @param ... Ignored
 #' @inheritParams dse_usage
 #' @inheritParams dse_s3
-#' @returns Returns `NULL` invisibly.
+#' @returns Returns the path to the downloaded file.
 #' @examples
 #' if (interactive() && (dse_has_s3_secret() || dse_has_client_info())) {
 #'   dse_stac_download(
@@ -228,17 +228,24 @@ dse_stac_download <- function(
     dplyr::bind_rows()
   
   local_path <- asset_info[[paste0(asset, ".file:local_path")]]
+  if (is.null(local_path)) fn <- NULL else
+    fn <- file.path(destination, basename(local_path))
   if (s3_key != "" && s3_secret != "") {
-    dse_s3_download(asset_info[[paste0(asset, ".href")]], destination,
+    source <- asset_info[[paste0(asset, ".href")]]
+    if (is.null(fn))
+      fn <- file.path(destination, basename(source))
+    dse_s3_download(source, destination,
                     s3_key = s3_key, s3_secret = s3_secret)
+    return(fn)
   } else if (token != "") {
-    asset_info[[paste0(asset, ".alternate.https.href")]] |>
+    source <- asset_info[[paste0(asset, ".alternate.https.href")]]
+    if (is.null(fn))
+      fn <- file.path(destination, basename(source))
+    source |>
       httr2::request() |>
       .add_token(token) |>
-      httr2::req_perform(path = file.path(
-        destination, basename(local_path)
-      ))
-    return(invisible())
+      httr2::req_perform(path = fn)
+    return(fn)
   } else {
     rlang::abort(c(
       x = "Need authentication details in order to download asset",
@@ -257,7 +264,7 @@ dse_stac_download <- function(
     httr2::resp_body_json()
 }
 
-#' Get Queryables for a STAC collection
+#' Get Queryables for a STAC Collection
 #' 
 #' When searching through a collection with [dse_stac_search_request()], it
 #' can be helpful to know which elements can be used to filter the search

@@ -3,7 +3,7 @@
 \name{dse_sh_collections}
 \alias{dse_sh_collections}
 \alias{dse_sh_queryables}
-\title{List Sentinel hub collections}
+\title{List Sentinel Hub Collections}
 \usage{
 dse_sh_collections(...)
 
