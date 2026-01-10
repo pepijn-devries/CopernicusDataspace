@@ -14,14 +14,29 @@ Install latest developmental version from R-Universe:
 install.packages("CopernicusDataspace", repos = c('https://pepijn-devries.r-universe.dev', 'https://cloud.r-project.org'))
 ```
 
-## Example
+## Downloading Using STAC Catalogue
 
 TODO
 
 ``` r
 library(CopernicusDataspace)
-## TODO
+library(stars) ## For reading and plotting the downloaded file
+
+## Only run this if an S3 secret is specified
+if (dse_has_s3_secret()) {
+  
+  id    <- "Copernicus_DSM_COG_30_S69_00_W062_00_DEM"
+  asset <- "data"
+
+  filename <- dse_stac_download(id, asset, tempdir())
+  tile <- read_stars(filename)
+  plot(tile, col = hcl.colors(100), axes = TRUE)
+  
+}
 ```
+
+![Example of downloading with STAC
+API](reference/figures/README-download-stac-1.png)
 
 ## More of Copernicus
 
@@ -77,9 +92,9 @@ By contributing to this project, you agree to abide by its terms.
   : Download Asset Through Uniform Resource Identifier
 - [`dse_sh_collections()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_collections.md)
   [`dse_sh_queryables()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_collections.md)
-  : List Sentinel hub collections
+  : List Sentinel Hub Collections
 - [`dse_sh_process()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_process.md)
-  : Process satelite data and download result
+  : Process Satellite Data and Download Result
 - [`dse_stac_client()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_client.md)
   : Obtain Information About the STAC Client
 - [`dse_stac_collections()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_collections.md)
@@ -87,7 +102,7 @@ By contributing to this project, you agree to abide by its terms.
 - [`dse_stac_download()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_download.md)
   : Download Asset From STAC Catalogue
 - [`dse_stac_queryables()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_queryables.md)
-  : Get Queryables for a STAC collection
+  : Get Queryables for a STAC Collection
 - [`dse_stac_search_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_search_request.md)
   : Create a Request for a STAC Search in the Data Space Ecosystem
 - [`dse_usage()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)

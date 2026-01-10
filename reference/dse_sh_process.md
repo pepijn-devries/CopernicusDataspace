@@ -1,4 +1,4 @@
-# Process satelite data and download result
+# Process Satellite Data and Download Result
 
 TODO
 

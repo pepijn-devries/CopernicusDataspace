@@ -163,7 +163,10 @@ manipulated further.</p></li>
 <span class="r-in"><span>    <span class="fu">slice_head</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu">collect</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="co">#TODO stac example</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="dse_stac_search_request.html">dse_stac_search_request</a></span><span class="op">(</span><span class="st">"sentinel-1-grd"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu">filter</span><span class="op">(</span><span class="va">`sat:orbit_state`</span> <span class="op">==</span> <span class="st">"ascending"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu">arrange</span><span class="op">(</span><span class="st">"id"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu">collect</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

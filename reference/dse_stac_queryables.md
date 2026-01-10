@@ -1,4 +1,4 @@
-# Get Queryables for a STAC collection
+# Get Queryables for a STAC Collection
 
 When searching through a collection with
 [`dse_stac_search_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_search_request.md),

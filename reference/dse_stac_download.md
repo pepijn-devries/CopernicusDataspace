@@ -53,7 +53,7 @@ dse_stac_download(
 
 ## Value
 
-Returns `NULL` invisibly.
+Returns the path to the downloaded file.
 
 ## Examples
 

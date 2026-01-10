@@ -14,14 +14,29 @@ Install latest developmental version from R-Universe:
 install.packages("CopernicusDataspace", repos = c('https://pepijn-devries.r-universe.dev', 'https://cloud.r-project.org'))
 ```
 
-## Example
+## Downloading Using STAC Catalogue
 
 TODO
 
 ``` r
 library(CopernicusDataspace)
-## TODO
+library(stars) ## For reading and plotting the downloaded file
+
+## Only run this if an S3 secret is specified
+if (dse_has_s3_secret()) {
+  
+  id    <- "Copernicus_DSM_COG_30_S69_00_W062_00_DEM"
+  asset <- "data"
+
+  filename <- dse_stac_download(id, asset, tempdir())
+  tile <- read_stars(filename)
+  plot(tile, col = hcl.colors(100), axes = TRUE)
+  
+}
 ```
+
+![Example of downloading with STAC
+API](reference/figures/README-download-stac-1.png)
 
 ## More of Copernicus
 

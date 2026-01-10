@@ -1,4 +1,4 @@
-# List Sentinel hub collections
+# List Sentinel Hub Collections
 
 TODO
 

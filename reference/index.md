@@ -36,9 +36,9 @@
   : Download Asset Through Uniform Resource Identifier
 - [`dse_sh_collections()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_collections.md)
   [`dse_sh_queryables()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_collections.md)
-  : List Sentinel hub collections
+  : List Sentinel Hub Collections
 - [`dse_sh_process()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_process.md)
-  : Process satelite data and download result
+  : Process Satellite Data and Download Result
 - [`dse_stac_client()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_client.md)
   : Obtain Information About the STAC Client
 - [`dse_stac_collections()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_collections.md)
@@ -46,7 +46,7 @@
 - [`dse_stac_download()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_download.md)
   : Download Asset From STAC Catalogue
 - [`dse_stac_queryables()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_queryables.md)
-  : Get Queryables for a STAC collection
+  : Get Queryables for a STAC Collection
 - [`dse_stac_search_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_search_request.md)
   : Create a Request for a STAC Search in the Data Space Ecosystem
 - [`dse_usage()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)
