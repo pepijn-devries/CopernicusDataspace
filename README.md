@@ -56,19 +56,24 @@ package offers access via the following APIs:
 This README shows only essential methods for downloading data. For more
 detailed information consult the respective vignettes:
 
-- `?vignette("OData")`;
-- `?vignette("STAC")`; and
-- `?vignette("SentinelHub")`
+- `vignette("OData")`;
+- `vignette("STAC")`; and
+- `vignette("SentinelHub")`
 
 ## Authentication
 
-TODO
-
-For more details consult `?vignette("Authentication")`.
+When actually downloading files from the Copernicus Data Space
+Ecosystem, you usually need some form of authentication. Examples below
+use credentials stored as environment variables. For more information
+about how to effectively authenticate download requests, please see
+`vignette("Authentication")`.
 
 ## Downloading Using STAC Catalogue
 
-TODO
+When you know the STAC identifier (`id`) and the asset name you wish to
+download, you can simply use the example shown below. When you don’t
+know these details, you should first explore the catalogue. Please see
+`vignette("STAC")` for more details on working with the STAC catalogue.
 
 ``` r
 library(CopernicusDataspace)

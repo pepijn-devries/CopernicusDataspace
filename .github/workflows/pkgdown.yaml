@@ -20,6 +20,10 @@ jobs:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      CDSE_API_CLIENTID: ${{ secrets.CDSE_API_CLIENTID }}
+      CDSE_API_CLIENTSECRET: ${{ secrets.CDSE_API_CLIENTSECRET }}
+      CDSE_API_S3ID: ${{ secrets.CDSE_API_S3ID }}
+      CDSE_API_S3SECRET: ${{ secrets.CDSE_API_S3SECRET }}
     permissions:
       contents: write
     steps:
