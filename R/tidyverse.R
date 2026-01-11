@@ -310,30 +310,31 @@ select.stac_request <-
 .column_select <- function(q, allow_desc = FALSE) {
   result <-
     lapply(q, \(xpr) {
+      xpr <- rlang::quo_get_expr(xpr)
       result <- NULL
       is_desc <- FALSE
-      if (allow_desc && rlang::is_call(xpr[[2]]) &&
-          identical(rlang::eval_tidy(xpr[[2]][[1]]), dplyr::desc)) {
+      if (allow_desc && rlang::is_call(xpr) &&
+          identical(rlang::eval_tidy(xpr[[1]]), dplyr::desc)) {
         is_desc <- TRUE
-        xpr <- rlang::as_quosure(xpr[[2]][[2]], .GlobalEnv)
+        xpr <- rlang::as_quosure(xpr[[2]], .GlobalEnv)
       }
-      if (rlang::is_call(xpr[[2]])) {
-        result <- if ((identical(rlang::eval_tidy(xpr[[2]][[1]]), `[[`)) ||
-                      (identical(rlang::eval_tidy(xpr[[2]][[1]]), `$`)) &&
-                      rlang::as_string(xpr[[2]][[2]]) == ".data")
-          rlang::as_string(xpr[[2]][[3]]) else
-            if (identical(c, rlang::eval_tidy(xpr[[2]][[1]])))
-              rlang::eval_tidy(xpr[[2]])
+      if (rlang::is_call(xpr)) {
+        result <- if ((identical(rlang::eval_tidy(xpr[[1]]), `[[`)) ||
+                      (identical(rlang::eval_tidy(xpr[[1]]), `$`)) &&
+                      rlang::as_string(xpr[[2]]) == ".data")
+          rlang::as_string(xpr[[3]]) else
+            if (identical(c, rlang::eval_tidy(xpr[[1]])))
+              rlang::eval_tidy(xpr)
         if (is.null(result))
           stop(sprintf("Sorry, '%s' is not implemented in this context",
-                       rlang::as_string(xpr[[2]][[1]])))
+                       rlang::as_string(xpr[[1]])))
         attr(result, "is_desc") <- is_desc
         result
       } else {
         result <-
-          if (rlang::is_string(xpr[[2]]))
+          if (rlang::is_string(xpr))
             rlang::eval_tidy(xpr) else
-              rlang::as_string(xpr[[2]])
+              rlang::as_string(xpr)
         attr(result, "is_desc") <- is_desc
         result
       }
@@ -383,46 +384,39 @@ select.stac_request <-
 
 .translate_filters <- function(quo, format = "odata") {
   expr <- rlang::quo_get_expr(quo)
-  if (is.call(expr)) {
-    idx <- .match_function(expr[[1]], format)
-    op <- ""
-    if (!is.na(idx)) {
-      op <- if (format == "odata") .odata_operators$api_code[idx] else
-        if (format == "stac") .stac_operators$api_code[idx]
-      if (rlang::is_call(expr[[2]])) {
-        left <- .translate_filters(rlang::as_quosure(expr[[2]], environment()), format)
-        if (format == "odata") left <- sprintf("(%s)", left)
-      } else {
-        left <- as.character(expr[[2]])
-      }
+  idx <- .match_function(expr[[1]], format)
+  op <- ""
+  if (!is.na(idx)) {
+    op <- if (format == "odata") .odata_operators$api_code[idx] else
+      if (format == "stac") .stac_operators$api_code[idx]
+    if (rlang::is_call(expr[[2]])) {
+      left <- .translate_filters(rlang::as_quosure(expr[[2]], environment()), format)
+      if (format == "odata") left <- sprintf("(%s)", left)
+    } else {
+      left <- as.character(expr[[2]])
     }
-    if (is.na(idx)) {
-      if (identical(c, eval(expr[[1]]))) {
-        result <- rlang::eval_tidy(expr)
-        if (format == "odata") {
-          if (is.character(result)) result <- sprintf("'%s'", result)
-          return (paste(result, collapse = ","))
-        } else if (format == "stac") {
-          return (result)
-        }
-      } else if (identical(`%in%`, eval(expr[[1]])) && format == "odata") {
-        right <- rlang::eval_tidy(expr[[3]])
-        if (is.character(right)) right <- sprintf("'%s'", right)
-        paste(
-          sprintf("%s eq %s", as.character(expr[[2]]), right),
-          collapse = " or ") |>
-          sprintf(fmt = "(%s)")
-      } else if (identical(`$`, eval(expr[[1]])) || identical(`[[`, eval(expr[[1]]))) {
-        if (rlang::as_string(expr[[2]]) == ".data") {
-          return(rlang::as_string(expr[[3]]))
-        } else if (rlang::as_string(expr[[2]]) == ".env") {
-          expr <- rlang::as_quosure(expr[[3]], .GlobalEnv)
-        } else {
-          result <- rlang::eval_tidy(expr)
-          if (format == "odata" && is.character(result))
-            result <- sprintf("'%s'", result)
-          result
-        }
+  }
+  if (is.na(idx)) {
+    if (identical(c, eval(expr[[1]]))) {
+      result <- rlang::eval_tidy(expr)
+      if (format == "odata") {
+        if (is.character(result)) result <- sprintf("'%s'", result)
+        return (paste(result, collapse = ","))
+      } else if (format == "stac") {
+        return (result)
+      }
+    } else if (identical(`%in%`, eval(expr[[1]])) && format == "odata") {
+      right <- rlang::eval_tidy(expr[[3]])
+      if (is.character(right)) right <- sprintf("'%s'", right)
+      paste(
+        sprintf("%s eq %s", as.character(expr[[2]]), right),
+        collapse = " or ") |>
+        sprintf(fmt = "(%s)")
+    } else if (identical(`$`, eval(expr[[1]])) || identical(`[[`, eval(expr[[1]]))) {
+      if (rlang::as_string(expr[[2]]) == ".data") {
+        return(rlang::as_string(expr[[3]]))
+      } else if (rlang::as_string(expr[[2]]) == ".env") {
+        expr <- rlang::as_quosure(expr[[3]], .GlobalEnv)
       } else {
         result <- rlang::eval_tidy(expr)
         if (format == "odata" && is.character(result))
@@ -430,47 +424,52 @@ select.stac_request <-
         result
       }
     } else {
-      if (length(expr) < 3) {
-        return(
-          list( args = left, op = op )
-        )
-        return(sprintf(op, left))
+      result <- rlang::eval_tidy(expr)
+      if (format == "odata" && is.character(result))
+        result <- sprintf("'%s'", result)
+      result
+    }
+  } else {
+    if (length(expr) < 3) {
+      return(
+        list( args = left, op = op )
+      )
+      return(sprintf(op, left))
+    } else {
+      if (rlang::is_call(expr[[3]])) {
+        right <- .translate_filters(rlang::as_quosure(expr[[3]], environment()), format)
       } else {
-        if (rlang::is_call(expr[[3]])) {
-          right <- .translate_filters(rlang::as_quosure(expr[[3]], environment()), format)
-        } else {
-          right <- eval(expr[[3]])
-        }
-        left_check <- left
-        if (is.list(left_check)) left_check <- left_check$args[[1]]$property
-        if (is.null(left_check)) left_check <- ""
-        if (grepl("date", left_check, ignore.case = TRUE)) {
-          right <- lubridate::as_datetime(right, tz = "")
-          right <- lubridate::format_ISO8601(right, usetz = TRUE)
-        }
-        if (is.character(right) && format == "odata")
-          right <- sprintf("'%s'", right)
+        right <- eval(expr[[3]])
       }
-      if (format == "odata") {
-        return(sprintf(op, left, right))
-      } else if (format == "stac") {
-        if (is.character(left)) {
-          left <- strsplit(left, "[.]")[[1]]
-          domain <- "property"
-          if (length(left) > 1) {
-            if (left[[1]] != "properties") stop("Unknown domain")
-            left <- left[[2]]
-          }
-          left <- structure(list(left), names = domain)
-        }
-        list(
-          args = list(
-            left,
-            right
-          ),
-          op = op
-        )
+      left_check <- left
+      if (is.list(left_check)) left_check <- left_check$args[[1]]$property
+      if (is.null(left_check)) left_check <- ""
+      if (grepl("date", left_check, ignore.case = TRUE)) {
+        right <- lubridate::as_datetime(right, tz = "")
+        right <- lubridate::format_ISO8601(right, usetz = TRUE)
       }
+      if (is.character(right) && format == "odata")
+        right <- sprintf("'%s'", right)
+    }
+    if (format == "odata") {
+      return(sprintf(op, left, right))
+    } else if (format == "stac") {
+      if (is.character(left)) {
+        left <- strsplit(left, "[.]")[[1]]
+        domain <- "property"
+        if (length(left) > 1) {
+          if (left[[1]] != "properties") stop("Unknown domain")
+          left <- left[[2]]
+        }
+        left <- structure(list(left), names = domain)
+      }
+      list(
+        args = list(
+          left,
+          right
+        ),
+        op = op
+      )
     }
   }
 }
