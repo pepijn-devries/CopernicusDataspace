@@ -1,4 +1,5 @@
-library(dplyr)
+library(dplyr) |> suppressMessages()
+library(stars) |> suppressMessages()
 
 test_that("STAC collections are obtained", {
   skip_if_offline()
@@ -40,3 +41,31 @@ test_that("STAC collections can be searched", {
   })
 })
 
+test_that("Files can be downloaded via STAC S3", {
+  skip_if_offline()
+  skip_if_not(dse_has_s3_secret())
+  expect_no_error({
+    fn <-
+      dse_stac_download(
+        id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
+        asset = "B01",
+        destination = tempdir()
+      )
+    tile <- read_stars(fn)
+  })
+})
+
+test_that("Files can be downloaded via STAC https", {
+  skip_if_offline()
+  skip_if_not(dse_has_client_info())
+  expect_no_error({
+    fn <-
+      dse_stac_download(
+        id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
+        asset = "B01",
+        s3_key = "", s3_secret = "",
+        destination = tempdir()
+      )
+    tile <- read_stars(fn)
+  })
+})
