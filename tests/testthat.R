@@ -8,6 +8,5 @@
 
 library(testthat)
 library(CopernicusDataspace)
-library(dplyr)
 
 test_check("CopernicusDataspace")
