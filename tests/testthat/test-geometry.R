@@ -1,5 +1,5 @@
-library(sf)
-library(dplyr)
+library(sf) |> suppressMessages()
+library(dplyr) |> suppressMessages()
 
 test_that("Returned STAC geometries intersect with request", {
   skip_if_offline()
@@ -11,26 +11,27 @@ test_that("Returned STAC geometries intersect with request", {
         crs = 4326)
     shape <- st_as_sfc(bbox)
     
-    result <-
+    result1 <-
       dse_stac_search_request() |>
       st_intersects(bbox) |>
       dplyr::collect()
+    result2 <-
+      dse_stac_search_request() |>
+      st_intersects(shape) |>
+      dplyr::collect()
     
-    result$bbox |> lapply(\(y) {
-      y <- unlist(y)
-      names(y) <- c("xmin", "ymin", "xmax", "ymax")
-      y <- st_bbox(y, crs = 4326)
-      test1 <-
-        st_intersects(y, bbox, sparse = FALSE) |>
-        c() |>
+    test_fun <- \(z) {
+      lapply(z, \(y) {
+        y <- unlist(y)
+        names(y) <- c("xmin", "ymin", "xmax", "ymax")
+        y <- st_bbox(y, crs = 4326) |> st_as_sfc()
+        st_intersects(shape, y, sparse = FALSE) |>
+          c() |>
+          all()
+      }) |>
+        unlist() |>
         all()
-      test2 <-
-        st_intersects(y, shape, sparse = FALSE) |>
-        c() |>
-        all()
-      test1 && test2
-    }) |>
-      unlist() |>
-      all()
+    }
+    test_fun(result1$bbox) && test_fun(result2$bbox) 
   })
 })
