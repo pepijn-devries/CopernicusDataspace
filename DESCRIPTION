@@ -26,6 +26,7 @@ Depends:
 Imports:
     dplyr,
     httr2,
+    jsonlite,
     lubridate,
     memoise,
     methods,
