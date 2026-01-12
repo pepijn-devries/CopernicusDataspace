@@ -1,7 +1,7 @@
 library(sf)
 library(dplyr)
 
-test_that("Returned STAC geometries intersect with request" {
+test_that("Returned STAC geometries intersect with request", {
   skip_if_offline()
   skip_on_cran()
   expect_true({
