@@ -48,11 +48,6 @@ st_intersects.odata_request <-
     sf::st_as_text()
 }
 
-.get_epsg <- function(x) {
-  crs <- sf::st_crs(x)
-  if (!is.null(crs$epsg) && !is.na(crs$epsg)) return(crs$epsg)
-}
-
 #' @rdname geometry
 #' @name st_intersects
 #' @export
@@ -82,7 +77,7 @@ st_intersects.stac_request <-
     } else {
       
       if (!(is.null(cur_geom) || is.na(cur_geom)))
-        rlang::warn("Replacing previously defined bbox")
+        rlang::warn("Replacing previously defined geometry")
 
       ## Make sure to summarise all features to one Geometry(Collection)      
       y <- dplyr::summarise(sf::st_as_sf(y)) |> sf::st_geometry()

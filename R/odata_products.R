@@ -25,7 +25,7 @@ NULL
 #' Meaning that they are just added to the object and are only evaluated after
 #' calling either [dplyr::compute()] or [dplyr::collect()] (see examples).
 #' @param expand Additional information to be appended to the result.
-#' Should be any of `"Attributes"`, `"Assets"`, `"Locations"`. Note that,
+#' Should be any of `"Attributes"`, `"Assets"`, or `"Locations"`. Note that,
 #' these columns are not affected by [dplyr::select()] calls (before calling
 #' [dplyr::collect()]).
 #' @param ... Ignored in case of `dse_odata_products_request()`. Dots are passed
@@ -72,8 +72,8 @@ dse_odata_products_request <- function(expand, ...) {
 
 #' @rdname dse_odata_products_request
 #' @export
-dse_odata_products <- function(...) {
-  dse_odata_products_request() |>
+dse_odata_products <- function(expand, ...) {
+  dse_odata_products_request(expand = expand) |>
     dplyr::filter(...) |>
     dplyr::collect()
 }
@@ -93,8 +93,8 @@ dse_odata_products <- function(...) {
 #' @examples
 #' if (interactive()) {
 #'   nodes <- dse_odata_product_nodes("c8ed8edb-9bef-4717-abfd-1400a57171a4")
-#'   dse_odata_product_nodes("c8ed8edb-9bef-4717-abfd-1400a57171a4",
-#'     node_path = node_path, recursive = TRUE)
+#'   nodes <- dse_odata_product_nodes("c8ed8edb-9bef-4717-abfd-1400a57171a4",
+#'                                    recursive = TRUE)
 #' }
 #' @export
 dse_odata_product_nodes <- function(product, node_path = "", recursive = FALSE, ...) {
@@ -112,17 +112,12 @@ dse_odata_product_nodes <- function(product, node_path = "", recursive = FALSE, 
     httr2::req_perform() |>
     httr2::resp_body_json()
   if (length(result$result) == 0) return(dplyr::tibble())
-  result <-
-    dplyr::bind_cols(
-      result$result |> .simplify() |> dplyr::select(-"Nodes"),
-      lapply(result$result, `[[`, "Nodes") |>
-        .simplify()
-    )
+  result <- .simplify(result$result)
   if (recursive) {
     result <-
       dplyr::bind_rows(
         result,
-        result$uri |>
+        result$Nodes.uri |>
           stringr::str_extract_all("(?<=/Nodes\\()(.*?)(?=\\))") |>
           lapply(paste, collapse = "/") |>
           unlist() |>
@@ -272,6 +267,7 @@ dse_odata_download_path <- function(
 #' }
 #' @export
 dse_odata_quicklook <- function(product, destination, ...) {
+  ## TODO this is wrong. Asset Id and Product Id are not the same thing!
   .odata_url |>
     paste(sprintf("Assets(%s)", product), "$value", sep = "/") |>
     httr2::request() |>

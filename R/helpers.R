@@ -1,4 +1,4 @@
-.simplify <- function(x, do_unnest = TRUE) {
+.simplify <- function(x, do_unnest = TRUE, what = "") {
   if (any(c("Product", "product") %in% names(x))) {
     nm <- names(x)
     nm[nm == "Product"] <- "product"
@@ -8,21 +8,25 @@
   if (rlang::is_named(x)) {
     result <- tibble::enframe(x) |>
       tidyr::pivot_wider(names_from = "name", values_from = "value")
-    
   } else {
-    result <-
-      lapply(x, \(y) {
-        tibble::enframe(y) |>
-          tidyr::pivot_wider(names_from = "name", values_from = "value")
-      }) |>
-      dplyr::bind_rows()
+    is_unnamed <- length(x) > 0 && all(!(lapply(x, rlang::is_named) |> unlist()))
+    if (is_unnamed) {
+      return(list(lapply(x, .simplify)))
+    } else {
+      result <-
+        lapply(x, \(y) {
+          tibble::enframe(y) |>
+            tidyr::pivot_wider(names_from = "name", values_from = "value")
+        }) |>
+        dplyr::bind_rows()
+    }
   }
   result <- result |>
     dplyr::mutate(
       dplyr::across(dplyr::everything(), ~ {
         if (lapply(.x, is.list) |> unlist() |> all()) {
           if (lapply(.x, rlang::is_named) |> unlist() |> all()) {
-            lapply(.x, .simplify)
+            lapply(.x, .simplify, what = dplyr::cur_column())
           } else {
             .x
           }

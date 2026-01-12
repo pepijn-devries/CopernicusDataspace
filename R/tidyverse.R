@@ -135,13 +135,8 @@ collect.odata_request <-
       result$value |>
       .simplify() |>
       dplyr::mutate(
-        dplyr::across(dplyr::any_of("Assets"), ~ {
+        dplyr::across(dplyr::any_of(c("Assets", "Locations", "Attributes")), ~ {
           lapply(., .simplify)
-        }),
-        dplyr::across(dplyr::any_of(c("Locations", "Attributes")), \(y) {
-          .simplify(y) |>
-            dplyr::rowwise() |>
-            dplyr::group_split()
         })
       )
     attributes(result) <- c(attributes(result), at)

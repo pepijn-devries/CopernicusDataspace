@@ -7,11 +7,11 @@
 \usage{
 dse_odata_products_request(expand, ...)
 
-dse_odata_products(...)
+dse_odata_products(expand, ...)
 }
 \arguments{
 \item{expand}{Additional information to be appended to the result.
-Should be any of \code{"Attributes"}, \code{"Assets"}, \code{"Locations"}. Note that,
+Should be any of \code{"Attributes"}, \code{"Assets"}, or \code{"Locations"}. Note that,
 these columns are not affected by \code{\link[dplyr:select]{dplyr::select()}} calls (before calling
 \code{\link[dplyr:compute]{dplyr::collect()}}).}
 
