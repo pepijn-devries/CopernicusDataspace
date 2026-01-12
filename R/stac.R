@@ -143,7 +143,7 @@ dse_stac_collections <- memoise::memoise(.dse_stac_collections)
   result <- .dse_fix_list(filt, args, api_props)
   names(result) <- names(filt)
   result[["filter-lang"]] <- "cql2-json"
-  result[["filter-crs"]] <- "EPSG:4326"
+  result[["filter-crs"]] <- "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
   class(result) <- union("stac_search", class(result))
   result
 }
