@@ -126,11 +126,11 @@ install.packages("CopernicusDataspace", repos = c('https://pepijn-devries.r-univ
 <span><span class="co">## Only run this if an S3 secret is specified</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="reference/dse_s3.html">dse_has_s3_secret</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  </span>
-<span>  <span class="va">id</span>    <span class="op">&lt;-</span> <span class="st">"Copernicus_DSM_COG_30_S69_00_W062_00_DEM"</span></span>
-<span>  <span class="va">asset</span> <span class="op">&lt;-</span> <span class="st">"data"</span></span>
+<span>  <span class="va">id</span>       <span class="op">&lt;-</span> <span class="st">"Copernicus_DSM_COG_30_S69_00_W062_00_DEM"</span></span>
+<span>  <span class="va">asset</span>    <span class="op">&lt;-</span> <span class="st">"data"</span></span>
 <span></span>
 <span>  <span class="va">filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dse_stac_download.html">dse_stac_download</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">asset</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">tile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/read_stars.html" class="external-link">read_stars</a></span><span class="op">(</span><span class="va">filename</span><span class="op">)</span></span>
+<span>  <span class="va">tile</span>     <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/stars/reference/read_stars.html" class="external-link">read_stars</a></span><span class="op">(</span><span class="va">filename</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tile</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">hcl.colors</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, axes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>  </span>
 <span><span class="op">}</span></span></code></pre></div>

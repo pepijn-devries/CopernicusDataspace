@@ -58,11 +58,11 @@ library(stars) ## For reading and plotting the downloaded file
 ## Only run this if an S3 secret is specified
 if (dse_has_s3_secret()) {
   
-  id    <- "Copernicus_DSM_COG_30_S69_00_W062_00_DEM"
-  asset <- "data"
+  id       <- "Copernicus_DSM_COG_30_S69_00_W062_00_DEM"
+  asset    <- "data"
 
   filename <- dse_stac_download(id, asset, tempdir())
-  tile <- read_stars(filename)
+  tile     <- read_stars(filename)
   plot(tile, col = hcl.colors(100), axes = TRUE)
   
 }
@@ -150,7 +150,8 @@ By contributing to this project, you agree to abide by its terms.
   [`dse_user_statistics()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)
   : Get Dataspace Account Information
 - [`st_intersects.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
-  : Filter OData Request Using Geometries
+  [`st_intersects.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
+  : Filter OData and STAC Requests Using Geometries
 - [`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
   : Perform a Request to Get a Response
 - [`filter.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)

@@ -1,21 +1,23 @@
-# Filter OData Request Using Geometries
+# Filter OData and STAC Requests Using Geometries
 
-Filters OData rows that intersect with spatial feature `y`.
+Filters OData and STAC rows that intersect with spatial feature `y`.
 
 ## Usage
 
 ``` r
 st_intersects.odata_request(x, y, sparse = FALSE, ...)
+
+st_intersects.stac_request(x, y, sparse = FALSE, ...)
 ```
 
 ## Arguments
 
 - x:
 
-  An `odata_request` class object. Generated with
-  [`dse_odata_products_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_products_request.md)
-  or
-  [`dse_odata_bursts_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_bursts.md).
+  Either an `odata_request` class object, generated with
+  [`dse_odata_products_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_products_request.md)/[`dse_odata_bursts_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_bursts.md);
+  or a `stac_request` generated with
+  [`dse_stac_search_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_search_request.md).
 
 - y:
 
@@ -35,8 +37,8 @@ st_intersects.odata_request(x, y, sparse = FALSE, ...)
 
 ## Value
 
-Returns an `odata_request` class object, with the geometry filter added
-to it.
+Returns an object of the same class as `x`, with the geometry filter
+added to it.
 
 ## Examples
 
@@ -52,6 +54,10 @@ if (interactive()) {
     dplyr::filter(
       `ContentDate/Start` > "2025-01-01") |>
     sf::st_intersects(bbox) |>
+    dplyr::collect()
+
+  dse_stac_search_request() |>
+    st_intersects(bbox) |>
     dplyr::collect()
 }
 ```

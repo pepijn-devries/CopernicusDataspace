@@ -58,11 +58,11 @@ library(stars) ## For reading and plotting the downloaded file
 ## Only run this if an S3 secret is specified
 if (dse_has_s3_secret()) {
   
-  id    <- "Copernicus_DSM_COG_30_S69_00_W062_00_DEM"
-  asset <- "data"
+  id       <- "Copernicus_DSM_COG_30_S69_00_W062_00_DEM"
+  asset    <- "data"
 
   filename <- dse_stac_download(id, asset, tempdir())
-  tile <- read_stars(filename)
+  tile     <- read_stars(filename)
   plot(tile, col = hcl.colors(100), axes = TRUE)
   
 }
