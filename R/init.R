@@ -10,9 +10,6 @@ setOldClass("odata_request")
 }
 
 register_all_s3_methods = function() {
-  ## Note that superseded tidyverse methods are not included, as there are better alternatives
-  ## vctrs
-  ## dplyr
   register_s3_method("dplyr", "arrange",       "odata_request")
   register_s3_method("dplyr", "arrange",        "stac_request")
   register_s3_method("dplyr", "filter",        "odata_request")
@@ -25,6 +22,7 @@ register_all_s3_methods = function() {
   register_s3_method("dplyr", "slice_head",    "odata_request")
   register_s3_method("dplyr", "slice_head",     "stac_request")
   register_s3_method("sf",    "st_intersects", "odata_request")
+  register_s3_method("sf",    "st_intersects",  "stac_request")
 }
 
 # from: https://github.com/tidyverse/hms/blob/master/R/zzz.R

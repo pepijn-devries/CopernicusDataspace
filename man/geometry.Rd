@@ -3,13 +3,17 @@
 \name{st_intersects}
 \alias{st_intersects}
 \alias{st_intersects.odata_request}
-\title{Filter OData Request Using Geometries}
+\alias{st_intersects.stac_request}
+\title{Filter OData and STAC Requests Using Geometries}
 \usage{
 st_intersects.odata_request(x, y, sparse = FALSE, ...)
+
+st_intersects.stac_request(x, y, sparse = FALSE, ...)
 }
 \arguments{
-\item{x}{An \code{odata_request} class object. Generated with \code{\link[=dse_odata_products_request]{dse_odata_products_request()}}
-or \code{\link[=dse_odata_bursts_request]{dse_odata_bursts_request()}}.}
+\item{x}{Either an \code{odata_request} class object, generated with
+\code{\link[=dse_odata_products_request]{dse_odata_products_request()}}/\code{\link[=dse_odata_bursts_request]{dse_odata_bursts_request()}}; or
+a \code{stac_request} generated with \code{\link[=dse_stac_search_request]{dse_stac_search_request()}}.}
 
 \item{y}{A spatial geometry of either class \code{sf} (see \code{\link[sf:st_as_sf]{sf::st_as_sf()}}) or
 \code{sfc} (see \code{\link[sf:st_as_sfc]{sf::st_as_sfc()}}). It
@@ -20,11 +24,11 @@ will always be transformed to WGS 84 projection (EPSG:4326).}
 \item{...}{Ignored}
 }
 \value{
-Returns an \code{odata_request} class object, with the geometry filter added
+Returns an object of the same class as \code{x}, with the geometry filter added
 to it.
 }
 \description{
-Filters OData rows that intersect with spatial feature \code{y}.
+Filters OData and STAC rows that intersect with spatial feature \code{y}.
 }
 \examples{
 if (interactive()) {
@@ -38,6 +42,10 @@ if (interactive()) {
     dplyr::filter(
       `ContentDate/Start` > "2025-01-01") |>
     sf::st_intersects(bbox) |>
+    dplyr::collect()
+
+  dse_stac_search_request() |>
+    st_intersects(bbox) |>
     dplyr::collect()
 }
 }
