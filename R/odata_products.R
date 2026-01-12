@@ -280,7 +280,7 @@ dse_odata_quicklook <- function(product, destination, ...) {
   assets$DownloadLink |>
     httr2::request() |>
     httr2::req_perform(path = destination)
-  if (requireNamespace("rstudioapi")) {
+  if (requireNamespace("rstudioapi") && rstudioapi::isAvailable()) {
     rstudioapi::viewer(destination)
   } else {
     file.show(destination)
