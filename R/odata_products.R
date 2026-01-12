@@ -72,7 +72,7 @@ dse_odata_products_request <- function(expand, ...) {
 
 #' @rdname dse_odata_products_request
 #' @export
-dse_odata_products <- function(expand, ...) {
+dse_odata_products <- function(..., expand = NULL) {
   dse_odata_products_request(expand = expand) |>
     dplyr::filter(...) |>
     dplyr::collect()
@@ -262,18 +262,28 @@ dse_odata_download_path <- function(
 #' @examples
 #' if (interactive()) {
 #'   dse_odata_quicklook(
-#'     "f4a87522-dd81-4c40-856e-41d40510e3b6",
+#'     "91822f33-b15c-5b60-aa39-6d9f6f5c773b",
 #'     tempfile(fileext = ".jpg"))
 #' }
 #' @export
 dse_odata_quicklook <- function(product, destination, ...) {
-  ## TODO this is wrong. Asset Id and Product Id are not the same thing!
-  .odata_url |>
-    paste(sprintf("Assets(%s)", product), "$value", sep = "/") |>
+  assets <-
+    dse_odata_products(.data$Id == .env$product, expand = "Assets") |>
+    dplyr::pull("Assets") |>
+    dplyr::bind_rows() |>
+    dplyr::filter(dplyr::if_any("Type", \(x) x == "QUICKLOOK"))
+  if (nrow(assets) == 0)
+    rlang::abort(c(
+      x = "This product does not have a 'quicklook'",
+      i = "Try again with a different product"
+    ))
+  assets$DownloadLink |>
     httr2::request() |>
     httr2::req_perform(path = destination)
   if (requireNamespace("rstudioapi")) {
     rstudioapi::viewer(destination)
+  } else {
+    file.show(destination)
   }
   return(invisible())
 }

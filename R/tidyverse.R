@@ -411,7 +411,7 @@ select.stac_request <-
       if (rlang::as_string(expr[[2]]) == ".data") {
         return(rlang::as_string(expr[[3]]))
       } else if (rlang::as_string(expr[[2]]) == ".env") {
-        expr <- rlang::as_quosure(expr[[3]], .GlobalEnv)
+        expr <- rlang::as_quosure(expr[[3]], rlang::quo_get_env(quo))
       } else {
         result <- rlang::eval_tidy(expr)
         if (format == "odata" && is.character(result))
@@ -432,7 +432,9 @@ select.stac_request <-
       return(sprintf(op, left))
     } else {
       if (rlang::is_call(expr[[3]])) {
-        right <- .translate_filters(rlang::as_quosure(expr[[3]], environment()), format)
+        right <- .translate_filters(
+          rlang::as_quosure(expr[[3]], rlang::get_env(quo)), format)
+        if (rlang::is_call(right)) right <- rlang::eval_tidy(right)
       } else {
         right <- eval(expr[[3]])
       }

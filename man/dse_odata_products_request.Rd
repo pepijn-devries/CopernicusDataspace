@@ -7,7 +7,7 @@
 \usage{
 dse_odata_products_request(expand, ...)
 
-dse_odata_products(expand, ...)
+dse_odata_products(..., expand = NULL)
 }
 \arguments{
 \item{expand}{Additional information to be appended to the result.
