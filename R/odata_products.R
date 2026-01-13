@@ -1,5 +1,6 @@
 #' @include tidyverse.R
 #' @include login.R
+#' @include account.R
 #' @include req_perform.R
 NULL
 
@@ -7,7 +8,12 @@ NULL
   body <- resp |> httr2::resp_body_json()
   result <- body$detail
   if (is.null(result)) {
-    "Details not returned"
+    if (resp$status_code == 401) {
+      c("Ensure that you have specified a token",
+        "Ensure your token hasn't expired (call `memoise::forget(dse_access_token)`)")
+    } else {
+      "Details not returned"
+    }
   } else {
     if (rlang::is_named(result)) result$message else as.character(result)
   }
@@ -24,12 +30,12 @@ NULL
 #' object returned by [dse_odata_products_request()]. These apply lazy evaluation.
 #' Meaning that they are just added to the object and are only evaluated after
 #' calling either [dplyr::compute()] or [dplyr::collect()] (see examples).
+#' @param ... Ignored in case of `dse_odata_products_request()`. Dots are passed
+#' to embedded [dplyr::filter()] in case of `dse_odata_products()`
 #' @param expand Additional information to be appended to the result.
 #' Should be any of `"Attributes"`, `"Assets"`, or `"Locations"`. Note that,
 #' these columns are not affected by [dplyr::select()] calls (before calling
 #' [dplyr::collect()]).
-#' @param ... Ignored in case of `dse_odata_products_request()`. Dots are passed
-#' to embedded [dplyr::filter()] in case of `dse_odata_products()`
 #' @returns Returns an `odata_request` class object in case of
 #' `dse_odata_products_request()`, which is an extension of [httr2::request()].
 #' In case of `dse_odata_products()` a `data.frame` listing requested products is
@@ -52,7 +58,7 @@ NULL
 #'     dplyr::collect()
 #' }
 #' @export
-dse_odata_products_request <- function(expand, ...) {
+dse_odata_products_request <- function(..., expand) {
   exp_f <- if (missing(expand)) {
     I
   } else {
@@ -99,14 +105,11 @@ dse_odata_products <- function(..., expand = NULL) {
 #' @export
 dse_odata_product_nodes <- function(product, node_path = "", recursive = FALSE, ...) {
   if (length(node_path) != 1) stop("Argument `node_path` should only have one element")
-  node_path <-
-    strsplit(node_path, "/") |>
-    unlist() |>
-    sprintf(fmt = "Nodes(%s)") |>
-    paste(collapse = "/")
-  result <-
-    .odata_url |>
-    paste(sprintf("Products(%s)", product), node_path, "Nodes", sep = "/") |>
+  
+  print(node_path) #TODO
+  
+  .path_to_url(product, node_path) |>
+    paste("Nodes", sep = "/") |>
     httr2::request() |>
     httr2::req_error(body = .odata_error) |>
     httr2::req_perform() |>
@@ -117,11 +120,13 @@ dse_odata_product_nodes <- function(product, node_path = "", recursive = FALSE, 
     result <-
       dplyr::bind_rows(
         result,
-        result$Nodes.uri |>
+        result |>
+          dplyr::filter(ChildrenNumber > 0) |>
+          dplyr::pull("Nodes.uri") |>
           stringr::str_extract_all("(?<=/Nodes\\()(.*?)(?=\\))") |>
           lapply(paste, collapse = "/") |>
           unlist() |>
-          lapply(\(x) dse_odata_product_nodes(product, x, recursive = TRUE))
+          lapply(\(x) dse_odata_product_nodes(product, x, recursive = TRUE, token = token))
       )
   }
   return (result)
@@ -217,36 +222,59 @@ dse_odata_download <- function(request, destination, ...,
   return (invisible())
 }
 
-#' TODO
+.path_to_url <- function(product, node_path) {
+  node_path <-
+    strsplit(node_path, "/") |>
+    unlist() |>
+    sprintf(fmt = "Nodes(%s)") |>
+    paste(collapse = "/")
+  
+  result <-
+    .odata_url |>
+    paste(sprintf("Products(%s)", product), node_path, sep = "/")
+}
+
+#' Alternative Route to Download OData Products
 #' 
-#' TODO Often doesn't work
+#' TODO
 #' @param product TODO
+#' @param node_path TODO
 #' @param destination TODO
-#' @param compressed A `logical` value. If set to`TRUE` (default), the product
-#' will be downloaded as a zipped archive file.
-#' @param ... TODO
-#' @param token TODO
+#' @param compressed A `logical` value (default is `FALSE`). If set to`TRUE`,
+#' the product will be downloaded as a zipped archive file. Note that
+#' compression is not supported by all products. In those cases you will
+#' get a 404 error.
+#' @param ... Ignored
+#' @inheritParams dse_usage
+#' @returns Returns a `httr2_response` class object
 #' @examples
 #' if (interactive() && dse_has_client_info()) {
-#'   ##TODO examples not always working
 #'   dse_odata_download_path(
-#'     "85d8fe9d-cf8e-4c51-b4fd-7b811b514673",
-#'     tempfile(fileext = ".nc"), compressed = FALSE)
-#' 
-#'   dse_odata_download_path(
-#'     "002f0c9e-8a4c-465b-9e03-479475947630",
+#'     "617cc4fb-bb72-4589-9ac7-c19a0d89ef2d",
 #'     tempfile(fileext = ".zip"))
+#'   dse_odata_download_path(
+#'     "2f497806-0101-5eea-83fa-c8f68bc56b0c",
+#'     paste("DEM1_SAR_DTE_90_20101213T034716_20130408T035028_ADS_000000_5033.DEM",
+#'           "Copernicus_DSM_30_S09_00_E026_00", "DEM",
+#'           "Copernicus_DSM_30_S09_00_E026_00_DEM.dt1", sep = "/"),
+#'     tempfile(fileext = ".dt1")
+#'   )
+#'   dse_odata_download_path(
+#'     "7724d5b9-7c74-426c-b2f2-d30c7bcfc868",
+#'     tempfile(fileext = ".zip"), compressed = TRUE)
 #' }
 #' @export
 dse_odata_download_path <- function(
-    product, destination, compressed = TRUE, ...,
+    product, node_path, destination, compressed = FALSE, ...,
     token = dse_access_token()) {
-  .odata_url |>
-    paste(sprintf("Products(%s)", product),
-          ifelse(compressed, "$zip", "$value"), sep = "/") |>
+
+  .path_to_url(product, node_path) |>
+    paste(ifelse(compressed, "$zip", "$value"), sep = "/") |>
     httr2::request() |>
     httr2::req_progress() |>
     .add_token(token) |>
+    ## Make sure that authentication is passed on to any redirect:
+    httr2::req_options(unrestricted_auth = 1) |>
     httr2::req_error(body = .odata_error) |>
     httr2::req_perform(path = destination)
 }

@@ -5,18 +5,18 @@
 \alias{dse_odata_products}
 \title{Create a OData Request for a Data Space Ecosystem Product}
 \usage{
-dse_odata_products_request(expand, ...)
+dse_odata_products_request(..., expand)
 
 dse_odata_products(..., expand = NULL)
 }
 \arguments{
+\item{...}{Ignored in case of \code{dse_odata_products_request()}. Dots are passed
+to embedded \code{\link[dplyr:filter]{dplyr::filter()}} in case of \code{dse_odata_products()}}
+
 \item{expand}{Additional information to be appended to the result.
 Should be any of \code{"Attributes"}, \code{"Assets"}, or \code{"Locations"}. Note that,
 these columns are not affected by \code{\link[dplyr:select]{dplyr::select()}} calls (before calling
 \code{\link[dplyr:compute]{dplyr::collect()}}).}
-
-\item{...}{Ignored in case of \code{dse_odata_products_request()}. Dots are passed
-to embedded \code{\link[dplyr:filter]{dplyr::filter()}} in case of \code{dse_odata_products()}}
 }
 \value{
 Returns an \code{odata_request} class object in case of

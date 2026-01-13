@@ -82,12 +82,12 @@ library(stars) ## For reading and plotting the downloaded file
 ## Only run this if an S3 secret is specified
 if (dse_has_s3_secret()) {
   
-  id       <- "Copernicus_DSM_COG_30_S69_00_W062_00_DEM"
-  asset    <- "data"
+  id        <- "Copernicus_DSM_COG_30_S69_00_W062_00_DEM"
+  asset     <- "data"
 
-  filename <- dse_stac_download(id, asset, tempdir())
-  tile     <- read_stars(filename)
-  plot(tile, col = hcl.colors(100), axes = TRUE)
+  filename  <- dse_stac_download(id, asset, tempdir())
+  tile_stac <- read_stars(filename)
+  plot(tile_stac, col = hcl.colors(100), axes = TRUE)
   
 }
 ```
@@ -96,6 +96,22 @@ if (dse_has_s3_secret()) {
 
 ## Downloading Using OData API
 
+``` r
+fn <- tempfile(fileext = ".dt1")
+
+dse_odata_download_path(
+  product     = "2f497806-0101-5eea-83fa-c8f68bc56b0c",
+  node_path   = paste(
+    "DEM1_SAR_DTE_90_20101213T034716_20130408T035028_ADS_000000_5033.DEM",
+    "Copernicus_DSM_30_S09_00_E026_00", "DEM",
+    "Copernicus_DSM_30_S09_00_E026_00_DEM.dt1", sep = "/"),
+  destination = fn)
+
+tile_odata <- read_stars(fn)
+plot(tile_odata, col = terrain.colors(100), axes = TRUE)
+```
+
+<img src="man/figures/README-download-odata-1.png" alt="Example of downloading with OData API" width="100%" />
 TODO
 
 ## Downloading Using SentinelHub

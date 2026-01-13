@@ -421,7 +421,7 @@ select.stac_request <-
     } else {
       result <- rlang::eval_tidy(expr)
       if (format == "odata" && is.character(result))
-        result <- sprintf("'%s'", result)
+        result <- sprintf("'%s'", result) #TODO
       result
     }
   } else {
@@ -431,10 +431,12 @@ select.stac_request <-
       )
       return(sprintf(op, left))
     } else {
+      quote_right <- TRUE
       if (rlang::is_call(expr[[3]])) {
         right <- .translate_filters(
           rlang::as_quosure(expr[[3]], rlang::get_env(quo)), format)
-        if (rlang::is_call(right)) right <- rlang::eval_tidy(right)
+        if (rlang::is_call(right)) right <- rlang::eval_tidy(right) else
+          quote_right <- FALSE
       } else {
         right <- eval(expr[[3]])
       }
@@ -445,7 +447,7 @@ select.stac_request <-
         right <- lubridate::as_datetime(right, tz = "")
         right <- lubridate::format_ISO8601(right, usetz = TRUE)
       }
-      if (is.character(right) && format == "odata")
+      if (quote_right && is.character(right) && format == "odata")
         right <- sprintf("'%s'", right)
     }
     if (format == "odata") {

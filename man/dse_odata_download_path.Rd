@@ -2,12 +2,13 @@
 % Please edit documentation in R/odata_products.R
 \name{dse_odata_download_path}
 \alias{dse_odata_download_path}
-\title{TODO}
+\title{Alternative Route to Download OData Products}
 \usage{
 dse_odata_download_path(
   product,
+  node_path,
   destination,
-  compressed = TRUE,
+  compressed = FALSE,
   ...,
   token = dse_access_token()
 )
@@ -15,27 +16,42 @@ dse_odata_download_path(
 \arguments{
 \item{product}{TODO}
 
+\item{node_path}{TODO}
+
 \item{destination}{TODO}
 
-\item{compressed}{A \code{logical} value. If set to\code{TRUE} (default), the product
-will be downloaded as a zipped archive file.}
+\item{compressed}{A \code{logical} value (default is \code{FALSE}). If set to\code{TRUE},
+the product will be downloaded as a zipped archive file. Note that
+compression is not supported by all products. In those cases you will
+get a 404 error.}
 
-\item{...}{TODO}
+\item{...}{Ignored}
 
-\item{token}{TODO}
+\item{token}{For authentication, many of the Dataspace Ecosystem uses
+an access token. Either provide your access token, or obtain one automatically
+with \code{\link[=dse_access_token]{dse_access_token()}} (default). Without a valid token you will likely get
+an "access denied" error.}
+}
+\value{
+Returns a \code{httr2_response} class object
 }
 \description{
-TODO Often doesn't work
+TODO
 }
 \examples{
 if (interactive() && dse_has_client_info()) {
-  ##TODO examples not always working
   dse_odata_download_path(
-    "85d8fe9d-cf8e-4c51-b4fd-7b811b514673",
-    tempfile(fileext = ".nc"), compressed = FALSE)
-
-  dse_odata_download_path(
-    "002f0c9e-8a4c-465b-9e03-479475947630",
+    "617cc4fb-bb72-4589-9ac7-c19a0d89ef2d",
     tempfile(fileext = ".zip"))
+  dse_odata_download_path(
+    "2f497806-0101-5eea-83fa-c8f68bc56b0c",
+    paste("DEM1_SAR_DTE_90_20101213T034716_20130408T035028_ADS_000000_5033.DEM",
+          "Copernicus_DSM_30_S09_00_E026_00", "DEM",
+          "Copernicus_DSM_30_S09_00_E026_00_DEM.dt1", sep = "/"),
+    tempfile(fileext = ".dt1")
+  )
+  dse_odata_download_path(
+    "7724d5b9-7c74-426c-b2f2-d30c7bcfc868",
+    tempfile(fileext = ".zip"), compressed = TRUE)
 }
 }
