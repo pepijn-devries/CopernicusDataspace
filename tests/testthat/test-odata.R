@@ -36,3 +36,13 @@ test_that("OData quicklook can be downloaded", {
     file.exists(tf) && file.size(tf) > 0
   })
 })
+
+test_that("OData attributes can be listed", {
+  skip_if_offline()
+  skip_on_cran()
+  expect_true({
+    attribs <- dse_odata_attributes()
+    nrow(attribs) > 0 &&
+      all(names(attribs) %in% c("Collection", "AttributeName", "AttributeValueType"))
+  })
+})

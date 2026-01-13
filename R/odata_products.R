@@ -106,14 +106,14 @@ dse_odata_products <- function(..., expand = NULL) {
 dse_odata_product_nodes <- function(product, node_path = "", recursive = FALSE, ...) {
   if (length(node_path) != 1) stop("Argument `node_path` should only have one element")
   
-  print(node_path) #TODO
-  
-  .path_to_url(product, node_path) |>
+  result <-
+    .path_to_url(product, node_path) |>
     paste("Nodes", sep = "/") |>
     httr2::request() |>
     httr2::req_error(body = .odata_error) |>
     httr2::req_perform() |>
     httr2::resp_body_json()
+  
   if (length(result$result) == 0) return(dplyr::tibble())
   result <- .simplify(result$result)
   if (recursive) {
@@ -121,12 +121,12 @@ dse_odata_product_nodes <- function(product, node_path = "", recursive = FALSE, 
       dplyr::bind_rows(
         result,
         result |>
-          dplyr::filter(ChildrenNumber > 0) |>
+          dplyr::filter(.data$ChildrenNumber > 0) |>
           dplyr::pull("Nodes.uri") |>
           stringr::str_extract_all("(?<=/Nodes\\()(.*?)(?=\\))") |>
           lapply(paste, collapse = "/") |>
           unlist() |>
-          lapply(\(x) dse_odata_product_nodes(product, x, recursive = TRUE, token = token))
+          lapply(\(x) dse_odata_product_nodes(product, x, recursive = TRUE))
       )
   }
   return (result)
