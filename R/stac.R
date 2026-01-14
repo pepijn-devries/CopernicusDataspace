@@ -4,6 +4,7 @@
 #' @include helpers.R
 #' @include account.R
 #' @include req_perform.R
+#' @include s3.R
 NULL
 
 .stac_base_url <- "https://stac.dataspace.copernicus.eu/v1"

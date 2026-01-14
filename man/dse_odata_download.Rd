@@ -26,7 +26,7 @@ where to store downloaded products}
 Ecosystem account}
 }
 \value{
-Returns \code{NULL} invisibly.
+A vector of downloaded file names stored at \code{destination}
 }
 \description{
 Use \code{\link[=dse_odata_products]{dse_odata_products()}} or \code{\link[=dse_odata_products_request]{dse_odata_products_request()}},

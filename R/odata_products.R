@@ -2,6 +2,7 @@
 #' @include login.R
 #' @include account.R
 #' @include req_perform.R
+#' @include s3.R
 NULL
 
 .odata_error <- function(resp) {
@@ -194,7 +195,7 @@ dse_odata_attributes <- memoise::memoise(.dse_odata_attributes)
 #' where to store downloaded products
 #' @param ... Arguments passed to [dse_s3()].
 #' @inheritParams dse_s3
-#' @returns Returns `NULL` invisibly.
+#' @returns A vector of downloaded file names stored at `destination`
 #' @examples
 #' if (interactive() && dse_has_s3_secret()) {
 #'   dse_odata_download(
@@ -216,22 +217,9 @@ dse_odata_download <- function(request, destination, ...,
                               s3_key = dse_s3_key(), s3_secret = dse_s3_secret()) {
   product_details <- request |> dplyr::collect()
   ps3 <- dse_s3(..., s3_key = s3_key, s3_secret = s3_secret)
-  .download_s3 <- function(s3_path) {
-    prefix  <- gsub("^/eodata/", "", s3_path)
-    objects <- ps3$list_objects("eodata", Prefix = prefix)
-    keys    <- lapply(objects$Contents, `[[`, "Key") |> unlist()
-    lapply(keys, \(k) {
-      dest <- file.path(destination, gsub(paste0(dirname(prefix), "[/]"), "", k))
-      if (!dir.exists(dirname(dest))) {
-        dirresult <- dir.create(dirname(dest), recursive = TRUE)
-        if (!dirresult) stop("Failed to create subdirectory for download file")
-      }
-      ps3$download_file("eodata", k, dest)
-    })
-  }
-
-  lapply(product_details$S3Path, .download_s3)
-  return (invisible())
+  
+  lapply(product_details$S3Path, .download_s3,
+         destination = destination, ps3 = ps3) |> unlist()
 }
 
 .path_to_url <- function(product, node_path) {

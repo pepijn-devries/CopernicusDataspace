@@ -68,6 +68,20 @@ test_that("OData file can be downloaded through https", {
   })
 })
 
+test_that("OData zipped product can be downloaded through s3", {
+  skip_if_offline()
+  skip_if_not(dse_has_s3_secret())
+  skip_on_cran()
+  expect_no_error({
+    fn <-
+      dse_odata_download(
+      dse_odata_products(Name == "S1C_AUX_PP2_V20241204T000000_G20251024T110034.SAFE"),
+      destination = tempdir()) |>
+      suppressMessages()
+    on.exit({ unlink(fn) })
+  })
+})
+
 test_that("OData zipped product can be downloaded through https", {
   skip_if_offline()
   skip_if_not(dse_has_client_info())
@@ -76,7 +90,8 @@ test_that("OData zipped product can be downloaded through https", {
     resp <-
       dse_odata_download_path(
         product     = "ce4576eb-975b-40ff-8319-e04b00d8d444",
-        destination = tempdir())
+        destination = tempdir()) |>
+      suppressMessages()
     unlink(resp$body)
   })
 })
