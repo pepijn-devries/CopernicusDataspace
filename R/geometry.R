@@ -34,7 +34,7 @@ NULL
 #' }
 #' @rdname geometry
 #' @name st_intersects
-#' @export
+#' @export st_intersects.odata_request
 st_intersects.odata_request <-
   function (x, y, sparse = FALSE, ...) {
     x$odata$geoms <- c(x$odata$geoms, list(y))
@@ -50,7 +50,7 @@ st_intersects.odata_request <-
 
 #' @rdname geometry
 #' @name st_intersects
-#' @export
+#' @export st_intersects.stac_request
 st_intersects.stac_request <-
   function (x, y, sparse = FALSE, ...) {
     cur_bbox <- x$body$data$bbox

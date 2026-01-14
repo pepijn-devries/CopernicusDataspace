@@ -78,7 +78,7 @@ NULL
 
 #' @rdname tidy_verbs
 #' @name filter
-#' @export
+#' @export filter.odata_request
 filter.odata_request <-
   function (.data, ..., .by = NULL, .preserve = FALSE) {
     new_filters <- rlang::enquos(..., .named = TRUE)
@@ -88,7 +88,7 @@ filter.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name filter
-#' @export
+#' @export filter.stac_request
 filter.stac_request <-
   function (.data, ..., .by = NULL, .preserve = FALSE) {
     old_filter <- .data$body$data$filter
@@ -109,7 +109,7 @@ filter.stac_request <-
 
 #' @rdname tidy_verbs
 #' @name compute
-#' @export
+#' @export compute.odata_request
 compute.odata_request <-
   function(x, skip = 0L, ...) {
     x |>
@@ -122,7 +122,7 @@ compute.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name collect
-#' @export
+#' @export collect.odata_request
 collect.odata_request <-
   function(x, skip = 0L, ...) {
     result <-
@@ -147,7 +147,7 @@ collect.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name collect
-#' @export
+#' @export collect.stac_request
 collect.stac_request <-
   function(x, ...) {
     items <- 
@@ -158,7 +158,7 @@ collect.stac_request <-
 
 #' @rdname tidy_verbs
 #' @name arrange
-#' @export
+#' @export arrange.odata_request
 arrange.odata_request <-
   function(.data, ..., .by_group = FALSE) {
     new_arrange <- rlang::enquos(..., .named = TRUE)
@@ -168,7 +168,7 @@ arrange.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name arrange
-#' @export
+#' @export arrange.stac_request
 arrange.stac_request <-
   function(.data, ..., .by_group = FALSE) {
     my_arrange <-
@@ -188,7 +188,7 @@ arrange.stac_request <-
 
 #' @rdname tidy_verbs
 #' @name slice_head
-#' @export
+#' @export slice_head.odata_request
 slice_head.odata_request <-
   function(.data, ..., n, prop, by = NULL) {
     if (!is.null(.data$odata$slice_head))
@@ -203,7 +203,7 @@ slice_head.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name slice_head
-#' @export
+#' @export slice_head.stac_request
 slice_head.stac_request <-
   function(.data, ..., n, prop, by = NULL) {
     if (!missing(prop))
@@ -216,7 +216,7 @@ slice_head.stac_request <-
 
 #' @rdname tidy_verbs
 #' @name select
-#' @export
+#' @export select.odata_request
 select.odata_request <-
   function(.data, ...) {
     new_select <- rlang::enquos(..., .named = TRUE)
@@ -226,7 +226,7 @@ select.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name select
-#' @export
+#' @export select.stac_request
 select.stac_request <-
   function(.data, ...) {
     new_select <-

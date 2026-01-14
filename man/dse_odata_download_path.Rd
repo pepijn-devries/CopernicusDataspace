@@ -8,7 +8,6 @@ dse_odata_download_path(
   product,
   node_path = "",
   destination,
-  compressed = FALSE,
   ...,
   token = dse_access_token()
 )
