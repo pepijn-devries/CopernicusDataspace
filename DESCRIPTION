@@ -55,6 +55,7 @@ Collate:
     'geometry.R'
     'tidyverse.R'
     'login.R'
+    's3.R'
     'req_perform.R'
     'odata_products.R'
     'odata_bursts.R'

@@ -2,11 +2,17 @@
 #' @include login.R
 #' @include account.R
 #' @include req_perform.R
+#' @include s3.R
 NULL
 
 .odata_error <- function(resp) {
-  body <- resp |> httr2::resp_body_json()
-  result <- body$detail
+  if (resp$headers$`Content-Type` == "application/json") {
+    body <- resp |> httr2::resp_body_json()
+    result <- body$detail
+  } else {
+    result <- NULL
+  }
+
   if (is.null(result)) {
     if (resp$status_code == 401) {
       c("Ensure that you have specified a token",
@@ -17,6 +23,13 @@ NULL
   } else {
     if (rlang::is_named(result)) result$message else as.character(result)
   }
+}
+
+.np_error <- function(node_path) {
+  if (length(node_path) != 1)
+    rlang::abort(c(
+      x = "Argument `node_path` should only have one element",
+      i = "Pass `node_path` elements in a loop"))
 }
 
 #' Create a OData Request for a Data Space Ecosystem Product
@@ -104,7 +117,7 @@ dse_odata_products <- function(..., expand = NULL) {
 #' }
 #' @export
 dse_odata_product_nodes <- function(product, node_path = "", recursive = FALSE, ...) {
-  if (length(node_path) != 1) stop("Argument `node_path` should only have one element")
+  .np_error(node_path)
   
   result <-
     .path_to_url(product, node_path) |>
@@ -182,7 +195,7 @@ dse_odata_attributes <- memoise::memoise(.dse_odata_attributes)
 #' where to store downloaded products
 #' @param ... Arguments passed to [dse_s3()].
 #' @inheritParams dse_s3
-#' @returns Returns `NULL` invisibly.
+#' @returns A vector of downloaded file names stored at `destination`
 #' @examples
 #' if (interactive() && dse_has_s3_secret()) {
 #'   dse_odata_download(
@@ -204,25 +217,13 @@ dse_odata_download <- function(request, destination, ...,
                               s3_key = dse_s3_key(), s3_secret = dse_s3_secret()) {
   product_details <- request |> dplyr::collect()
   ps3 <- dse_s3(..., s3_key = s3_key, s3_secret = s3_secret)
-  .download_s3 <- function(s3_path) {
-    prefix  <- gsub("^/eodata/", "", s3_path)
-    objects <- ps3$list_objects("eodata", Prefix = prefix)
-    keys    <- lapply(objects$Contents, `[[`, "Key") |> unlist()
-    lapply(keys, \(k) {
-      dest <- file.path(destination, gsub(paste0(dirname(prefix), "[/]"), "", k))
-      if (!dir.exists(dirname(dest))) {
-        dirresult <- dir.create(dirname(dest), recursive = TRUE)
-        if (!dirresult) stop("Failed to create subdirectory for download file")
-      }
-      ps3$download_file("eodata", k, dest)
-    })
-  }
-
-  lapply(product_details$S3Path, .download_s3)
-  return (invisible())
+  
+  lapply(product_details$S3Path, .download_s3,
+         destination = destination, ps3 = ps3) |> unlist()
 }
 
 .path_to_url <- function(product, node_path) {
+
   node_path <-
     strsplit(node_path, "/") |>
     unlist() |>
@@ -266,7 +267,8 @@ dse_odata_download <- function(request, destination, ...,
 dse_odata_download_path <- function(
     product, node_path = "", destination, ...,
     token = dse_access_token()) {
-
+  .np_error(node_path)
+  
   node_details <-
     dse_odata_product_nodes(product, node_path)
   
