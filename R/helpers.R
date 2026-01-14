@@ -41,7 +41,7 @@
     tibble_columns <-
       lapply(result, \(y) lapply(y, tibble::is_tibble) |> unlist() |> all()) |> unlist()
     tibble_columns[names(tibble_columns) %in%
-                     c("assets", "properties.cube:variables")] <- FALSE
+                     c("assets", "properties.cube:variables", "geometry")] <- FALSE
     if (any(tibble_columns)) {
       tidyr::unnest(result, names(tibble_columns)[tibble_columns], names_sep = ".")
     } else result

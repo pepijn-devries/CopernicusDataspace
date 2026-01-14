@@ -5,8 +5,13 @@
 NULL
 
 .odata_error <- function(resp) {
-  body <- resp |> httr2::resp_body_json()
-  result <- body$detail
+  if (resp$headers$`Content-Type` == "application/json") {
+    body <- resp |> httr2::resp_body_json()
+    result <- body$detail
+  } else {
+    result <- NULL
+  }
+
   if (is.null(result)) {
     if (resp$status_code == 401) {
       c("Ensure that you have specified a token",

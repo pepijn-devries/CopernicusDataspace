@@ -40,3 +40,11 @@ test_that("Quicklook cannot be downloaded if it doesn't exist", {
     dse_odata_quicklook( "ce4576eb-975b-40ff-8319-e04b00d8d444", tempfile())
   }, "does not have a 'quicklook'")
 })
+
+test_that("Invalid OData request produce meaningfull errors", {
+  skip_if_offline()
+  skip_on_cran()
+  expect_error({
+    dse_odata_products(foo == "bar")
+  }, "Invalid field")
+})
