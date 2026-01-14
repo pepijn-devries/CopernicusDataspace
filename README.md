@@ -97,17 +97,17 @@ if (dse_has_s3_secret()) {
 ## Downloading Using OData API
 
 ``` r
-fn <- tempfile(fileext = ".dt1")
 
-dse_odata_download_path(
+response <-
+  dse_odata_download_path(
   product     = "2f497806-0101-5eea-83fa-c8f68bc56b0c",
   node_path   = paste(
     "DEM1_SAR_DTE_90_20101213T034716_20130408T035028_ADS_000000_5033.DEM",
     "Copernicus_DSM_30_S09_00_E026_00", "DEM",
     "Copernicus_DSM_30_S09_00_E026_00_DEM.dt1", sep = "/"),
-  destination = fn)
+  destination = tempdir())
 
-tile_odata <- read_stars(fn)
+tile_odata <- read_stars(response$body)
 plot(tile_odata, col = terrain.colors(100), axes = TRUE)
 ```
 

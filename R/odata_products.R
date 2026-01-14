@@ -237,46 +237,56 @@ dse_odata_download <- function(request, destination, ...,
 #' Alternative Route to Download OData Products
 #' 
 #' TODO
-#' @param product TODO
-#' @param node_path TODO
-#' @param destination TODO
-#' @param compressed A `logical` value (default is `FALSE`). If set to`TRUE`,
-#' the product will be downloaded as a zipped archive file. Note that
-#' compression is not supported by all products. In those cases you will
-#' get a 404 error.
+#' @param product Hexadecimal id of the product to be downloaded
+#' @param node_path Path to a specific file in the product. When left blank (`""`)
+#' The function will attempt to download the entire product as a zip archive.
+#' @param destination Path to a directory where to store the downloaded file
 #' @param ... Ignored
 #' @inheritParams dse_usage
-#' @returns Returns a `httr2_response` class object
+#' @returns Returns a `httr2_response` class object. It's body will hold the filename
+#' of the downloaded file
 #' @examples
 #' if (interactive() && dse_has_client_info()) {
+#' 
 #'   dse_odata_download_path(
-#'     "617cc4fb-bb72-4589-9ac7-c19a0d89ef2d",
-#'     tempfile(fileext = ".zip"))
-#'   dse_odata_download_path(
-#'     "2f497806-0101-5eea-83fa-c8f68bc56b0c",
-#'     paste("DEM1_SAR_DTE_90_20101213T034716_20130408T035028_ADS_000000_5033.DEM",
-#'           "Copernicus_DSM_30_S09_00_E026_00", "DEM",
-#'           "Copernicus_DSM_30_S09_00_E026_00_DEM.dt1", sep = "/"),
-#'     tempfile(fileext = ".dt1")
+#'     product     = "2f497806-0101-5eea-83fa-c8f68bc56b0c",
+#'     node_path   = 
+#'       paste("DEM1_SAR_DTE_90_20101213T034716_20130408T035028_ADS_000000_5033.DEM",
+#'             "Copernicus_DSM_30_S09_00_E026_00", "DEM",
+#'             "Copernicus_DSM_30_S09_00_E026_00_DEM.dt1", sep = "/"),
+#'     destination = tempdir()
 #'   )
+#'   
 #'   dse_odata_download_path(
-#'     "7724d5b9-7c74-426c-b2f2-d30c7bcfc868",
-#'     tempfile(fileext = ".zip"), compressed = TRUE)
+#'     product     = "ce4576eb-975b-40ff-8319-e04b00d8d444",
+#'     destination = tempdir())
+#'
 #' }
 #' @export
 dse_odata_download_path <- function(
-    product, node_path, destination, compressed = FALSE, ...,
+    product, node_path = "", destination, compressed = FALSE, ...,
     token = dse_access_token()) {
 
+  node_details <-
+    dse_odata_product_nodes(product, node_path)
+  
+  if (length(node_details) == 0) {
+    fn <- basename(node_path)
+  } else {
+    fn <- node_details$Name
+    if (node_details$ChildrenNumber > 0) fn <- paste0(fn, ".zip")
+  }
+  
   .path_to_url(product, node_path) |>
-    paste(ifelse(compressed, "$zip", "$value"), sep = "/") |>
+    stringr::str_replace("\\/$", "") |>
+    paste("$value", sep = "/") |>
     httr2::request() |>
     httr2::req_progress() |>
     .add_token(token) |>
     ## Make sure that authentication is passed on to any redirect:
     httr2::req_options(unrestricted_auth = 1) |>
     httr2::req_error(body = .odata_error) |>
-    httr2::req_perform(path = destination)
+    httr2::req_perform(path = file.path(destination, fn))
 }
 
 #' Download a Quicklook for a Product
@@ -298,8 +308,10 @@ dse_odata_quicklook <- function(product, destination, ...) {
   assets <-
     dse_odata_products(.data$Id == .env$product, expand = "Assets") |>
     dplyr::pull("Assets") |>
-    dplyr::bind_rows() |>
-    dplyr::filter(dplyr::if_any("Type", \(x) x == "QUICKLOOK"))
+    dplyr::bind_rows()
+  if ("Type" %in% names(assets))
+    assets <-
+      dplyr::filter(assets, dplyr::if_any("Type", \(x) x == "QUICKLOOK"))
   if (nrow(assets) == 0)
     rlang::abort(c(
       x = "This product does not have a 'quicklook'",

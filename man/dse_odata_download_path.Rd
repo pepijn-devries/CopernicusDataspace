@@ -6,7 +6,7 @@
 \usage{
 dse_odata_download_path(
   product,
-  node_path,
+  node_path = "",
   destination,
   compressed = FALSE,
   ...,
@@ -14,16 +14,12 @@ dse_odata_download_path(
 )
 }
 \arguments{
-\item{product}{TODO}
+\item{product}{Hexadecimal id of the product to be downloaded}
 
-\item{node_path}{TODO}
+\item{node_path}{Path to a specific file in the product. When left blank (\code{""})
+The function will attempt to download the entire product as a zip archive.}
 
-\item{destination}{TODO}
-
-\item{compressed}{A \code{logical} value (default is \code{FALSE}). If set to\code{TRUE},
-the product will be downloaded as a zipped archive file. Note that
-compression is not supported by all products. In those cases you will
-get a 404 error.}
+\item{destination}{Path to a directory where to store the downloaded file}
 
 \item{...}{Ignored}
 
@@ -33,25 +29,27 @@ with \code{\link[=dse_access_token]{dse_access_token()}} (default). Without a va
 an "access denied" error.}
 }
 \value{
-Returns a \code{httr2_response} class object
+Returns a \code{httr2_response} class object. It's body will hold the filename
+of the downloaded file
 }
 \description{
 TODO
 }
 \examples{
 if (interactive() && dse_has_client_info()) {
+
   dse_odata_download_path(
-    "617cc4fb-bb72-4589-9ac7-c19a0d89ef2d",
-    tempfile(fileext = ".zip"))
-  dse_odata_download_path(
-    "2f497806-0101-5eea-83fa-c8f68bc56b0c",
-    paste("DEM1_SAR_DTE_90_20101213T034716_20130408T035028_ADS_000000_5033.DEM",
-          "Copernicus_DSM_30_S09_00_E026_00", "DEM",
-          "Copernicus_DSM_30_S09_00_E026_00_DEM.dt1", sep = "/"),
-    tempfile(fileext = ".dt1")
+    product     = "2f497806-0101-5eea-83fa-c8f68bc56b0c",
+    node_path   = 
+      paste("DEM1_SAR_DTE_90_20101213T034716_20130408T035028_ADS_000000_5033.DEM",
+            "Copernicus_DSM_30_S09_00_E026_00", "DEM",
+            "Copernicus_DSM_30_S09_00_E026_00_DEM.dt1", sep = "/"),
+    destination = tempdir()
   )
+  
   dse_odata_download_path(
-    "7724d5b9-7c74-426c-b2f2-d30c7bcfc868",
-    tempfile(fileext = ".zip"), compressed = TRUE)
+    product     = "ce4576eb-975b-40ff-8319-e04b00d8d444",
+    destination = tempdir())
+
 }
 }
