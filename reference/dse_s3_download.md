@@ -27,7 +27,7 @@ dse_s3_download(
 
 - destination:
 
-  Destination path where to store the downloaded file
+  Destination path to a directory where to store the downloaded file(s)
 
 - ...:
 
@@ -40,7 +40,7 @@ dse_s3_download(
 
 ## Value
 
-Returns `NULL` invisibly.
+A vector of file names stored at `destination`
 
 ## Examples
 

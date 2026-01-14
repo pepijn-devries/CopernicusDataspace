@@ -50,7 +50,7 @@ dse_odata_download(
 
 ## Value
 
-Returns `NULL` invisibly.
+A vector of downloaded file names stored at `destination`
 
 ## Examples
 

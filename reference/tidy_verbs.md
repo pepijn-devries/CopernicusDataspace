@@ -12,38 +12,27 @@ the latter by
 ## Usage
 
 ``` r
-# S3 method for class 'odata_request'
-filter(.data, ..., .by = NULL, .preserve = FALSE)
+filter.odata_request(.data, ..., .by = NULL, .preserve = FALSE)
 
-# S3 method for class 'stac_request'
-filter(.data, ..., .by = NULL, .preserve = FALSE)
+filter.stac_request(.data, ..., .by = NULL, .preserve = FALSE)
 
-# S3 method for class 'odata_request'
-compute(x, skip = 0L, ...)
+compute.odata_request(x, skip = 0L, ...)
 
-# S3 method for class 'odata_request'
-collect(x, skip = 0L, ...)
+collect.odata_request(x, skip = 0L, ...)
 
-# S3 method for class 'stac_request'
-collect(x, ...)
+collect.stac_request(x, ...)
 
-# S3 method for class 'odata_request'
-arrange(.data, ..., .by_group = FALSE)
+arrange.odata_request(.data, ..., .by_group = FALSE)
 
-# S3 method for class 'stac_request'
-arrange(.data, ..., .by_group = FALSE)
+arrange.stac_request(.data, ..., .by_group = FALSE)
 
-# S3 method for class 'odata_request'
-slice_head(.data, ..., n, prop, by = NULL)
+slice_head.odata_request(.data, ..., n, prop, by = NULL)
 
-# S3 method for class 'stac_request'
-slice_head(.data, ..., n, prop, by = NULL)
+slice_head.stac_request(.data, ..., n, prop, by = NULL)
 
-# S3 method for class 'odata_request'
-select(.data, ...)
+select.odata_request(.data, ...)
 
-# S3 method for class 'stac_request'
-select(.data, ...)
+select.stac_request(.data, ...)
 ```
 
 ## Arguments
