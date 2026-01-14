@@ -94,6 +94,8 @@ if (dse_has_s3_secret()) {
 
 <img src="man/figures/README-download-stac-1.png" alt="Example of downloading with STAC API" width="100%" />
 
+This produces a tile in the Southern Ocean near Antarctica.
+
 ## Downloading Using OData API
 
 ``` r
@@ -112,6 +114,9 @@ plot(tile_odata, col = terrain.colors(100), axes = TRUE)
 ```
 
 <img src="man/figures/README-download-odata-1.png" alt="Example of downloading with OData API" width="100%" />
+
+This produces a map of Lake Upemba in Congo.
+
 TODO
 
 ## Downloading Using SentinelHub

@@ -99,6 +99,8 @@ if (dse_has_s3_secret()) {
 }
 ```
 
+This produces a tile in the Southern Ocean near Antarctica.
+
 ## Downloading Using OData API
 
 
@@ -116,6 +118,9 @@ response <-
 tile_odata <- read_stars(response$body)
 plot(tile_odata, col = terrain.colors(100), axes = TRUE)
 ```
+
+This produces a map of Lake Upemba in Congo.
+
 TODO
 
 ## Downloading Using SentinelHub

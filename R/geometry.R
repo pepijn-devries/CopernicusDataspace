@@ -42,6 +42,8 @@ st_intersects.odata_request <-
   }
 
 .translate_geoms <- function(geom) {
+  if (!inherits(geom, "sfc"))
+    geom <- sf::st_as_sfc(geom)
   geom |>
     sf::st_transform(4326) |>
     sf::st_geometry() |>
