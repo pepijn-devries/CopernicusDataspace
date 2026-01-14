@@ -264,7 +264,7 @@ dse_odata_download <- function(request, destination, ...,
 #' }
 #' @export
 dse_odata_download_path <- function(
-    product, node_path = "", destination, compressed = FALSE, ...,
+    product, node_path = "", destination, ...,
     token = dse_access_token()) {
 
   node_details <-
