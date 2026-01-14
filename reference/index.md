@@ -17,7 +17,7 @@
 - [`dse_odata_download()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_download.md)
   : Download Data Space Ecosystem Products Through OData API
 - [`dse_odata_download_path()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_download_path.md)
-  : TODO
+  : Alternative Route to Download OData Products
 - [`dse_odata_product_nodes()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_product_nodes.md)
   : List OData Product Nodes (i.e. Files and Directories)
 - [`dse_odata_products_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_products_request.md)
@@ -52,20 +52,20 @@
 - [`dse_usage()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)
   [`dse_user_statistics()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)
   : Get Dataspace Account Information
-- [`st_intersects.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
-  [`st_intersects.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
+- [`st_intersects(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
+  [`st_intersects(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
   : Filter OData and STAC Requests Using Geometries
 - [`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
   : Perform a Request to Get a Response
-- [`filter.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`filter.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`compute.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`collect.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`collect.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`arrange.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`arrange.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`slice_head.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`slice_head.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`select.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`select.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+- [`filter(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`filter(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`compute(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`collect(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`collect(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`arrange(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`arrange(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`slice_head(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`slice_head(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`select(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`select(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
   : Tidy Verbs for OData API and STAC Requests

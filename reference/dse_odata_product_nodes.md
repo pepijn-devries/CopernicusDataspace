@@ -38,7 +38,7 @@ A `data.frame` with information on the requested node(s)
 ``` r
 if (interactive()) {
   nodes <- dse_odata_product_nodes("c8ed8edb-9bef-4717-abfd-1400a57171a4")
-  dse_odata_product_nodes("c8ed8edb-9bef-4717-abfd-1400a57171a4",
-    node_path = node_path, recursive = TRUE)
+  nodes <- dse_odata_product_nodes("c8ed8edb-9bef-4717-abfd-1400a57171a4",
+                                   recursive = TRUE)
 }
 ```

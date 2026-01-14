@@ -58,12 +58,12 @@ library(stars) ## For reading and plotting the downloaded file
 ## Only run this if an S3 secret is specified
 if (dse_has_s3_secret()) {
   
-  id       <- "Copernicus_DSM_COG_30_S69_00_W062_00_DEM"
-  asset    <- "data"
+  id        <- "Copernicus_DSM_COG_30_S69_00_W062_00_DEM"
+  asset     <- "data"
 
-  filename <- dse_stac_download(id, asset, tempdir())
-  tile     <- read_stars(filename)
-  plot(tile, col = hcl.colors(100), axes = TRUE)
+  filename  <- dse_stac_download(id, asset, tempdir())
+  tile_stac <- read_stars(filename)
+  plot(tile_stac, col = hcl.colors(100), axes = TRUE)
   
 }
 ```
@@ -73,7 +73,23 @@ API](reference/figures/README-download-stac-1.png)
 
 ## Downloading Using OData API
 
-TODO
+``` r
+
+response <-
+  dse_odata_download_path(
+  product     = "2f497806-0101-5eea-83fa-c8f68bc56b0c",
+  node_path   = paste(
+    "DEM1_SAR_DTE_90_20101213T034716_20130408T035028_ADS_000000_5033.DEM",
+    "Copernicus_DSM_30_S09_00_E026_00", "DEM",
+    "Copernicus_DSM_30_S09_00_E026_00_DEM.dt1", sep = "/"),
+  destination = tempdir())
+
+tile_odata <- read_stars(response$body)
+plot(tile_odata, col = terrain.colors(100), axes = TRUE)
+```
+
+![Example of downloading with OData
+API](reference/figures/README-download-odata-1.png) TODO
 
 ## Downloading Using SentinelHub
 
@@ -114,7 +130,7 @@ By contributing to this project, you agree to abide by its terms.
 - [`dse_odata_download()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_download.md)
   : Download Data Space Ecosystem Products Through OData API
 - [`dse_odata_download_path()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_download_path.md)
-  : TODO
+  : Alternative Route to Download OData Products
 - [`dse_odata_product_nodes()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_product_nodes.md)
   : List OData Product Nodes (i.e. Files and Directories)
 - [`dse_odata_products_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_products_request.md)
@@ -149,22 +165,22 @@ By contributing to this project, you agree to abide by its terms.
 - [`dse_usage()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)
   [`dse_user_statistics()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)
   : Get Dataspace Account Information
-- [`st_intersects.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
-  [`st_intersects.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
+- [`st_intersects(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
+  [`st_intersects(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
   : Filter OData and STAC Requests Using Geometries
 - [`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
   : Perform a Request to Get a Response
-- [`filter.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`filter.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`compute.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`collect.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`collect.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`arrange.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`arrange.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`slice_head.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`slice_head.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`select.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`select.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+- [`filter(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`filter(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`compute(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`collect(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`collect(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`arrange(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`arrange(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`slice_head(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`slice_head(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`select(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`select(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
   : Tidy Verbs for OData API and STAC Requests
 
 # Articles

@@ -12,27 +12,38 @@ the latter by
 ## Usage
 
 ``` r
-filter.odata_request(.data, ..., .by = NULL, .preserve = FALSE)
+# S3 method for class 'odata_request'
+filter(.data, ..., .by = NULL, .preserve = FALSE)
 
-filter.stac_request(.data, ..., .by = NULL, .preserve = FALSE)
+# S3 method for class 'stac_request'
+filter(.data, ..., .by = NULL, .preserve = FALSE)
 
-compute.odata_request(x, skip = 0L, ...)
+# S3 method for class 'odata_request'
+compute(x, skip = 0L, ...)
 
-collect.odata_request(x, skip = 0L, ...)
+# S3 method for class 'odata_request'
+collect(x, skip = 0L, ...)
 
-collect.stac_request(x, ...)
+# S3 method for class 'stac_request'
+collect(x, ...)
 
-arrange.odata_request(.data, ..., .by_group = FALSE)
+# S3 method for class 'odata_request'
+arrange(.data, ..., .by_group = FALSE)
 
-arrange.stac_request(.data, ..., .by_group = FALSE)
+# S3 method for class 'stac_request'
+arrange(.data, ..., .by_group = FALSE)
 
-slice_head.odata_request(.data, ..., n, prop, by = NULL)
+# S3 method for class 'odata_request'
+slice_head(.data, ..., n, prop, by = NULL)
 
-slice_head.stac_request(.data, ..., n, prop, by = NULL)
+# S3 method for class 'stac_request'
+slice_head(.data, ..., n, prop, by = NULL)
 
-select.odata_request(.data, ...)
+# S3 method for class 'odata_request'
+select(.data, ...)
 
-select.stac_request(.data, ...)
+# S3 method for class 'stac_request'
+select(.data, ...)
 ```
 
 ## Arguments
@@ -126,6 +137,14 @@ from its tidy standards. Most notably:
 
 ``` r
 library(dplyr)
+#> 
+#> Attaching package: ‘dplyr’
+#> The following objects are masked from ‘package:stats’:
+#> 
+#>     filter, lag
+#> The following objects are masked from ‘package:base’:
+#> 
+#>     intersect, setdiff, setequal, union
 if (interactive()) {
   dse_odata_products_request() |>
     filter(contains(Name, "WRR")) |>

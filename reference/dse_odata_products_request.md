@@ -9,21 +9,12 @@ methods for filtering and arranging the data.
 ## Usage
 
 ``` r
-dse_odata_products_request(expand, ...)
+dse_odata_products_request(..., expand)
 
-dse_odata_products(...)
+dse_odata_products(..., expand = NULL)
 ```
 
 ## Arguments
-
-- expand:
-
-  Additional information to be appended to the result. Should be any of
-  `"Attributes"`, `"Assets"`, `"Locations"`. Note that, these columns
-  are not affected by
-  [`dplyr::select()`](https://dplyr.tidyverse.org/reference/select.html)
-  calls (before calling
-  [`dplyr::collect()`](https://dplyr.tidyverse.org/reference/compute.html)).
 
 - ...:
 
@@ -31,6 +22,15 @@ dse_odata_products(...)
   embedded
   [`dplyr::filter()`](https://dplyr.tidyverse.org/reference/filter.html)
   in case of `dse_odata_products()`
+
+- expand:
+
+  Additional information to be appended to the result. Should be any of
+  `"Attributes"`, `"Assets"`, or `"Locations"`. Note that, these columns
+  are not affected by
+  [`dplyr::select()`](https://dplyr.tidyverse.org/reference/select.html)
+  calls (before calling
+  [`dplyr::collect()`](https://dplyr.tidyverse.org/reference/compute.html)).
 
 ## Value
 

@@ -32,7 +32,7 @@ dse_stac_search_request(collections, ids, ...)
 
 - ...:
 
-  Ignored
+  Arguments appended to search filter request body.
 
 ## Value
 
@@ -46,18 +46,15 @@ If you prefer a graphical user interface, you can alternatively use the
 ## Examples
 
 ``` r
-# TODO
-library(dplyr)
-#> 
-#> Attaching package: ‘dplyr’
-#> The following objects are masked from ‘package:stats’:
-#> 
-#>     filter, lag
-#> The following objects are masked from ‘package:base’:
-#> 
-#>     intersect, setdiff, setequal, union
-
 if (interactive()) {
+  library(dplyr)
+  library(sf)
+  
+  bbox <-
+    sf::st_bbox(
+      c(xmin = 5.261, ymin = 52.680, xmax = 5.319, ymax = 52.715),
+      crs = 4326)
+
   dse_stac_search_request("sentinel-2-l1c") |>
     filter(`eo:cloud_cover` < 10) |>
     collect()
@@ -65,6 +62,7 @@ if (interactive()) {
   dse_stac_search_request("sentinel-1-grd") |>
     filter(`sat:orbit_state` == "ascending") |>
     arrange("id") |>
+    st_intersects(bbox) |>
     collect()
 }
 ```

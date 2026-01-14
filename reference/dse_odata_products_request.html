@@ -54,25 +54,25 @@ supports several tidyverse methods for filtering and arranging the data.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dse_odata_products_request</span><span class="op">(</span><span class="va">expand</span>, <span class="va">...</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dse_odata_products_request</span><span class="op">(</span><span class="va">...</span>, <span class="va">expand</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">dse_odata_products</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">dse_odata_products</span><span class="op">(</span><span class="va">...</span>, expand <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-expand">expand<a class="anchor" aria-label="anchor" href="#arg-expand"></a></dt>
-<dd><p>Additional information to be appended to the result.
-Should be any of <code>"Attributes"</code>, <code>"Assets"</code>, <code>"Locations"</code>. Note that,
-these columns are not affected by <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code> calls (before calling
-<code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">dplyr::collect()</a></code>).</p></dd>
-
-
-<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dl><dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Ignored in case of <code>dse_odata_products_request()</code>. Dots are passed
 to embedded <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code> in case of <code>dse_odata_products()</code></p></dd>
+
+
+<dt id="arg-expand">expand<a class="anchor" aria-label="anchor" href="#arg-expand"></a></dt>
+<dd><p>Additional information to be appended to the result.
+Should be any of <code>"Attributes"</code>, <code>"Assets"</code>, or <code>"Locations"</code>. Note that,
+these columns are not affected by <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code> calls (before calling
+<code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">dplyr::collect()</a></code>).</p></dd>
 
 </dl></div>
     <div class="section level2">
