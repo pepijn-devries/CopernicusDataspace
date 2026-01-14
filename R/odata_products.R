@@ -24,6 +24,13 @@ NULL
   }
 }
 
+.np_error <- function(node_path) {
+  if (length(node_path) != 1)
+    rlang::abort(c(
+      x = "Argument `node_path` should only have one element",
+      i = "Pass `node_path` elements in a loop"))
+}
+
 #' Create a OData Request for a Data Space Ecosystem Product
 #' 
 #' OData is an application programming interface (API) used to disseminate Copernicus
@@ -109,7 +116,7 @@ dse_odata_products <- function(..., expand = NULL) {
 #' }
 #' @export
 dse_odata_product_nodes <- function(product, node_path = "", recursive = FALSE, ...) {
-  if (length(node_path) != 1) stop("Argument `node_path` should only have one element")
+  .np_error(node_path)
   
   result <-
     .path_to_url(product, node_path) |>
@@ -228,6 +235,7 @@ dse_odata_download <- function(request, destination, ...,
 }
 
 .path_to_url <- function(product, node_path) {
+
   node_path <-
     strsplit(node_path, "/") |>
     unlist() |>
@@ -271,7 +279,8 @@ dse_odata_download <- function(request, destination, ...,
 dse_odata_download_path <- function(
     product, node_path = "", destination, ...,
     token = dse_access_token()) {
-
+  .np_error(node_path)
+  
   node_details <-
     dse_odata_product_nodes(product, node_path)
   

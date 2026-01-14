@@ -48,3 +48,23 @@ test_that("Invalid OData request produce meaningfull errors", {
     dse_odata_products(foo == "bar")
   }, "Invalid field")
 })
+
+test_that("OData files cannot be downloaded without token", {
+  skip_if_offline()
+  skip_on_cran()
+  expect_error({
+    dse_odata_download_path(
+      product     = "ce4576eb-975b-40ff-8319-e04b00d8d444",
+      destination = tempdir(),
+      token       = NULL)
+  }, "Ensure that you have specified a token")
+})
+
+test_that("`node_path` only works if it has one element", {
+  skip_if_offline()
+  skip_on_cran()
+  expect_error({
+    dse_odata_product_nodes("c8ed8edb-9bef-4717-abfd-1400a57171a4",
+                            node_path = c("", ""))
+  }, "should only have one element")
+})
