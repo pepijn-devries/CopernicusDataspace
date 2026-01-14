@@ -2,40 +2,53 @@
 % Please edit documentation in R/odata_products.R
 \name{dse_odata_download_path}
 \alias{dse_odata_download_path}
-\title{TODO}
+\title{Alternative Route to Download OData Products}
 \usage{
 dse_odata_download_path(
   product,
+  node_path = "",
   destination,
-  compressed = TRUE,
   ...,
   token = dse_access_token()
 )
 }
 \arguments{
-\item{product}{TODO}
+\item{product}{Hexadecimal id of the product to be downloaded}
 
-\item{destination}{TODO}
+\item{node_path}{Path to a specific file in the product. When left blank (\code{""})
+The function will attempt to download the entire product as a zip archive.}
 
-\item{compressed}{A \code{logical} value. If set to\code{TRUE} (default), the product
-will be downloaded as a zipped archive file.}
+\item{destination}{Path to a directory where to store the downloaded file}
 
-\item{...}{TODO}
+\item{...}{Ignored}
 
-\item{token}{TODO}
+\item{token}{For authentication, many of the Dataspace Ecosystem uses
+an access token. Either provide your access token, or obtain one automatically
+with \code{\link[=dse_access_token]{dse_access_token()}} (default). Without a valid token you will likely get
+an "access denied" error.}
+}
+\value{
+Returns a \code{httr2_response} class object. It's body will hold the filename
+of the downloaded file
 }
 \description{
-TODO Often doesn't work
+TODO
 }
 \examples{
 if (interactive() && dse_has_client_info()) {
-  ##TODO examples not always working
-  dse_odata_download_path(
-    "85d8fe9d-cf8e-4c51-b4fd-7b811b514673",
-    tempfile(fileext = ".nc"), compressed = FALSE)
 
   dse_odata_download_path(
-    "002f0c9e-8a4c-465b-9e03-479475947630",
-    tempfile(fileext = ".zip"))
+    product     = "2f497806-0101-5eea-83fa-c8f68bc56b0c",
+    node_path   = 
+      paste("DEM1_SAR_DTE_90_20101213T034716_20130408T035028_ADS_000000_5033.DEM",
+            "Copernicus_DSM_30_S09_00_E026_00", "DEM",
+            "Copernicus_DSM_30_S09_00_E026_00_DEM.dt1", sep = "/"),
+    destination = tempdir()
+  )
+  
+  dse_odata_download_path(
+    product     = "ce4576eb-975b-40ff-8319-e04b00d8d444",
+    destination = tempdir())
+
 }
 }

@@ -23,7 +23,7 @@ it will attempt to open the image in the Viewer panel.
 \examples{
 if (interactive()) {
   dse_odata_quicklook(
-    "f4a87522-dd81-4c40-856e-41d40510e3b6",
+    "91822f33-b15c-5b60-aa39-6d9f6f5c773b",
     tempfile(fileext = ".jpg"))
 }
 }

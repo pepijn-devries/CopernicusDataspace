@@ -78,7 +78,7 @@ NULL
 
 #' @rdname tidy_verbs
 #' @name filter
-#' @export
+#' @export filter.odata_request
 filter.odata_request <-
   function (.data, ..., .by = NULL, .preserve = FALSE) {
     new_filters <- rlang::enquos(..., .named = TRUE)
@@ -88,7 +88,7 @@ filter.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name filter
-#' @export
+#' @export filter.stac_request
 filter.stac_request <-
   function (.data, ..., .by = NULL, .preserve = FALSE) {
     old_filter <- .data$body$data$filter
@@ -109,7 +109,7 @@ filter.stac_request <-
 
 #' @rdname tidy_verbs
 #' @name compute
-#' @export
+#' @export compute.odata_request
 compute.odata_request <-
   function(x, skip = 0L, ...) {
     x |>
@@ -122,7 +122,7 @@ compute.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name collect
-#' @export
+#' @export collect.odata_request
 collect.odata_request <-
   function(x, skip = 0L, ...) {
     result <-
@@ -135,13 +135,8 @@ collect.odata_request <-
       result$value |>
       .simplify() |>
       dplyr::mutate(
-        dplyr::across(dplyr::any_of("Assets"), ~ {
+        dplyr::across(dplyr::any_of(c("Assets", "Locations", "Attributes")), ~ {
           lapply(., .simplify)
-        }),
-        dplyr::across(dplyr::any_of(c("Locations", "Attributes")), \(y) {
-          .simplify(y) |>
-            dplyr::rowwise() |>
-            dplyr::group_split()
         })
       )
     attributes(result) <- c(attributes(result), at)
@@ -152,7 +147,7 @@ collect.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name collect
-#' @export
+#' @export collect.stac_request
 collect.stac_request <-
   function(x, ...) {
     items <- 
@@ -163,7 +158,7 @@ collect.stac_request <-
 
 #' @rdname tidy_verbs
 #' @name arrange
-#' @export
+#' @export arrange.odata_request
 arrange.odata_request <-
   function(.data, ..., .by_group = FALSE) {
     new_arrange <- rlang::enquos(..., .named = TRUE)
@@ -173,7 +168,7 @@ arrange.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name arrange
-#' @export
+#' @export arrange.stac_request
 arrange.stac_request <-
   function(.data, ..., .by_group = FALSE) {
     my_arrange <-
@@ -193,7 +188,7 @@ arrange.stac_request <-
 
 #' @rdname tidy_verbs
 #' @name slice_head
-#' @export
+#' @export slice_head.odata_request
 slice_head.odata_request <-
   function(.data, ..., n, prop, by = NULL) {
     if (!is.null(.data$odata$slice_head))
@@ -208,7 +203,7 @@ slice_head.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name slice_head
-#' @export
+#' @export slice_head.stac_request
 slice_head.stac_request <-
   function(.data, ..., n, prop, by = NULL) {
     if (!missing(prop))
@@ -221,7 +216,7 @@ slice_head.stac_request <-
 
 #' @rdname tidy_verbs
 #' @name select
-#' @export
+#' @export select.odata_request
 select.odata_request <-
   function(.data, ...) {
     new_select <- rlang::enquos(..., .named = TRUE)
@@ -231,7 +226,7 @@ select.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name select
-#' @export
+#' @export select.stac_request
 select.stac_request <-
   function(.data, ...) {
     new_select <-
@@ -416,7 +411,7 @@ select.stac_request <-
       if (rlang::as_string(expr[[2]]) == ".data") {
         return(rlang::as_string(expr[[3]]))
       } else if (rlang::as_string(expr[[2]]) == ".env") {
-        expr <- rlang::as_quosure(expr[[3]], .GlobalEnv)
+        expr <- rlang::as_quosure(expr[[3]], rlang::quo_get_env(quo))
       } else {
         result <- rlang::eval_tidy(expr)
         if (format == "odata" && is.character(result))
@@ -426,7 +421,7 @@ select.stac_request <-
     } else {
       result <- rlang::eval_tidy(expr)
       if (format == "odata" && is.character(result))
-        result <- sprintf("'%s'", result)
+        result <- sprintf("'%s'", result) #TODO
       result
     }
   } else {
@@ -436,8 +431,12 @@ select.stac_request <-
       )
       return(sprintf(op, left))
     } else {
+      quote_right <- TRUE
       if (rlang::is_call(expr[[3]])) {
-        right <- .translate_filters(rlang::as_quosure(expr[[3]], environment()), format)
+        right <- .translate_filters(
+          rlang::as_quosure(expr[[3]], rlang::get_env(quo)), format)
+        if (rlang::is_call(right)) right <- rlang::eval_tidy(right) else
+          quote_right <- FALSE
       } else {
         right <- eval(expr[[3]])
       }
@@ -448,7 +447,7 @@ select.stac_request <-
         right <- lubridate::as_datetime(right, tz = "")
         right <- lubridate::format_ISO8601(right, usetz = TRUE)
       }
-      if (is.character(right) && format == "odata")
+      if (quote_right && is.character(right) && format == "odata")
         right <- sprintf("'%s'", right)
     }
     if (format == "odata") {

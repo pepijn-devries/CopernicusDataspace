@@ -1,3 +1,6 @@
+#' @include tidyverse.R
+NULL
+
 .odata_url <- "https://catalogue.dataspace.copernicus.eu/odata/v1"
 .odata_s3_endpoint <- "https://eodata.dataspace.copernicus.eu"
 

@@ -1,5 +1,6 @@
 #' @include tidyverse.R
 #' @include login.R
+#' @include account.R
 #' @include req_perform.R
 NULL
 
@@ -7,7 +8,12 @@ NULL
   body <- resp |> httr2::resp_body_json()
   result <- body$detail
   if (is.null(result)) {
-    "Details not returned"
+    if (resp$status_code == 401) {
+      c("Ensure that you have specified a token",
+        "Ensure your token hasn't expired (call `memoise::forget(dse_access_token)`)")
+    } else {
+      "Details not returned"
+    }
   } else {
     if (rlang::is_named(result)) result$message else as.character(result)
   }
@@ -24,12 +30,12 @@ NULL
 #' object returned by [dse_odata_products_request()]. These apply lazy evaluation.
 #' Meaning that they are just added to the object and are only evaluated after
 #' calling either [dplyr::compute()] or [dplyr::collect()] (see examples).
-#' @param expand Additional information to be appended to the result.
-#' Should be any of `"Attributes"`, `"Assets"`, `"Locations"`. Note that,
-#' these columns are not affected by [dplyr::select()] calls (before calling
-#' [dplyr::collect()]).
 #' @param ... Ignored in case of `dse_odata_products_request()`. Dots are passed
 #' to embedded [dplyr::filter()] in case of `dse_odata_products()`
+#' @param expand Additional information to be appended to the result.
+#' Should be any of `"Attributes"`, `"Assets"`, or `"Locations"`. Note that,
+#' these columns are not affected by [dplyr::select()] calls (before calling
+#' [dplyr::collect()]).
 #' @returns Returns an `odata_request` class object in case of
 #' `dse_odata_products_request()`, which is an extension of [httr2::request()].
 #' In case of `dse_odata_products()` a `data.frame` listing requested products is
@@ -52,7 +58,7 @@ NULL
 #'     dplyr::collect()
 #' }
 #' @export
-dse_odata_products_request <- function(expand, ...) {
+dse_odata_products_request <- function(..., expand) {
   exp_f <- if (missing(expand)) {
     I
   } else {
@@ -72,8 +78,8 @@ dse_odata_products_request <- function(expand, ...) {
 
 #' @rdname dse_odata_products_request
 #' @export
-dse_odata_products <- function(...) {
-  dse_odata_products_request() |>
+dse_odata_products <- function(..., expand = NULL) {
+  dse_odata_products_request(expand = expand) |>
     dplyr::filter(...) |>
     dplyr::collect()
 }
@@ -93,36 +99,30 @@ dse_odata_products <- function(...) {
 #' @examples
 #' if (interactive()) {
 #'   nodes <- dse_odata_product_nodes("c8ed8edb-9bef-4717-abfd-1400a57171a4")
-#'   dse_odata_product_nodes("c8ed8edb-9bef-4717-abfd-1400a57171a4",
-#'     node_path = node_path, recursive = TRUE)
+#'   nodes <- dse_odata_product_nodes("c8ed8edb-9bef-4717-abfd-1400a57171a4",
+#'                                    recursive = TRUE)
 #' }
 #' @export
 dse_odata_product_nodes <- function(product, node_path = "", recursive = FALSE, ...) {
   if (length(node_path) != 1) stop("Argument `node_path` should only have one element")
-  node_path <-
-    strsplit(node_path, "/") |>
-    unlist() |>
-    sprintf(fmt = "Nodes(%s)") |>
-    paste(collapse = "/")
+  
   result <-
-    .odata_url |>
-    paste(sprintf("Products(%s)", product), node_path, "Nodes", sep = "/") |>
+    .path_to_url(product, node_path) |>
+    paste("Nodes", sep = "/") |>
     httr2::request() |>
     httr2::req_error(body = .odata_error) |>
     httr2::req_perform() |>
     httr2::resp_body_json()
+  
   if (length(result$result) == 0) return(dplyr::tibble())
-  result <-
-    dplyr::bind_cols(
-      result$result |> .simplify() |> dplyr::select(-"Nodes"),
-      lapply(result$result, `[[`, "Nodes") |>
-        .simplify()
-    )
+  result <- .simplify(result$result)
   if (recursive) {
     result <-
       dplyr::bind_rows(
         result,
-        result$uri |>
+        result |>
+          dplyr::filter(.data$ChildrenNumber > 0) |>
+          dplyr::pull("Nodes.uri") |>
           stringr::str_extract_all("(?<=/Nodes\\()(.*?)(?=\\))") |>
           lapply(paste, collapse = "/") |>
           unlist() |>
@@ -222,38 +222,71 @@ dse_odata_download <- function(request, destination, ...,
   return (invisible())
 }
 
-#' TODO
+.path_to_url <- function(product, node_path) {
+  node_path <-
+    strsplit(node_path, "/") |>
+    unlist() |>
+    sprintf(fmt = "Nodes(%s)") |>
+    paste(collapse = "/")
+  
+  result <-
+    .odata_url |>
+    paste(sprintf("Products(%s)", product), node_path, sep = "/")
+}
+
+#' Alternative Route to Download OData Products
 #' 
-#' TODO Often doesn't work
-#' @param product TODO
-#' @param destination TODO
-#' @param compressed A `logical` value. If set to`TRUE` (default), the product
-#' will be downloaded as a zipped archive file.
-#' @param ... TODO
-#' @param token TODO
+#' TODO
+#' @param product Hexadecimal id of the product to be downloaded
+#' @param node_path Path to a specific file in the product. When left blank (`""`)
+#' The function will attempt to download the entire product as a zip archive.
+#' @param destination Path to a directory where to store the downloaded file
+#' @param ... Ignored
+#' @inheritParams dse_usage
+#' @returns Returns a `httr2_response` class object. It's body will hold the filename
+#' of the downloaded file
 #' @examples
 #' if (interactive() && dse_has_client_info()) {
-#'   ##TODO examples not always working
-#'   dse_odata_download_path(
-#'     "85d8fe9d-cf8e-4c51-b4fd-7b811b514673",
-#'     tempfile(fileext = ".nc"), compressed = FALSE)
 #' 
 #'   dse_odata_download_path(
-#'     "002f0c9e-8a4c-465b-9e03-479475947630",
-#'     tempfile(fileext = ".zip"))
+#'     product     = "2f497806-0101-5eea-83fa-c8f68bc56b0c",
+#'     node_path   = 
+#'       paste("DEM1_SAR_DTE_90_20101213T034716_20130408T035028_ADS_000000_5033.DEM",
+#'             "Copernicus_DSM_30_S09_00_E026_00", "DEM",
+#'             "Copernicus_DSM_30_S09_00_E026_00_DEM.dt1", sep = "/"),
+#'     destination = tempdir()
+#'   )
+#'   
+#'   dse_odata_download_path(
+#'     product     = "ce4576eb-975b-40ff-8319-e04b00d8d444",
+#'     destination = tempdir())
+#'
 #' }
 #' @export
 dse_odata_download_path <- function(
-    product, destination, compressed = TRUE, ...,
+    product, node_path = "", destination, ...,
     token = dse_access_token()) {
-  .odata_url |>
-    paste(sprintf("Products(%s)", product),
-          ifelse(compressed, "$zip", "$value"), sep = "/") |>
+
+  node_details <-
+    dse_odata_product_nodes(product, node_path)
+  
+  if (length(node_details) == 0) {
+    fn <- basename(node_path)
+  } else {
+    fn <- node_details$Name
+    if (node_details$ChildrenNumber > 0) fn <- paste0(fn, ".zip")
+  }
+  
+  .path_to_url(product, node_path) |>
+    stringr::str_replace("\\/$", "") |>
+    paste("$value", sep = "/") |>
     httr2::request() |>
     httr2::req_progress() |>
     .add_token(token) |>
+    ## Make sure that authentication is passed on to any redirect:
+    httr2::req_options(unrestricted_auth = 1) |>
     httr2::req_error(body = .odata_error) |>
-    httr2::req_perform(path = destination)
+    httr2::req_perform(path = file.path(destination, fn))
 }
 
 #' Download a Quicklook for a Product
@@ -267,17 +300,30 @@ dse_odata_download_path <- function(
 #' @examples
 #' if (interactive()) {
 #'   dse_odata_quicklook(
-#'     "f4a87522-dd81-4c40-856e-41d40510e3b6",
+#'     "91822f33-b15c-5b60-aa39-6d9f6f5c773b",
 #'     tempfile(fileext = ".jpg"))
 #' }
 #' @export
 dse_odata_quicklook <- function(product, destination, ...) {
-  .odata_url |>
-    paste(sprintf("Assets(%s)", product), "$value", sep = "/") |>
+  assets <-
+    dse_odata_products(.data$Id == .env$product, expand = "Assets") |>
+    dplyr::pull("Assets") |>
+    dplyr::bind_rows()
+  if ("Type" %in% names(assets))
+    assets <-
+      dplyr::filter(assets, dplyr::if_any("Type", \(x) x == "QUICKLOOK"))
+  if (nrow(assets) == 0)
+    rlang::abort(c(
+      x = "This product does not have a 'quicklook'",
+      i = "Try again with a different product"
+    ))
+  assets$DownloadLink |>
     httr2::request() |>
     httr2::req_perform(path = destination)
-  if (requireNamespace("rstudioapi")) {
+  if (requireNamespace("rstudioapi") && rstudioapi::isAvailable()) {
     rstudioapi::viewer(destination)
+  } else {
+    file.show(destination)
   }
   return(invisible())
 }

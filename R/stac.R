@@ -160,13 +160,18 @@ dse_stac_collections <- memoise::memoise(.dse_stac_collections)
 #' the [STAC web browser](https://browser.stac.dataspace.copernicus.eu/).
 #' @param collections Restrict the search to the collections listed here.
 #' @param ids Restrict the search to ids listed here.
-#' @param ... Ignored
+#' @param ... Arguments appended to search filter request body.
 #' @returns Returns a `data.frame` with search results.
 #' @examples
-#' # TODO
-#' library(dplyr)
-#' 
 #' if (interactive()) {
+#'   library(dplyr)
+#'   library(sf)
+#'   
+#'   bbox <-
+#'     sf::st_bbox(
+#'       c(xmin = 5.261, ymin = 52.680, xmax = 5.319, ymax = 52.715),
+#'       crs = 4326)
+#'
 #'   dse_stac_search_request("sentinel-2-l1c") |>
 #'     filter(`eo:cloud_cover` < 10) |>
 #'     collect()
@@ -174,6 +179,7 @@ dse_stac_collections <- memoise::memoise(.dse_stac_collections)
 #'   dse_stac_search_request("sentinel-1-grd") |>
 #'     filter(`sat:orbit_state` == "ascending") |>
 #'     arrange("id") |>
+#'     st_intersects(bbox) |>
 #'     collect()
 #' }
 #' @export
@@ -181,8 +187,8 @@ dse_stac_search_request <- function(collections, ids, ...) {
   if (missing(collections)) collections <- NA
   if (missing(ids)) ids <- NA
   filt <- .dse_stac_search_filter(collections = collections, ids = ids, ...)
-  filt$intersects <- NULL #TODO complete from st_intersects
-  filt$bbox <- NULL #TODO complete from st_intersects
+  filt$intersects <- NULL # Mutually exclusive. Added by st_intersects()
+  filt$bbox       <- NULL # Mutually exclusive. Added by st_intersects()
   result <-
     .stac_base_url |>
     paste("search", sep = "/") |>
