@@ -205,8 +205,9 @@ dse_stac_search_request <- function(collections, ids, ...) {
 #' 
 #' Use [dse_stac_search_request()] to identify assets that can be downloaded.
 #' Use [dse_stac_download()] to download an asset by its STAC id and asset name.
-#' @param id STAC id, used for locating the asset download details.
+#' @param asset_id STAC id, used for locating the asset download details.
 #' @param asset Name of the asset to download
+#' @param collection TODO
 #' @param destination Directory path where to store the downloaded file.
 #' @param ... Ignored
 #' @inheritParams dse_usage
@@ -215,19 +216,22 @@ dse_stac_search_request <- function(collections, ids, ...) {
 #' @examples
 #' if (interactive() && (dse_has_s3_secret() || dse_has_client_info())) {
 #'   dse_stac_download(
-#'     id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
+#'     asset_id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
 #'     asset = "B01",
 #'     destination = tempdir()
 #'   )
 #' }
 #' @export
 dse_stac_download <- function(
-    id, asset, destination, ...,
+    asset_id, asset, collection = dse_stac_guess_collection, destination, ...,
     s3_key    = dse_s3_key(),
     s3_secret = dse_s3_secret(),
     token     = dse_access_token()) {
+
+  if (is.function(collection)) collection <- collection(asset_id)
+  
   asset_info <-
-    dse_stac_search_request(ids = id) |>
+    dse_stac_search_request(ids = asset_id, collections = collection) |>
     dplyr::select(!!paste0("assets.", asset)) |>
     dplyr::arrange("id") |>
     dplyr::collect() |>
@@ -287,3 +291,56 @@ dse_stac_download <- function(
 #' }
 #' @export
 dse_stac_queryables <- memoise::memoise(.dse_stac_queryables)
+
+.collection_codes <-
+  data.frame(
+    code = c(
+      "^S1.\\_.._SLC\\_\\_",
+      "^S1.\\_.._GRHD\\_",
+      "^S1.\\_RTC\\_",
+      "^S2.\\_MSIL1C\\_",
+      "^S2.\\_MSIL2A\\_",
+      "^S2.\\_GRI_L1C_",
+      "^S3.\\_OL\\_1\\_EFR\\_",
+      "^S3.\\_OL\\_2\\_LFR\\_",
+      "^S3.\\_SL\\_1\\_RBT\\_",
+      "^S3.\\_SR\\_2\\_LAN\\_",
+      "^COP-DEM\\_",
+      "^SRTM\\_"
+    ),
+    collection_id = c(
+      "sentinel-1-slc",
+      "sentinel-1-grd",
+      "sentinel-1-rtc",
+      "sentinel-2-l1c",
+      "sentinel-2-l2a",
+      "sentinel-2-gri-l1c",
+      "sentinel-3-olci-l1-efr",
+      "sentinel-3-olci-l2-lfr-ntc",
+      "sentinel-3-slstr-l1-rbt",
+      "sentinel-3-sral-l2-lan",
+      "cop-dem",
+      "srtm-dem"
+    )
+  )
+
+#' TODO
+#' 
+#' TODO
+#' 
+#' @param asset_id TODO
+#' @returns TODO
+#' @examples
+#' # TODO
+#' @export
+dse_stac_guess_collection <- function(asset_id) {
+  idx <- lapply(asset_id, stringr::str_detect, pattern = .collection_codes$code) |>
+    lapply(which)
+  if (any(lengths(idx) == 0)) {
+    rlang::abort(c(
+      x = "Couldn't guess the collection id",
+      i = "Please provide the collection id manually"
+    ))
+  }
+  lapply(idx, \(i) .collection_codes$collection_id[[i]]) |> unlist()
+}

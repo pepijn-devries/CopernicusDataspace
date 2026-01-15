@@ -12,13 +12,14 @@ test_that("Returned STAC geometries intersect with request", {
     shape <- st_as_sfc(bbox)
     
     result1 <-
-      dse_stac_search_request() |>
+      dse_stac_search_request(collections = "sentinel-3-sl-2-aod-nrt") |>
       st_intersects(bbox) |>
       dplyr::collect()
     result2 <-
-      dse_stac_search_request() |>
+      dse_stac_search_request(collections = "sentinel-3-sl-2-aod-nrt") |>
       st_intersects(shape) |>
-      dplyr::collect()
+      dplyr::collect() |>
+      suppressMessages()
     
     test_fun <- \(z) {
       lapply(z, \(y) {
@@ -27,7 +28,8 @@ test_that("Returned STAC geometries intersect with request", {
         y <- st_bbox(y, crs = 4326) |> st_as_sfc()
         st_intersects(shape, y, sparse = FALSE) |>
           c() |>
-          all()
+          all() |>
+          suppressMessages()
       }) |>
         unlist() |>
         all()
@@ -46,12 +48,15 @@ test_that("Returned OData geometries intersect with request", {
         crs = 4326)
     shape <- st_as_sfc(bbox)
     
+    ## In addition to geometry add a filter to avoid TimeOut error
     result1 <-
       dse_odata_products_request() |>
+      dplyr::filter(`Collection/Name` == "SENTINEL-3") |>
       st_intersects(bbox) |>
       dplyr::collect()
     result2 <-
       dse_odata_products_request() |>
+      dplyr::filter(`Collection/Name` == "SENTINEL-3") |>
       st_intersects(shape) |>
       dplyr::collect()
     
@@ -65,7 +70,8 @@ test_that("Returned OData geometries intersect with request", {
         sf_use_s2(FALSE)
         st_intersects(shape, geom, sparse = FALSE) |>
           c() |>
-          all()
+          all() |>
+          suppressMessages()
       }) |>
         unlist() |>
         all()

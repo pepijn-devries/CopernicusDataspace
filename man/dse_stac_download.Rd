@@ -5,8 +5,9 @@
 \title{Download Asset From STAC Catalogue}
 \usage{
 dse_stac_download(
-  id,
+  asset_id,
   asset,
+  collection = dse_stac_guess_collection,
   destination,
   ...,
   s3_key = dse_s3_key(),
@@ -15,9 +16,11 @@ dse_stac_download(
 )
 }
 \arguments{
-\item{id}{STAC id, used for locating the asset download details.}
+\item{asset_id}{STAC id, used for locating the asset download details.}
 
 \item{asset}{Name of the asset to download}
+
+\item{collection}{TODO}
 
 \item{destination}{Directory path where to store the downloaded file.}
 
@@ -41,7 +44,7 @@ Use \code{\link[=dse_stac_download]{dse_stac_download()}} to download an asset b
 \examples{
 if (interactive() && (dse_has_s3_secret() || dse_has_client_info())) {
   dse_stac_download(
-    id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
+    asset_id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
     asset = "B01",
     destination = tempdir()
   )

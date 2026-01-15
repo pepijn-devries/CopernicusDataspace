@@ -47,7 +47,7 @@ test_that("Files can be downloaded via STAC S3", {
   expect_no_error({
     fn <-
       dse_stac_download(
-        id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
+        asset_id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
         asset = "B01",
         destination = tempdir()
       )
@@ -61,7 +61,7 @@ test_that("Files can be downloaded via STAC https", {
   expect_no_error({
     fn <-
       dse_stac_download(
-        id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
+        asset_id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
         asset = "B01",
         s3_key = "", s3_secret = "",
         destination = tempdir()
