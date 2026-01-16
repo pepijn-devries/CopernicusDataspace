@@ -32,7 +32,9 @@ Returns a \code{httr2_response} class object. It's body will hold the filename
 of the downloaded file
 }
 \description{
-TODO
+Downloading data using the OData API is probably fastest by using
+\code{\link[=dse_odata_download]{dse_odata_download()}}. As an alternative, you can use this function
+which uses the https protocol to download a product.
 }
 \examples{
 if (interactive() && dse_has_client_info()) {

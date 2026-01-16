@@ -207,7 +207,10 @@ dse_stac_search_request <- function(collections, ids, ...) {
 #' Use [dse_stac_download()] to download an asset by its STAC id and asset name.
 #' @param asset_id STAC id, used for locating the asset download details.
 #' @param asset Name of the asset to download
-#' @param collection TODO
+#' @param collection The identifier for a collection. The default argument
+#' is the [dse_stac_guess_collection()] function which tries to guess the
+#' collection id from the `asset_id`. A more rigid approach is to provide
+#' the collection id as a `character` string.
 #' @param destination Directory path where to store the downloaded file.
 #' @param ... Ignored
 #' @inheritParams dse_usage
@@ -234,7 +237,14 @@ dse_stac_download <- function(
     dse_stac_search_request(ids = asset_id, collections = collection) |>
     dplyr::select(!!paste0("assets.", asset)) |>
     dplyr::arrange("id") |>
-    dplyr::collect() |>
+    dplyr::collect()
+  
+  if (nrow(asset_info) == 0)
+    rlang::abort(
+      c(x = "Asset not found",
+        i = "Ensure that you have specified the correct asset id and collection")
+    )
+  asset_info <- asset_info |>
     dplyr::pull("assets") |>
     dplyr::bind_rows()
   
@@ -306,6 +316,7 @@ dse_stac_queryables <- memoise::memoise(.dse_stac_queryables)
       "^S3.\\_SL\\_1\\_RBT\\_",
       "^S3.\\_SR\\_2\\_LAN\\_",
       "^COP-DEM\\_",
+      "^Copernicus\\_DSM\\_...\\_30",
       "^SRTM\\_"
     ),
     collection_id = c(
@@ -320,27 +331,39 @@ dse_stac_queryables <- memoise::memoise(.dse_stac_queryables)
       "sentinel-3-slstr-l1-rbt",
       "sentinel-3-sral-l2-lan",
       "cop-dem",
+      "cop-dem-glo-30-dged-cog",
       "srtm-dem"
     )
   )
 
-#' TODO
+#' Guess the Collection id from an Asset id
 #' 
-#' TODO
+#' As the STAC catalogue contains a large number of records, your request
+#' may receive a timeout error. To prevent this it is best to narrow down
+#' your requests to specific collections. This function is a helper function
+#' that tries to guess the collection id from an asset id. Note that this
+#' method is not highly reliable, and it is always best to manually provide
+#' a collection id to a request.
 #' 
-#' @param asset_id TODO
-#' @returns TODO
+#' @param asset_id An asset identifier name, used to guess its parent
+#' collection id.
+#' @returns A `character` string with a guessed collection id. Or `NA` in
+#' case it cannot make a guess.
 #' @examples
-#' # TODO
+#' dse_stac_guess_collection(
+#'   "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148")
 #' @export
 dse_stac_guess_collection <- function(asset_id) {
   idx <- lapply(asset_id, stringr::str_detect, pattern = .collection_codes$code) |>
     lapply(which)
   if (any(lengths(idx) == 0)) {
-    rlang::abort(c(
-      x = "Couldn't guess the collection id",
+    rlang::warn(c(
+      "Couldn't guess the collection id",
       i = "Please provide the collection id manually"
     ))
   }
-  lapply(idx, \(i) .collection_codes$collection_id[[i]]) |> unlist()
+  lapply(idx, \(i) {
+    if (length(i) == 0) return(NA)
+    .collection_codes$collection_id[[i]]
+  }) |> unlist()
 }

@@ -66,22 +66,21 @@ st_intersects.stac_request <-
     
     if (inherits(y, "bbox")) {
       
-      if (!(is.null(cur_bbox) || is.na(cur_bbox)))
+      if (!(is.null(cur_bbox) || all(is.na(cur_bbox))))
         rlang::warn("Replacing previously defined bbox")
       
       x$body$data$bbox <- as.list(as.numeric(y))
       
-      if (!(is.null(cur_geom) || is.na(cur_geom))) {
+      if (!(is.null(cur_geom) || all(is.na(cur_geom)))) {
         x$body$data$intersects <- NULL
         w()
       }
       
     } else {
-      
-      if (!(is.null(cur_geom) || is.na(cur_geom)))
+      if (!(is.null(cur_geom) || all(is.na(cur_geom))))
         rlang::warn("Replacing previously defined geometry")
 
-      ## Make sure to summarise all features to one Geometry(Collection)      
+      ## Make sure to summarise all features to one Geometry(Collection)
       y <- dplyr::summarise(sf::st_as_sf(y)) |> sf::st_geometry()
       
       tempfn <- tempfile(fileext = ".geojson")
@@ -92,7 +91,7 @@ st_intersects.stac_request <-
       
       x$body$data$intersects <- geom
       
-      if (!(is.null(cur_bbox) || is.na(cur_bbox))) {
+      if (!(is.null(cur_bbox) || all(is.na(cur_bbox)))) {
         x$body$data$bbox <- NULL
         w()
       }

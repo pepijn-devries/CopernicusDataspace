@@ -20,7 +20,10 @@ dse_stac_download(
 
 \item{asset}{Name of the asset to download}
 
-\item{collection}{TODO}
+\item{collection}{The identifier for a collection. The default argument
+is the \code{\link[=dse_stac_guess_collection]{dse_stac_guess_collection()}} function which tries to guess the
+collection id from the \code{asset_id}. A more rigid approach is to provide
+the collection id as a \code{character} string.}
 
 \item{destination}{Directory path where to store the downloaded file.}
 

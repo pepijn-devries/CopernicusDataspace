@@ -1,3 +1,5 @@
+library(sf) |> suppressMessages()
+
 test_that("Invalid URI does not start S3 download", {
   expect_error({
     dse_s3_download("foobar", tempdir())
@@ -67,4 +69,61 @@ test_that("`node_path` only works if it has one element", {
     dse_odata_product_nodes("c8ed8edb-9bef-4717-abfd-1400a57171a4",
                             node_path = c("", ""))
   }, "should only have one element")
+})
+
+test_that("st_intersects warns when adding multiple bboxes to stac request", {
+  expect_warning({
+    bbox <-
+      st_bbox(
+        c(xmin = 5.261, ymin = 52.680, xmax = 5.319, ymax = 52.715),
+        crs = 4326)
+
+    dse_stac_search_request() |>
+      st_intersects(bbox) |>
+      st_intersects(bbox)
+  }, "Replacing previously defined bbox")
+})
+
+test_that("st_intersects warns when adding bbox after shape to stac request", {
+  expect_warning({
+    bbox <-
+      st_bbox(
+        c(xmin = 5.261, ymin = 52.680, xmax = 5.319, ymax = 52.715),
+        crs = 4326)
+    shape <- st_as_sfc(bbox)
+    
+    dse_stac_search_request() |>
+      st_intersects(shape) |>
+      st_intersects(bbox) |>
+      suppressMessages()
+  }, "mutually exclusive")
+})
+
+test_that("st_intersects warns when adding shape after bbox to stac request", {
+  expect_warning({
+    bbox <-
+      st_bbox(
+        c(xmin = 5.261, ymin = 52.680, xmax = 5.319, ymax = 52.715),
+        crs = 4326)
+    shape <- st_as_sfc(bbox)
+    
+    dse_stac_search_request() |>
+      st_intersects(bbox) |>
+      st_intersects(shape) |>
+      suppressMessages()
+  }, "mutually exclusive")
+})
+
+test_that("Non existing assets produce error on STAC", {
+  skip_if_offline()
+  skip_on_cran()
+  expect_error({
+    dse_stac_download("foo", "bar", "foobar")
+  }, "Asset not found")
+})
+
+test_that("Warning is thrown when collection id cannot be guessed", {
+  expect_warning({
+    dse_stac_guess_collection("foobar")
+  }, "Couldn't guess")
 })
