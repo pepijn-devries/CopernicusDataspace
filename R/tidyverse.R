@@ -308,18 +308,21 @@ select.stac_request <-
       result <- NULL
       is_desc <- FALSE
       if (allow_desc && rlang::is_call(xpr) &&
-          identical(rlang::eval_tidy(xpr[[1]]), dplyr::desc)) {
+          identical(rlang::eval_tidy(xpr[[1]], env = env), dplyr::desc)) {
         is_desc <- TRUE
         xpr <- rlang::as_quosure(xpr[[2]], env)
+        env <- if (rlang::is_quosure(xpr))
+          rlang::quo_get_env(xpr) else
+            environment()
       }
       if (rlang::is_call(xpr)) {
         xpr1 <- if (rlang::is_quosure(xpr))
           rlang::quo_get_expr(xpr) else xpr[[1]]
-        result <- if ((identical(rlang::eval_tidy(xpr1), `[[`)) ||
-                      (identical(rlang::eval_tidy(xpr1), `$`)) &&
+        result <- if ((identical(rlang::eval_tidy(xpr1, env = env), `[[`)) ||
+                      (identical(rlang::eval_tidy(xpr1, env = env), `$`)) &&
                       rlang::as_string(xpr[[2]]) == ".data")
           rlang::as_string(xpr[[3]]) else
-            rlang::eval_tidy(xpr)
+            rlang::eval_tidy(xpr, env = env)
         if (is.null(result))
           stop(sprintf("Sorry, '%s' is not implemented in this context",
                        rlang::as_string(xpr[[1]])))
