@@ -1,0 +1,26 @@
+library(dplyr) |> suppressMessages()
+library(lubridate) |> suppressMessages()
+
+test_that("Complex stac request works with tidy verbs", {
+  skip_if_offline()
+  skip_on_cran()
+  expect_true({
+    d1 <- "2025-01-01 UTC"
+    d2 <- "2025-01-02 UTC"
+    n <- 5
+    result <-
+      dse_stac_search_request("sentinel-1-grd") |>
+      filter(datetime >= d1 & datetime <= d2) |>
+      filter(`sat:orbit_state` == "ascending") |>
+      arrange(desc("datetime")) |>
+      slice_head(n = n) |>
+      select(.data$`properties.sat:orbit_state`, .data$properties.datetime) |>
+      collect()
+    all(as_datetime(result$properties.datetime) >=
+          as_datetime(d1)) &&
+      all(as_datetime(result$properties.datetime) <=
+            as_datetime(d2)) &&
+      all(result$`properties.sat:orbit_state` == "ascending") &&
+      nrow(result) == n
+  })
+})

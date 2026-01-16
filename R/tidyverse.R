@@ -97,7 +97,7 @@ filter.stac_request <-
       .translate_filters(rlang::enquos(..., .named = TRUE)[[1]], "stac")
     if (!is.null(old_filter)) {
       new_filter <- list(
-        args = c(old_filter, new_filter),
+        args = list(old_filter, new_filter),
         op = "and"
       )
     }
@@ -318,8 +318,7 @@ select.stac_request <-
                       (identical(rlang::eval_tidy(xpr[[1]]), `$`)) &&
                       rlang::as_string(xpr[[2]]) == ".data")
           rlang::as_string(xpr[[3]]) else
-            if (identical(c, rlang::eval_tidy(xpr[[1]])))
-              rlang::eval_tidy(xpr)
+            rlang::eval_tidy(xpr)
         if (is.null(result))
           stop(sprintf("Sorry, '%s' is not implemented in this context",
                        rlang::as_string(xpr[[1]])))
@@ -360,7 +359,7 @@ select.stac_request <-
 .stac_operators <- dplyr::tibble(
   r_code = list(`==`, `!=`, `>`, `>=`, `<`, `<=`, `&`, `|`, `!`, is.na, `%in%`,
                 dplyr::between),
-  api_code = c("=", "<>", ">", ">=", "<", "<=", "and", "or", "not",
+  api_code = c("eq", "neq", "gt", "gte", "lt", "lte", "and", "or", "not",
                "isNull", "in", "between")
 )
 
@@ -421,7 +420,7 @@ select.stac_request <-
     } else {
       result <- rlang::eval_tidy(expr)
       if (format == "odata" && is.character(result))
-        result <- sprintf("'%s'", result) #TODO
+        result <- sprintf("'%s'", result)
       result
     }
   } else {
@@ -443,9 +442,10 @@ select.stac_request <-
       left_check <- left
       if (is.list(left_check)) left_check <- left_check$args[[1]]$property
       if (is.null(left_check)) left_check <- ""
-      if (grepl("date", left_check, ignore.case = TRUE)) {
-        right <- lubridate::as_datetime(right, tz = "")
-        right <- lubridate::format_ISO8601(right, usetz = TRUE)
+      if (grepl("date", left_check, ignore.case = TRUE) && !is.list(right)) {
+        right <- lubridate::as_datetime(right)
+        right <- list(
+          timestamp = lubridate::format_ISO8601(right, usetz = TRUE))
       }
       if (quote_right && is.character(right) && format == "odata")
         right <- sprintf("'%s'", right)

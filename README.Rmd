@@ -33,7 +33,7 @@ At the moment, the package is still only experimental. It can therefore only be
 installed from GitHub:
 
 ```{r install_temp, eval=FALSE}
-devtools::install_github("CopernicusDataspace", username = "pepijn-devries")
+remotes::install_github("pepijn-devries/CopernicusDataspace")
 ```
 
 <!-- TODO update installation procedure once available -->

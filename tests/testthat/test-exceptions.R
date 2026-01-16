@@ -99,6 +99,21 @@ test_that("st_intersects warns when adding bbox after shape to stac request", {
   }, "mutually exclusive")
 })
 
+test_that("st_intersects warns when adding multiple shapes to stac request", {
+  expect_warning({
+    bbox <-
+      st_bbox(
+        c(xmin = 5.261, ymin = 52.680, xmax = 5.319, ymax = 52.715),
+        crs = 4326)
+    shape <- st_as_sfc(bbox)
+    
+    dse_stac_search_request() |>
+      st_intersects(shape) |>
+      st_intersects(shape) |>
+      suppressMessages()
+  }, "Replacing previously defined geometry")
+})
+
 test_that("st_intersects warns when adding shape after bbox to stac request", {
   expect_warning({
     bbox <-

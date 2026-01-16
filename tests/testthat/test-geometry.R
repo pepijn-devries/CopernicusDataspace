@@ -67,7 +67,7 @@ test_that("Returned OData geometries intersect with request", {
         coords[,1][coords[,1] < -180] <- -180
         geom <- sf::st_polygon(list(coords)) |>
           sf::st_sfc(crs = 4326)
-        sf_use_s2(FALSE)
+        sf_use_s2(FALSE) |> suppressMessages()
         st_intersects(shape, geom, sparse = FALSE) |>
           c() |>
           all() |>

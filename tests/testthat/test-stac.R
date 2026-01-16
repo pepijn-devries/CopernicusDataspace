@@ -69,3 +69,14 @@ test_that("Files can be downloaded via STAC https", {
     tile <- read_stars(fn)
   })
 })
+
+test_that("req_perform can also handle ordinary requests", {
+  skip_if_offline()
+  skip_on_cran()
+  expect_identical({
+    "https://stac.dataspace.copernicus.eu/v1/_mgmt/ping" |>
+      httr2::request() |>
+      CopernicusDataspace::req_perform() |>
+      httr2::resp_body_json()
+  }, list(message = "PONG"))
+})
