@@ -45,6 +45,8 @@
   : Get a Summary of all Data Space Ecosystem Collections
 - [`dse_stac_download()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_download.md)
   : Download Asset From STAC Catalogue
+- [`dse_stac_guess_collection()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_guess_collection.md)
+  : Guess the Collection id from an Asset id
 - [`dse_stac_queryables()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_queryables.md)
   : Get Queryables for a STAC Collection
 - [`dse_stac_search_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_search_request.md)

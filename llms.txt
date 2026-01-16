@@ -45,9 +45,11 @@ about how to effectively authenticate download requests, please see
 
 ## Downloading Using STAC Catalogue
 
-When you know the STAC identifier (`id`) and the asset name you wish to
-download, you can simply use the example shown below. When you don’t
-know these details, you should first explore the catalogue. Please see
+When you know the STAC identifier (`asset_id`) and the asset name you
+wish to download, you can simply use the example shown below. It will
+often speed you request up if you include the `collection` id. When you
+don’t know these details, you should first explore the catalogue. Please
+see
 [`vignette("STAC")`](https://pepijn-devries.github.io/CopernicusDataspace/articles/STAC.md)
 for more details on working with the STAC catalogue.
 
@@ -58,11 +60,14 @@ library(stars) ## For reading and plotting the downloaded file
 ## Only run this if an S3 secret is specified
 if (dse_has_s3_secret()) {
   
-  id        <- "Copernicus_DSM_COG_30_S69_00_W062_00_DEM"
-  asset     <- "data"
-
-  filename  <- dse_stac_download(id, asset, tempdir())
+  filename  <- dse_stac_download(
+    asset_id   = "Copernicus_DSM_COG_30_S69_00_W062_00_DEM",
+    asset      = "data",
+    collection = "cop-dem-glo-90-dged-cog",
+    tempdir())
+  
   tile_stac <- read_stars(filename)
+  
   plot(tile_stac, col = hcl.colors(100), axes = TRUE)
   
 }
@@ -70,6 +75,8 @@ if (dse_has_s3_secret()) {
 
 ![Example of downloading with STAC
 API](reference/figures/README-download-stac-1.png)
+
+This produces a tile in the Southern Ocean near Antarctica.
 
 ## Downloading Using OData API
 
@@ -89,7 +96,11 @@ plot(tile_odata, col = terrain.colors(100), axes = TRUE)
 ```
 
 ![Example of downloading with OData
-API](reference/figures/README-download-odata-1.png) TODO
+API](reference/figures/README-download-odata-1.png)
+
+This produces a map of Lake Upemba in Congo.
+
+TODO
 
 ## Downloading Using SentinelHub
 
@@ -158,6 +169,8 @@ By contributing to this project, you agree to abide by its terms.
   : Get a Summary of all Data Space Ecosystem Collections
 - [`dse_stac_download()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_download.md)
   : Download Asset From STAC Catalogue
+- [`dse_stac_guess_collection()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_guess_collection.md)
+  : Guess the Collection id from an Asset id
 - [`dse_stac_queryables()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_queryables.md)
   : Get Queryables for a STAC Collection
 - [`dse_stac_search_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_search_request.md)

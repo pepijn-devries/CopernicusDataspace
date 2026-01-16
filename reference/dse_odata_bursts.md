@@ -40,5 +40,14 @@ or
 ``` r
 if (interactive()) {
   dse_odata_bursts(ParentProductId == "879d445c-2c67-5b30-8589-b1f478904269")
+  
+  burst_req <-
+    dse_odata_bursts_request(ParentProductId == "879d445c-2c67-5b30-8589-b1f478904269")
+  
+  ## Note that these are large files and may take a while to download:
+  dse_odata_download(
+    burst_req,
+    tempdir()
+  )
 }
 ```

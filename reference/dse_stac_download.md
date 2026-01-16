@@ -9,8 +9,9 @@ download an asset by its STAC id and asset name.
 
 ``` r
 dse_stac_download(
-  id,
+  asset_id,
   asset,
+  collection = dse_stac_guess_collection,
   destination,
   ...,
   s3_key = dse_s3_key(),
@@ -21,13 +22,21 @@ dse_stac_download(
 
 ## Arguments
 
-- id:
+- asset_id:
 
   STAC id, used for locating the asset download details.
 
 - asset:
 
   Name of the asset to download
+
+- collection:
+
+  The identifier for a collection. The default argument is the
+  [`dse_stac_guess_collection()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_guess_collection.md)
+  function which tries to guess the collection id from the `asset_id`. A
+  more rigid approach is to provide the collection id as a `character`
+  string.
 
 - destination:
 
@@ -60,7 +69,7 @@ Returns the path to the downloaded file.
 ``` r
 if (interactive() && (dse_has_s3_secret() || dse_has_client_info())) {
   dse_stac_download(
-    id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
+    asset_id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
     asset = "B01",
     destination = tempdir()
   )

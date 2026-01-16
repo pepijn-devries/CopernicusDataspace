@@ -1,6 +1,9 @@
 # Alternative Route to Download OData Products
 
-TODO
+Downloading data using the OData API is probably fastest by using
+[`dse_odata_download()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_download.md).
+As an alternative, you can use this function which uses the https
+protocol to download a product.
 
 ## Usage
 
