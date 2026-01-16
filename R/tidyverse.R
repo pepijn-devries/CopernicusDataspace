@@ -233,13 +233,9 @@ select.stac_request <-
       rlang::enquos(..., .named = TRUE) |>
       .column_select()
     if (is.na(.data$body$data$fields)) .data$body$data$fields <- NULL
-    new_select <- c(.data$body$data$fields$include, new_select)
-    .data |>
-      httr2::req_body_json_modify(
-        fields = list(
-          include = as.list(new_select)
-        )
-      )
+    new_select <- c(.data$body$data$fields$include |> unlist(), new_select)
+    .data$body$data$fields$include <- as.list(new_select)
+    .data
   }
 
 .parse_filters <- function(.data) {
@@ -306,16 +302,21 @@ select.stac_request <-
   result <-
     lapply(q, \(xpr) {
       xpr <- rlang::quo_get_expr(xpr)
+      env <- if (rlang::is_quosure(xpr))
+        rlang::quo_get_env(xpr) else
+          environment()
       result <- NULL
       is_desc <- FALSE
       if (allow_desc && rlang::is_call(xpr) &&
           identical(rlang::eval_tidy(xpr[[1]]), dplyr::desc)) {
         is_desc <- TRUE
-        xpr <- rlang::as_quosure(xpr[[2]], .GlobalEnv)
+        xpr <- rlang::as_quosure(xpr[[2]], env)
       }
       if (rlang::is_call(xpr)) {
-        result <- if ((identical(rlang::eval_tidy(xpr[[1]]), `[[`)) ||
-                      (identical(rlang::eval_tidy(xpr[[1]]), `$`)) &&
+        xpr1 <- if (rlang::is_quosure(xpr))
+          rlang::quo_get_expr(xpr) else xpr[[1]]
+        result <- if ((identical(rlang::eval_tidy(xpr1), `[[`)) ||
+                      (identical(rlang::eval_tidy(xpr1), `$`)) &&
                       rlang::as_string(xpr[[2]]) == ".data")
           rlang::as_string(xpr[[3]]) else
             rlang::eval_tidy(xpr)
@@ -342,6 +343,7 @@ select.stac_request <-
 .parse_select <- function(.data) {
   my_select <- .data$odata$select
   if (is.null(my_select)) return(.data)
+  browser() #TODO
   sel <- .column_select(.data$odata$select)
   .data |>
     httr2::req_url_query(

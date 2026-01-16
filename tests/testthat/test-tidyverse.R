@@ -1,5 +1,5 @@
 library(dplyr) |> suppressMessages()
-library(lubridate) |> suppressMessages()
+library(lubridate) |> suppressMessages() |> suppressWarnings()
 
 test_that("Complex stac request works with tidy verbs", {
   skip_if_offline()
@@ -10,11 +10,15 @@ test_that("Complex stac request works with tidy verbs", {
     n <- 5
     result <-
       dse_stac_search_request("sentinel-1-grd") |>
+      ## The order of the filters can break the request.
+      ## I think this is a problem caused by the parser on the
+      ## server. Check with Copernicus
       filter(datetime >= d1 & datetime <= d2) |>
       filter(`sat:orbit_state` == "ascending") |>
       arrange(desc("datetime")) |>
       slice_head(n = n) |>
       select(.data$`properties.sat:orbit_state`, .data$properties.datetime) |>
+      select(c("properties.constellation", "properties.view:incidence_angle")) |>
       collect()
     all(as_datetime(result$properties.datetime) >=
           as_datetime(d1)) &&
