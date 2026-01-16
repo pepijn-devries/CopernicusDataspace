@@ -383,13 +383,14 @@ select.stac_request <-
 
 .translate_filters <- function(quo, format = "odata") {
   expr <- rlang::quo_get_expr(quo)
+  env  <- rlang::quo_get_env(quo)
   idx <- .match_function(expr[[1]], format)
   op <- ""
   if (!is.na(idx)) {
     op <- if (format == "odata") .odata_operators$api_code[idx] else
       if (format == "stac") .stac_operators$api_code[idx]
     if (rlang::is_call(expr[[2]])) {
-      left <- .translate_filters(rlang::as_quosure(expr[[2]], environment()), format)
+      left <- .translate_filters(rlang::as_quosure(expr[[2]], env), format)
       if (format == "odata") left <- sprintf("(%s)", left)
     } else {
       left <- as.character(expr[[2]])
@@ -416,9 +417,9 @@ select.stac_request <-
       if (rlang::as_string(expr[[2]]) == ".data") {
         return(rlang::as_string(expr[[3]]))
       } else if (rlang::as_string(expr[[2]]) == ".env") {
-        expr <- rlang::as_quosure(expr[[3]], rlang::quo_get_env(quo))
+        expr <- rlang::as_quosure(expr[[3]], env)
       } else {
-        result <- rlang::eval_tidy(expr)
+        result <- rlang::eval_tidy(expr, env = env)
         if (format == "odata" && is.character(result))
           result <- sprintf("'%s'", result)
         result
@@ -439,11 +440,11 @@ select.stac_request <-
       quote_right <- TRUE
       if (rlang::is_call(expr[[3]])) {
         right <- .translate_filters(
-          rlang::as_quosure(expr[[3]], rlang::get_env(quo)), format)
+          rlang::as_quosure(expr[[3]], env), format)
         if (rlang::is_call(right)) right <- rlang::eval_tidy(right) else
           quote_right <- FALSE
       } else {
-        right <- rlang::eval_tidy(expr[[3]])
+        right <- rlang::eval_tidy(expr[[3]], env = env)
       }
       left_check <- left
       if (is.list(left_check)) left_check <- left_check$args[[1]]$property
