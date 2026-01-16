@@ -66,6 +66,7 @@ test_that("OData file can be downloaded through https", {
       suppressMessages()
     on.exit({unlink(resp$body)})
     sp <- read_stars(resp$body)
+    NULL
   })
 })
 
@@ -94,6 +95,7 @@ test_that("OData zipped product can be downloaded through https", {
         destination = tempdir()) |>
       suppressMessages()
     unlink(resp$body)
+    NULL
   })
 })
 

@@ -40,6 +40,7 @@ test_that("Quicklook cannot be downloaded if it doesn't exist", {
   skip_on_cran()
   expect_error({
     dse_odata_quicklook( "ce4576eb-975b-40ff-8319-e04b00d8d444", tempfile())
+    NULL
   }, "does not have a 'quicklook'")
 })
 
@@ -59,6 +60,7 @@ test_that("OData files cannot be downloaded without token", {
       product     = "ce4576eb-975b-40ff-8319-e04b00d8d444",
       destination = tempdir(),
       token       = NULL)
+    NULL
   }, "Ensure that you have specified a token")
 })
 

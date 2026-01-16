@@ -393,7 +393,7 @@ select.stac_request <-
     }
   }
   if (is.na(idx)) {
-    if (identical(c, eval(expr[[1]]))) {
+    if (identical(c, rlang::eval_tidy(expr[[1]]))) {
       result <- rlang::eval_tidy(expr)
       if (format == "odata") {
         if (is.character(result)) result <- sprintf("'%s'", result)
@@ -401,14 +401,15 @@ select.stac_request <-
       } else if (format == "stac") {
         return (result)
       }
-    } else if (identical(`%in%`, eval(expr[[1]])) && format == "odata") {
+    } else if (identical(`%in%`, rlang::eval_tidy(expr[[1]])) && format == "odata") {
       right <- rlang::eval_tidy(expr[[3]])
       if (is.character(right)) right <- sprintf("'%s'", right)
       paste(
         sprintf("%s eq %s", as.character(expr[[2]]), right),
         collapse = " or ") |>
         sprintf(fmt = "(%s)")
-    } else if (identical(`$`, eval(expr[[1]])) || identical(`[[`, eval(expr[[1]]))) {
+    } else if (identical(`$`, rlang::eval_tidy(expr[[1]])) ||
+               identical(`[[`, rlang::eval_tidy(expr[[1]]))) {
       if (rlang::as_string(expr[[2]]) == ".data") {
         return(rlang::as_string(expr[[3]]))
       } else if (rlang::as_string(expr[[2]]) == ".env") {
@@ -439,7 +440,7 @@ select.stac_request <-
         if (rlang::is_call(right)) right <- rlang::eval_tidy(right) else
           quote_right <- FALSE
       } else {
-        right <- eval(expr[[3]])
+        right <- rlang::eval_tidy(expr[[3]])
       }
       left_check <- left
       if (is.list(left_check)) left_check <- left_check$args[[1]]$property

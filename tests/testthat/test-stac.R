@@ -52,6 +52,7 @@ test_that("Files can be downloaded via STAC S3", {
         destination = tempdir()
       )
     tile <- read_stars(fn)
+    NULL
   })
 })
 
