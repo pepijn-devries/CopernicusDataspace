@@ -346,7 +346,6 @@ select.stac_request <-
 .parse_select <- function(.data) {
   my_select <- .data$odata$select
   if (is.null(my_select)) return(.data)
-  browser() #TODO
   sel <- .column_select(.data$odata$select)
   .data |>
     httr2::req_url_query(
@@ -397,15 +396,19 @@ select.stac_request <-
     }
   }
   if (is.na(idx)) {
+    
+    ## ==== START: Check operator for special cases:
+    
     if (identical(c, rlang::eval_tidy(expr[[1]]))) {
-      result <- rlang::eval_tidy(expr)
+      result <- rlang::eval_tidy(expr, env)
       if (format == "odata") {
         if (is.character(result)) result <- sprintf("'%s'", result)
         return (paste(result, collapse = ","))
       } else if (format == "stac") {
         return (result)
       }
-    } else if (identical(`%in%`, rlang::eval_tidy(expr[[1]])) && format == "odata") {
+    } else if (identical(`%in%`, rlang::eval_tidy(expr[[1]])) &&
+               format == "odata") {
       right <- rlang::eval_tidy(expr[[3]])
       if (is.character(right)) right <- sprintf("'%s'", right)
       paste(
@@ -424,6 +427,9 @@ select.stac_request <-
           result <- sprintf("'%s'", result)
         result
       }
+      
+    ## ==== END: Check operator for special cases:
+
     } else {
       result <- rlang::eval_tidy(expr)
       if (format == "odata" && is.character(result))
@@ -432,9 +438,7 @@ select.stac_request <-
     }
   } else {
     if (length(expr) < 3) {
-      return(
-        list( args = left, op = op )
-      )
+      if (format == "stac") return( list( args = left, op = op ) )
       return(sprintf(op, left))
     } else {
       quote_right <- TRUE
@@ -449,14 +453,16 @@ select.stac_request <-
       left_check <- left
       if (is.list(left_check)) left_check <- left_check$args[[1]]$property
       if (is.null(left_check)) left_check <- ""
-      if (grepl("date", left_check, ignore.case = TRUE) && !is.list(right)) {
+      if (grepl("date", left_check, ignore.case = TRUE) &&
+          !is.list(right) && quote_right) {
         right <- lubridate::as_datetime(right)
-        right <- list(
-          timestamp = lubridate::format_ISO8601(right, usetz = TRUE))
+        right <- lubridate::format_ISO8601(right, usetz = TRUE)
+        if (format == "stac") right <- list(timestamp = right)
       }
       if (quote_right && is.character(right) && format == "odata")
         right <- sprintf("'%s'", right)
     }
+
     if (format == "odata") {
       return(sprintf(op, left, right))
     } else if (format == "stac") {

@@ -144,3 +144,15 @@ test_that("Warning is thrown when collection id cannot be guessed", {
     dse_stac_guess_collection("foobar")
   }, "Couldn't guess")
 })
+
+test_that("slice_head.stac_request does not accept 'prop'", {
+  expect_error({
+    slice_head.stac_request(NULL, prop = 1)
+  }, "'prop' argument is not implemented")
+})
+
+test_that("slice_head.odata_request does not accept 'prop'", {
+  expect_error({
+    slice_head.odata_request(NULL, prop = 1)
+  }, "'prop' argument is not implemented")
+})

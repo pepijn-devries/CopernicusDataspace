@@ -28,3 +28,29 @@ test_that("Complex stac request works with tidy verbs", {
       nrow(result) == n
   })
 })
+
+test_that("Complex stac request works with tidy verbs", {
+  skip_if_offline()
+  skip_on_cran()
+  expect_true({
+    d1 <- "2025-01-01 UTC"
+    d2 <- "2025-01-02 UTC"
+    n <- 5
+    result <-
+      dse_odata_products_request() |>
+      filter(`ContentDate/Start` >= d1 & `ContentDate/Start` <= d2) |>
+      filter(Online == TRUE) |>
+      arrange(desc("ContentDate/Start")) |>
+      slice_head(n = n) |>
+      select(.data$Id, .data$Name) |>
+      select(c("ContentDate/Start", "Online")) |>
+      collect()
+    
+    all(as_datetime(result$ContentDate.Start) >=
+          as_datetime(d1)) &&
+      all(as_datetime(result$ContentDate.Start) <=
+            as_datetime(d2)) &&
+      all(result$Online == "TRUE") &&
+      nrow(result) == n
+  })
+})
