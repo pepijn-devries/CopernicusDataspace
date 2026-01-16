@@ -70,10 +70,12 @@ about how to effectively authenticate download requests, please see
 
 ## Downloading Using STAC Catalogue
 
-When you know the STAC identifier (`id`) and the asset name you wish to
-download, you can simply use the example shown below. When you don’t
-know these details, you should first explore the catalogue. Please see
-`vignette("STAC")` for more details on working with the STAC catalogue.
+When you know the STAC identifier (`asset_id`) and the asset name you
+wish to download, you can simply use the example shown below. It will
+often speed you request up if you include the `collection` id. When you
+don’t know these details, you should first explore the catalogue. Please
+see `vignette("STAC")` for more details on working with the STAC
+catalogue.
 
 ``` r
 library(CopernicusDataspace)
@@ -82,17 +84,22 @@ library(stars) ## For reading and plotting the downloaded file
 ## Only run this if an S3 secret is specified
 if (dse_has_s3_secret()) {
   
-  id        <- "Copernicus_DSM_COG_30_S69_00_W062_00_DEM"
-  asset     <- "data"
-
-  filename  <- dse_stac_download(id, asset, tempdir())
+  filename  <- dse_stac_download(
+    asset_id   = "Copernicus_DSM_COG_30_S69_00_W062_00_DEM",
+    asset      = "data",
+    collection = "cop-dem-glo-90-dged-cog",
+    tempdir())
+  
   tile_stac <- read_stars(filename)
+  
   plot(tile_stac, col = hcl.colors(100), axes = TRUE)
   
 }
 ```
 
 <img src="man/figures/README-download-stac-1.png" alt="Example of downloading with STAC API" width="100%" />
+
+This produces a tile in the Southern Ocean near Antarctica.
 
 ## Downloading Using OData API
 
@@ -112,6 +119,9 @@ plot(tile_odata, col = terrain.colors(100), axes = TRUE)
 ```
 
 <img src="man/figures/README-download-odata-1.png" alt="Example of downloading with OData API" width="100%" />
+
+This produces a map of Lake Upemba in Congo.
+
 TODO
 
 ## Downloading Using SentinelHub

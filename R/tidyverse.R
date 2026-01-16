@@ -97,7 +97,7 @@ filter.stac_request <-
       .translate_filters(rlang::enquos(..., .named = TRUE)[[1]], "stac")
     if (!is.null(old_filter)) {
       new_filter <- list(
-        args = c(old_filter, new_filter),
+        args = list(old_filter, new_filter),
         op = "and"
       )
     }
@@ -233,13 +233,9 @@ select.stac_request <-
       rlang::enquos(..., .named = TRUE) |>
       .column_select()
     if (is.na(.data$body$data$fields)) .data$body$data$fields <- NULL
-    new_select <- c(.data$body$data$fields$include, new_select)
-    .data |>
-      httr2::req_body_json_modify(
-        fields = list(
-          include = as.list(new_select)
-        )
-      )
+    new_select <- c(.data$body$data$fields$include |> unlist(), new_select)
+    .data$body$data$fields$include <- as.list(new_select)
+    .data
   }
 
 .parse_filters <- function(.data) {
@@ -306,20 +302,27 @@ select.stac_request <-
   result <-
     lapply(q, \(xpr) {
       xpr <- rlang::quo_get_expr(xpr)
+      env <- if (rlang::is_quosure(xpr))
+        rlang::quo_get_env(xpr) else
+          environment()
       result <- NULL
       is_desc <- FALSE
       if (allow_desc && rlang::is_call(xpr) &&
-          identical(rlang::eval_tidy(xpr[[1]]), dplyr::desc)) {
+          identical(rlang::eval_tidy(xpr[[1]], env = env), dplyr::desc)) {
         is_desc <- TRUE
-        xpr <- rlang::as_quosure(xpr[[2]], .GlobalEnv)
+        xpr <- rlang::as_quosure(xpr[[2]], env)
+        env <- if (rlang::is_quosure(xpr))
+          rlang::quo_get_env(xpr) else
+            environment()
       }
       if (rlang::is_call(xpr)) {
-        result <- if ((identical(rlang::eval_tidy(xpr[[1]]), `[[`)) ||
-                      (identical(rlang::eval_tidy(xpr[[1]]), `$`)) &&
+        xpr1 <- if (rlang::is_quosure(xpr))
+          rlang::quo_get_expr(xpr) else xpr[[1]]
+        result <- if ((identical(rlang::eval_tidy(xpr1, env = env), `[[`)) ||
+                      (identical(rlang::eval_tidy(xpr1, env = env), `$`)) &&
                       rlang::as_string(xpr[[2]]) == ".data")
           rlang::as_string(xpr[[3]]) else
-            if (identical(c, rlang::eval_tidy(xpr[[1]])))
-              rlang::eval_tidy(xpr)
+            rlang::eval_tidy(xpr, env = env)
         if (is.null(result))
           stop(sprintf("Sorry, '%s' is not implemented in this context",
                        rlang::as_string(xpr[[1]])))
@@ -360,7 +363,7 @@ select.stac_request <-
 .stac_operators <- dplyr::tibble(
   r_code = list(`==`, `!=`, `>`, `>=`, `<`, `<=`, `&`, `|`, `!`, is.na, `%in%`,
                 dplyr::between),
-  api_code = c("=", "<>", ">", ">=", "<", "<=", "and", "or", "not",
+  api_code = c("eq", "neq", "gt", "gte", "lt", "lte", "and", "or", "not",
                "isNull", "in", "between")
 )
 
@@ -379,77 +382,87 @@ select.stac_request <-
 
 .translate_filters <- function(quo, format = "odata") {
   expr <- rlang::quo_get_expr(quo)
+  env  <- rlang::quo_get_env(quo)
   idx <- .match_function(expr[[1]], format)
   op <- ""
   if (!is.na(idx)) {
     op <- if (format == "odata") .odata_operators$api_code[idx] else
       if (format == "stac") .stac_operators$api_code[idx]
     if (rlang::is_call(expr[[2]])) {
-      left <- .translate_filters(rlang::as_quosure(expr[[2]], environment()), format)
+      left <- .translate_filters(rlang::as_quosure(expr[[2]], env), format)
       if (format == "odata") left <- sprintf("(%s)", left)
     } else {
       left <- as.character(expr[[2]])
     }
   }
   if (is.na(idx)) {
-    if (identical(c, eval(expr[[1]]))) {
-      result <- rlang::eval_tidy(expr)
+    
+    ## ==== START: Check operator for special cases:
+    
+    if (identical(c, rlang::eval_tidy(expr[[1]]))) {
+      result <- rlang::eval_tidy(expr, env)
       if (format == "odata") {
         if (is.character(result)) result <- sprintf("'%s'", result)
         return (paste(result, collapse = ","))
       } else if (format == "stac") {
         return (result)
       }
-    } else if (identical(`%in%`, eval(expr[[1]])) && format == "odata") {
+    } else if (identical(`%in%`, rlang::eval_tidy(expr[[1]])) &&
+               format == "odata") {
       right <- rlang::eval_tidy(expr[[3]])
       if (is.character(right)) right <- sprintf("'%s'", right)
       paste(
         sprintf("%s eq %s", as.character(expr[[2]]), right),
         collapse = " or ") |>
         sprintf(fmt = "(%s)")
-    } else if (identical(`$`, eval(expr[[1]])) || identical(`[[`, eval(expr[[1]]))) {
+    } else if (identical(`$`, rlang::eval_tidy(expr[[1]])) ||
+               identical(`[[`, rlang::eval_tidy(expr[[1]]))) {
       if (rlang::as_string(expr[[2]]) == ".data") {
         return(rlang::as_string(expr[[3]]))
       } else if (rlang::as_string(expr[[2]]) == ".env") {
-        expr <- rlang::as_quosure(expr[[3]], rlang::quo_get_env(quo))
+        expr <- rlang::as_quosure(expr[[3]], env)
       } else {
-        result <- rlang::eval_tidy(expr)
+        result <- rlang::eval_tidy(expr, env = env)
         if (format == "odata" && is.character(result))
           result <- sprintf("'%s'", result)
         result
       }
+      
+    ## ==== END: Check operator for special cases:
+
     } else {
       result <- rlang::eval_tidy(expr)
       if (format == "odata" && is.character(result))
-        result <- sprintf("'%s'", result) #TODO
+        result <- sprintf("'%s'", result)
       result
     }
   } else {
     if (length(expr) < 3) {
-      return(
-        list( args = left, op = op )
-      )
+      if (format == "stac") return( list( args = left, op = op ) )
       return(sprintf(op, left))
     } else {
       quote_right <- TRUE
       if (rlang::is_call(expr[[3]])) {
         right <- .translate_filters(
-          rlang::as_quosure(expr[[3]], rlang::get_env(quo)), format)
+          rlang::as_quosure(expr[[3]], env), format)
         if (rlang::is_call(right)) right <- rlang::eval_tidy(right) else
           quote_right <- FALSE
       } else {
-        right <- eval(expr[[3]])
+        right <- rlang::eval_tidy(expr[[3]], env = env)
       }
       left_check <- left
       if (is.list(left_check)) left_check <- left_check$args[[1]]$property
       if (is.null(left_check)) left_check <- ""
-      if (grepl("date", left_check, ignore.case = TRUE)) {
-        right <- lubridate::as_datetime(right, tz = "")
+      if (grepl("date", left_check, ignore.case = TRUE) &&
+          !is.list(right) && quote_right) {
+        right <- lubridate::as_datetime(right)
         right <- lubridate::format_ISO8601(right, usetz = TRUE)
+        if (format == "stac") right <- list(timestamp = right)
       }
       if (quote_right && is.character(right) && format == "odata")
         right <- sprintf("'%s'", right)
     }
+
     if (format == "odata") {
       return(sprintf(op, left, right))
     } else if (format == "stac") {

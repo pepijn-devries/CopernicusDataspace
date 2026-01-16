@@ -1,3 +1,5 @@
+library(sf) |> suppressMessages()
+
 test_that("Invalid URI does not start S3 download", {
   expect_error({
     dse_s3_download("foobar", tempdir())
@@ -23,7 +25,7 @@ test_that("Files cannot be downloaded via STAC when authentication is missing", 
   expect_error({
     fn <-
       dse_stac_download(
-        id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
+        asset_id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
         asset = "B01",
         destination = tempdir(),
         s3_key = "",
@@ -38,6 +40,7 @@ test_that("Quicklook cannot be downloaded if it doesn't exist", {
   skip_on_cran()
   expect_error({
     dse_odata_quicklook( "ce4576eb-975b-40ff-8319-e04b00d8d444", tempfile())
+    NULL
   }, "does not have a 'quicklook'")
 })
 
@@ -57,6 +60,7 @@ test_that("OData files cannot be downloaded without token", {
       product     = "ce4576eb-975b-40ff-8319-e04b00d8d444",
       destination = tempdir(),
       token       = NULL)
+    NULL
   }, "Ensure that you have specified a token")
 })
 
@@ -67,4 +71,88 @@ test_that("`node_path` only works if it has one element", {
     dse_odata_product_nodes("c8ed8edb-9bef-4717-abfd-1400a57171a4",
                             node_path = c("", ""))
   }, "should only have one element")
+})
+
+test_that("st_intersects warns when adding multiple bboxes to stac request", {
+  expect_warning({
+    bbox <-
+      st_bbox(
+        c(xmin = 5.261, ymin = 52.680, xmax = 5.319, ymax = 52.715),
+        crs = 4326)
+
+    dse_stac_search_request() |>
+      st_intersects(bbox) |>
+      st_intersects(bbox)
+  }, "Replacing previously defined bbox")
+})
+
+test_that("st_intersects warns when adding bbox after shape to stac request", {
+  expect_warning({
+    bbox <-
+      st_bbox(
+        c(xmin = 5.261, ymin = 52.680, xmax = 5.319, ymax = 52.715),
+        crs = 4326)
+    shape <- st_as_sfc(bbox)
+    
+    dse_stac_search_request() |>
+      st_intersects(shape) |>
+      st_intersects(bbox) |>
+      suppressMessages()
+  }, "mutually exclusive")
+})
+
+test_that("st_intersects warns when adding multiple shapes to stac request", {
+  expect_warning({
+    bbox <-
+      st_bbox(
+        c(xmin = 5.261, ymin = 52.680, xmax = 5.319, ymax = 52.715),
+        crs = 4326)
+    shape <- st_as_sfc(bbox)
+    
+    dse_stac_search_request() |>
+      st_intersects(shape) |>
+      st_intersects(shape) |>
+      suppressMessages()
+  }, "Replacing previously defined geometry")
+})
+
+test_that("st_intersects warns when adding shape after bbox to stac request", {
+  expect_warning({
+    bbox <-
+      st_bbox(
+        c(xmin = 5.261, ymin = 52.680, xmax = 5.319, ymax = 52.715),
+        crs = 4326)
+    shape <- st_as_sfc(bbox)
+    
+    dse_stac_search_request() |>
+      st_intersects(bbox) |>
+      st_intersects(shape) |>
+      suppressMessages()
+  }, "mutually exclusive")
+})
+
+test_that("Non existing assets produce error on STAC", {
+  skip_if_offline()
+  skip_on_cran()
+  expect_error({
+    dse_stac_download("foo", "bar", "foobar")
+  }, "Asset not found")
+})
+
+test_that("Warning is thrown when collection id cannot be guessed", {
+  expect_warning({
+    dse_stac_guess_collection("foobar")
+  }, "Couldn't guess")
+})
+
+test_that("slice_head.stac_request does not accept 'prop'", {
+  expect_error({
+    slice_head.stac_request(NULL, prop = 1)
+  }, "'prop' argument is not implemented")
+})
+
+test_that("slice_head.odata_request does not accept 'prop'", {
+  expect_error({
+    slice_head.odata_request(NULL, prop = 1)
+  }, "'prop' argument is not implemented")
 })

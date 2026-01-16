@@ -237,7 +237,9 @@ dse_odata_download <- function(request, destination, ...,
 
 #' Alternative Route to Download OData Products
 #' 
-#' TODO
+#' Downloading data using the OData API is probably fastest by using
+#' [dse_odata_download()]. As an alternative, you can use this function
+#' which uses the https protocol to download a product.
 #' @param product Hexadecimal id of the product to be downloaded
 #' @param node_path Path to a specific file in the product. When left blank (`""`)
 #' The function will attempt to download the entire product as a zip archive.

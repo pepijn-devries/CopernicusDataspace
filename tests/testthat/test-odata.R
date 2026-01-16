@@ -62,9 +62,11 @@ test_that("OData file can be downloaded through https", {
                 "Copernicus_DSM_30_S09_00_E026_00", "DEM",
                 "Copernicus_DSM_30_S09_00_E026_00_DEM.dt1", sep = "/"),
         destination = tempdir()
-      )
+      ) |>
+      suppressMessages()
     on.exit({unlink(resp$body)})
     sp <- read_stars(resp$body)
+    NULL
   })
 })
 
@@ -93,5 +95,15 @@ test_that("OData zipped product can be downloaded through https", {
         destination = tempdir()) |>
       suppressMessages()
     unlink(resp$body)
+    NULL
   })
+})
+
+test_that("Bursts data can be listed", {
+  skip_if_offline()
+  skip_on_cran()
+  expect_type({
+    bursts <- dse_odata_bursts(ParentProductId == "879d445c-2c67-5b30-8589-b1f478904269")
+    bursts$Id
+  }, "character")
 })
