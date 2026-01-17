@@ -158,6 +158,7 @@ test_that("slice_head.odata_request does not accept 'prop'", {
 })
 
 test_that("Sentinel Hub errors are passed - A", {
+  skip_if_not(dse_has_client_info())
   skip_if_offline()
   skip_on_cran()
   expect_error({
@@ -166,6 +167,7 @@ test_that("Sentinel Hub errors are passed - A", {
 })
 
 test_that("Sentinel Hub errors are passed - B", {
+  skip_if_not(dse_has_client_info())
   skip_if_offline()
   skip_on_cran()
   expect_error({

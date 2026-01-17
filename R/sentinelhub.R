@@ -220,8 +220,16 @@ dse_sh_get_custom_script <-
 #' @returns TODO
 #' @examples
 #' # TODO
+#' library(sf)
+#' 
+#' shape <- st_bbox(c(xmin = 5.261, ymin = 52.680,
+#'                    xmax = 5.319, ymax = 52.715), crs = 4326) |>
+#'            st_as_sfc()
 #' dse_sh_prepare_input(
 #'   bounds = c(5.261, 52.680, 5.319, 52.715)
+#' )
+#' dse_sh_prepare_input(
+#'   bounds = shape
 #' )
 #' @references
 #'  * <https://apps.sentinel-hub.com/requests-builder/>
@@ -233,12 +241,20 @@ dse_sh_prepare_input <-
     data_type = "sentinel-2-l2a"
   ) {
     result = list()
+    if (is.numeric(bounds) && !inherits(bounds, "bbox")) {
+      if (!rlang::is_named(bounds)) {
+        names(bounds) <- c("xmin", "ymin", "xmax", "ymax")
+        bounds <- sf::st_bbox(bounds, crs = 4326)
+      }
+    }
     if (inherits(bounds, "bbox")) {
-      result$bounds <- list(bbox = NA)
-      #TODO
+      bounds <-
+        sf::st_as_sfc(bounds) |>
+        sf::st_transform(4326) |>
+        sf::st_bbox()
+      result$bounds <- list(bbox = unname(as.numeric(bounds)))
     } else {
-      result$bounds <- list(geometry = NA)
-      #TODO
+      result$bounds <- list(geometry = .sfc_to_geojson(bounds))
     }
     result
   }

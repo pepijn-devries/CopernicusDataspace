@@ -21,8 +21,16 @@ TODO
 }
 \examples{
 # TODO
+library(sf)
+
+shape <- st_bbox(c(xmin = 5.261, ymin = 52.680,
+                   xmax = 5.319, ymax = 52.715), crs = 4326) |>
+           st_as_sfc()
 dse_sh_prepare_input(
   bounds = c(5.261, 52.680, 5.319, 52.715)
+)
+dse_sh_prepare_input(
+  bounds = shape
 )
 }
 \references{
