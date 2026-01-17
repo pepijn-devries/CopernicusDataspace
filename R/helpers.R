@@ -41,7 +41,8 @@
     tibble_columns <-
       lapply(result, \(y) lapply(y, tibble::is_tibble) |> unlist() |> all()) |> unlist()
     tibble_columns[names(tibble_columns) %in%
-                     c("assets", "properties.cube:variables", "geometry")] <- FALSE
+                     c("assets", "properties.cube:variables",
+                       "geometry", "summaries")] <- FALSE
     if (any(tibble_columns)) {
       tidyr::unnest(result, names(tibble_columns)[tibble_columns], names_sep = ".")
     } else result
@@ -83,4 +84,12 @@
   attributes(x) <- c(attributes(x), x)
   x
   
+}
+
+## Use GDAL driver to convert sfc class object to geojson:
+.sfc_to_geojson <- function(x) {
+  tempfn <- tempfile(fileext = ".geojson")
+  on.exit({ unlink(tempfn) })
+  sf::st_write(x, tempfn, driver = "GeoJSON", quiet = TRUE)
+  yjson <- jsonlite::read_json(tempfn)
 }

@@ -53,20 +53,16 @@ output <- list(
   )
 )
 
-evalscript <- paste(
-  "//VERSION=3",
-  "function setup() {",
-  "return {",
-  "input: [\"B02\", \"B03\", \"B04\"],",
-  "output: { bands: 3 }",
-  "};",
-  "}",
-  "function evaluatePixel(sample) {",
-  "return [2.5 * sample.B04, 2.5 * sample.B03, 2.5 * sample.B02];",
-  "}",
-  sep = "\n")
+evalscript <- dse_sh_get_custom_script("/sentinel-2/l2a_optimized/")
+
 fl <- tempfile(fileext = ".tiff")
 if (interactive() && dse_has_client_info()) {
   dse_sh_process(input, output, evalscript, fl) #TODO
+  
+  if (requireNamespace("stars")) {
+    library(stars)
+    enkhuizen <- read_stars(fl)
+    plot(enkhuizen, rgb = 1:3, axes = TRUE)
+  }
 }
 }
