@@ -2,39 +2,22 @@
 % Please edit documentation in R/sentinelhub.R
 \name{dse_sh_collections}
 \alias{dse_sh_collections}
-\alias{dse_sh_queryables}
 \title{List Sentinel Hub Collections}
 \usage{
 dse_sh_collections(...)
-
-dse_sh_queryables(collection, ..., token = dse_access_token())
 }
 \arguments{
-\item{...}{TODO}
-
-\item{collection}{TODO}
-
-\item{token}{For authentication, many of the Dataspace Ecosystem uses
-an access token. Either provide your access token, or obtain one automatically
-with \code{\link[=dse_access_token]{dse_access_token()}} (default). Without a valid token you will likely get
-an "access denied" error.}
+\item{...}{Ignored}
 }
 \value{
-TODO
-
-TODO
+Returns a \code{data.frame} with information about the
+collections available from the Sentinel Hub
 }
 \description{
-TODO
-
-TODO
+List collections that are available from the Sentinel Hub.
 }
 \examples{
 if (interactive()) {
   dse_sh_collections()
-  if (dse_has_client_info()) {
-    qt <- dse_sh_querytables("sentinel-2-l1c")
-  }
 }
-#TODO
 }

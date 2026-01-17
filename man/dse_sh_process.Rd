@@ -20,7 +20,7 @@ dse_sh_process(
 
 \item{evalscript}{TODO}
 
-\item{destination}{TODO}
+\item{destination}{A file name to store the downloaded image.}
 
 \item{...}{TODO}
 
@@ -28,6 +28,10 @@ dse_sh_process(
 an access token. Either provide your access token, or obtain one automatically
 with \code{\link[=dse_access_token]{dse_access_token()}} (default). Without a valid token you will likely get
 an "access denied" error.}
+}
+\value{
+A \code{httr2_response} class object containing the
+location of the downloaded file at its \code{destination}.
 }
 \description{
 TODO
@@ -53,20 +57,16 @@ output <- list(
   )
 )
 
-evalscript <- paste(
-  "//VERSION=3",
-  "function setup() {",
-  "return {",
-  "input: [\"B02\", \"B03\", \"B04\"],",
-  "output: { bands: 3 }",
-  "};",
-  "}",
-  "function evaluatePixel(sample) {",
-  "return [2.5 * sample.B04, 2.5 * sample.B03, 2.5 * sample.B02];",
-  "}",
-  sep = "\n")
-fl <- tempfile(fileext = ".tiff")
+evalscript <- dse_sh_get_custom_script("/sentinel-2/l2a_optimized/")
+
 if (interactive() && dse_has_client_info()) {
+  fl <- tempfile(fileext = ".tiff")
   dse_sh_process(input, output, evalscript, fl) #TODO
+  
+  if (requireNamespace("stars")) {
+    library(stars)
+    enkhuizen <- read_stars(fl) |> suppresWarnings()
+    plot(enkhuizen, rgb = 1:3, axes = TRUE, main = "Enkhuizen")
+  }
 }
 }
