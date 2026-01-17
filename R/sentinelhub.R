@@ -87,8 +87,7 @@ dse_sh_queryables <- memoise::memoise(.dse_sh_queryables)
     input, output, evalscript, destination,
     ..., token = dse_access_token()) {
   
-  data <- 
-    .sh_api_url |>
+  .sh_api_url |>
     paste("process", sep = "/") |>
     httr2::request() |>
     httr2::req_method("POST") |>
@@ -100,10 +99,7 @@ dse_sh_queryables <- memoise::memoise(.dse_sh_queryables)
       ), auto_unbox = TRUE
     ) |>
     .add_token(token) |>
-    httr2::req_perform() |>
-    httr2::resp_body_raw()
-  ## TODO as argument path to req_perform Pass
-  writeBin(data, destination)
+    httr2::req_perform(path = destination)
 }
 
 #' Process Satellite Data and Download Result
@@ -112,8 +108,10 @@ dse_sh_queryables <- memoise::memoise(.dse_sh_queryables)
 #' @param input TODO
 #' @param output TODO
 #' @param evalscript TODO
-#' @param destination TODO
+#' @param destination A file name to store the downloaded image.
 #' @param ... TODO
+#' @returns A `httr2_response` class object containing the
+#' location of the downloaded file at its `destination`.
 #' @inheritParams dse_usage
 #' @examples
 #' input <- list(
@@ -138,14 +136,14 @@ dse_sh_queryables <- memoise::memoise(.dse_sh_queryables)
 #' 
 #' evalscript <- dse_sh_get_custom_script("/sentinel-2/l2a_optimized/")
 #' 
-#' fl <- tempfile(fileext = ".tiff")
 #' if (interactive() && dse_has_client_info()) {
+#'   fl <- tempfile(fileext = ".tiff")
 #'   dse_sh_process(input, output, evalscript, fl) #TODO
 #'   
 #'   if (requireNamespace("stars")) {
 #'     library(stars)
-#'     enkhuizen <- read_stars(fl)
-#'     plot(enkhuizen, rgb = 1:3, axes = TRUE)
+#'     enkhuizen <- read_stars(fl) |> suppresWarnings()
+#'     plot(enkhuizen, rgb = 1:3, axes = TRUE, main = "Enkhuizen")
 #'   }
 #' }
 #' @export
@@ -219,7 +217,14 @@ dse_sh_get_custom_script <-
 #' @param bounds TODO
 #' @param data_filter TODO
 #' @param data_type TODO
-#' @references <https://apps.sentinel-hub.com/requests-builder/>
+#' @returns TODO
+#' @examples
+#' # TODO
+#' dse_sh_prepare_input(
+#'   bounds = c(5.261, 52.680, 5.319, 52.715)
+#' )
+#' @references
+#'  * <https://apps.sentinel-hub.com/requests-builder/>
 #' @export
 dse_sh_prepare_input <-
   function(
@@ -235,4 +240,5 @@ dse_sh_prepare_input <-
       result$bounds <- list(geometry = NA)
       #TODO
     }
+    result
   }

@@ -13,9 +13,20 @@ dse_sh_prepare_input(bounds, data_filter, data_type = "sentinel-2-l2a")
 
 \item{data_type}{TODO}
 }
+\value{
+TODO
+}
 \description{
 TODO
 }
+\examples{
+# TODO
+dse_sh_prepare_input(
+  bounds = c(5.261, 52.680, 5.319, 52.715)
+)
+}
 \references{
-\url{https://apps.sentinel-hub.com/requests-builder/}
+\itemize{
+\item \url{https://apps.sentinel-hub.com/requests-builder/}
+}
 }
