@@ -37,35 +37,30 @@ location of the downloaded file at its \code{destination}.
 TODO
 }
 \examples{
-input <- list(
-  bounds = list(bbox = c(5.261, 52.680, 5.319, 52.715)),
-  data = list(
-    list(
-      dataFilter = list(
-        timeRange = list(from = "2025-06-21T00:00:00Z", to = "2025-07-21T00:00:00Z")
-      ),
-      type = "sentinel-2-l2a"
-    )
-  )
-)
-output <- list(
-  width = 512, height = 515.09, responses = list(
-    list(
-      identifier = "default",
-      format = list(type = "image/tiff")
-    )
-  )
-)
-
-evalscript <- dse_sh_get_custom_script("/sentinel-2/l2a_optimized/")
-
 if (interactive() && dse_has_client_info()) {
-  fl <- tempfile(fileext = ".tiff")
-  dse_sh_process(input, output, evalscript, fl) #TODO
+
+  bounds <- c(5.261, 52.680, 5.319, 52.715)
   
+  ## prepare input data
+  input <-
+    dse_sh_prepare_input(
+      bounds = bounds,
+      time_range = c("2025-06-01 UTC", "2025-07-01 UTC")
+    )
+
+  ## prepare ouput format
+  output <- dse_sh_prepare_output(bbox = bounds)
+  
+  ## retrieve processing script
+  evalscript <- dse_sh_get_custom_script("/sentinel-2/l2a_optimized/")
+  
+  fl <- tempfile(fileext = ".tiff")
+  ## send request and download result:
+  dse_sh_process(input, output, evalscript, fl)
+
   if (requireNamespace("stars")) {
     library(stars)
-    enkhuizen <- read_stars(fl) |> suppresWarnings()
+    enkhuizen <- read_stars(fl) |> suppressWarnings()
     plot(enkhuizen, rgb = 1:3, axes = TRUE, main = "Enkhuizen")
   }
 }
