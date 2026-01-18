@@ -35,10 +35,18 @@
 - [`dse_s3_download()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3_download.md)
   : Download Asset Through Uniform Resource Identifier
 - [`dse_sh_collections()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_collections.md)
-  [`dse_sh_queryables()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_collections.md)
   : List Sentinel Hub Collections
+- [`dse_sh_custom_scripts()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_custom_scripts.md)
+  : List Custom JavaScripts for Processing Sentinel Hub Data
+- [`dse_sh_get_custom_script()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_get_custom_script.md)
+  : Retrieve Custom JavaScripts to be Used by Sentinel Hub
+- [`dse_sh_prepare_input()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_prepare_.md)
+  [`dse_sh_prepare_output()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_prepare_.md)
+  : Prepare Input and Output Fields for Sentinel Hub Request
 - [`dse_sh_process()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_process.md)
   : Process Satellite Data and Download Result
+- [`dse_sh_queryables()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_queryables.md)
+  : List Queryable Fields on Sentinel Hub
 - [`dse_stac_client()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_client.md)
   : Obtain Information About the STAC Client
 - [`dse_stac_collections()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_collections.md)
