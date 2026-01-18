@@ -20,7 +20,7 @@ dse_sh_process(
 
 \item{evalscript}{TODO}
 
-\item{destination}{TODO}
+\item{destination}{A file name to store the downloaded image.}
 
 \item{...}{TODO}
 
@@ -29,44 +29,39 @@ an access token. Either provide your access token, or obtain one automatically
 with \code{\link[=dse_access_token]{dse_access_token()}} (default). Without a valid token you will likely get
 an "access denied" error.}
 }
+\value{
+A \code{httr2_response} class object containing the
+location of the downloaded file at its \code{destination}.
+}
 \description{
 TODO
 }
 \examples{
-input <- list(
-  bounds = list(bbox = c(5.261, 52.680, 5.319, 52.715)),
-  data = list(
-    list(
-      dataFilter = list(
-        timeRange = list(from = "2025-06-21T00:00:00Z", to = "2025-07-21T00:00:00Z")
-      ),
-      type = "sentinel-2-l2a"
-    )
-  )
-)
-output <- list(
-  width = 512, height = 515.09, responses = list(
-    list(
-      identifier = "default",
-      format = list(type = "image/tiff")
-    )
-  )
-)
-
-evalscript <- paste(
-  "//VERSION=3",
-  "function setup() {",
-  "return {",
-  "input: [\"B02\", \"B03\", \"B04\"],",
-  "output: { bands: 3 }",
-  "};",
-  "}",
-  "function evaluatePixel(sample) {",
-  "return [2.5 * sample.B04, 2.5 * sample.B03, 2.5 * sample.B02];",
-  "}",
-  sep = "\n")
-fl <- tempfile(fileext = ".tiff")
 if (interactive() && dse_has_client_info()) {
-  dse_sh_process(input, output, evalscript, fl) #TODO
+
+  bounds <- c(5.261, 52.680, 5.319, 52.715)
+  
+  ## prepare input data
+  input <-
+    dse_sh_prepare_input(
+      bounds = bounds,
+      time_range = c("2025-06-01 UTC", "2025-07-01 UTC")
+    )
+
+  ## prepare ouput format
+  output <- dse_sh_prepare_output(bbox = bounds)
+  
+  ## retrieve processing script
+  evalscript <- dse_sh_get_custom_script("/sentinel-2/l2a_optimized/")
+  
+  fl <- tempfile(fileext = ".tiff")
+  ## send request and download result:
+  dse_sh_process(input, output, evalscript, fl)
+
+  if (requireNamespace("stars")) {
+    library(stars)
+    enkhuizen <- read_stars(fl) |> suppressWarnings()
+    plot(enkhuizen, rgb = 1:3, axes = TRUE, main = "Enkhuizen")
+  }
 }
 }

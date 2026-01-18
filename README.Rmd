@@ -87,7 +87,7 @@ for more details on working with the STAC catalogue.
 library(CopernicusDataspace)
 library(stars) ## For reading and plotting the downloaded file
 
-## Only run this if an S3 secret is specified
+## Only run this if an S3 secret is specified:
 if (dse_has_s3_secret()) {
   
   filename  <- dse_stac_download(
@@ -110,17 +110,20 @@ This produces a tile in the Southern Ocean near Antarctica.
 
 ```{r download-odata, eval=TRUE, message=FALSE, fig.alt="Example of downloading with OData API"}
 
-response <-
-  dse_odata_download_path(
-  product     = "2f497806-0101-5eea-83fa-c8f68bc56b0c",
-  node_path   = paste(
-    "DEM1_SAR_DTE_90_20101213T034716_20130408T035028_ADS_000000_5033.DEM",
-    "Copernicus_DSM_30_S09_00_E026_00", "DEM",
-    "Copernicus_DSM_30_S09_00_E026_00_DEM.dt1", sep = "/"),
-  destination = tempdir())
-
-tile_odata <- read_stars(response$body)
-plot(tile_odata, col = terrain.colors(100), axes = TRUE)
+## Only run this if client info is available:
+if (dse_has_client_info()) {
+  response <-
+    dse_odata_download_path(
+    product     = "2f497806-0101-5eea-83fa-c8f68bc56b0c",
+    node_path   = paste(
+      "DEM1_SAR_DTE_90_20101213T034716_20130408T035028_ADS_000000_5033.DEM",
+      "Copernicus_DSM_30_S09_00_E026_00", "DEM",
+      "Copernicus_DSM_30_S09_00_E026_00_DEM.dt1", sep = "/"),
+    destination = tempdir())
+  
+  tile_odata <- read_stars(response$body)
+  plot(tile_odata, col = terrain.colors(100), axes = TRUE)
+}
 ```
 
 This produces a map of Lake Upemba in Congo.
@@ -130,6 +133,34 @@ TODO
 ## Downloading Using SentinelHub
 
 TODO
+
+```{r download-sentinelhub, eval=TRUE, message=FALSE, fig.alt="Example of downloading with Sentinel Hub API"}
+## Only run this if client info is available:
+if (dse_has_client_info()) {
+  bounds <- c(5.261, 52.680, 5.319, 52.715)
+
+  ## prepare input data
+  input <-
+    dse_sh_prepare_input(
+      bounds = bounds,
+      time_range = c("2025-06-01 UTC", "2025-07-01 UTC")
+    )
+
+  ## prepare ouput format
+  output <- dse_sh_prepare_output(bbox = bounds)
+
+  ## retrieve processing script
+  evalscript <- dse_sh_get_custom_script("/sentinel-2/l2a_optimized/")
+
+  fl <- tempfile(fileext = ".tiff")
+  
+  ## send request and download result:
+  dse_sh_process(input, output, evalscript, fl)
+
+  enkhuizen <- read_stars(fl) |> suppressWarnings()
+  plot(enkhuizen, rgb = 1:3, axes = TRUE, main = "Enkhuizen")
+}
+```
 
 ## More of Copernicus
 

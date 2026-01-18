@@ -83,10 +83,7 @@ st_intersects.stac_request <-
       ## Make sure to summarise all features to one Geometry(Collection)
       y <- dplyr::summarise(sf::st_as_sf(y)) |> sf::st_geometry()
       
-      tempfn <- tempfile(fileext = ".geojson")
-      on.exit({ unlink(tempfn) })
-      sf::st_write(y, tempfn, driver = "GeoJSON", quiet = TRUE)
-      yjson <- jsonlite::read_json(tempfn)
+      yjson <- .sfc_to_geojson(y)
       geom  <- yjson$features[[1]]$geometry
       
       x$body$data$intersects <- geom
