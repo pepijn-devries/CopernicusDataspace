@@ -174,3 +174,13 @@ test_that("Sentinel Hub errors are passed - B", {
     dse_sh_queryables("foobar")
   }, "Illegal collection")
 })
+
+test_that("Passing nonsense to SentinelHub will Yield 'bad request'", {
+  skip_if_not(dse_has_client_info())
+  skip_if_offline()
+  skip_on_cran()
+  expect_error({
+    dse_sh_process(list(foo = "bar"), list(foo = "bar"), "", tempfile())
+  }, "Bad Request")
+})
+
