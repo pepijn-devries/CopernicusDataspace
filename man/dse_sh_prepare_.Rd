@@ -21,61 +21,73 @@ dse_sh_prepare_input(
 dse_sh_prepare_output(
   width = 512,
   height = 512,
-  output_identifier = "default",
-  output_format = "image/tiff",
+  output_format = "tiff",
   bbox,
   ...
 )
 }
 \arguments{
-\item{bounds}{TODO}
+\item{bounds}{A bounding box or geometry (classes \code{sf::bbox},
+\code{sf::sf}, \code{sf::sfc}) defining the boundaries of the output image.}
 
-\item{time_range}{TODO}
+\item{time_range}{A \code{vector} of two date-time values, specifying
+the time range for satellite data to include in the process.}
 
-\item{collection_name}{TODO}
+\item{collection_name}{A collection name. defaults to \code{"sentinel-2-l2a"}
+to ensure you get Sentinel-2 L2A data.}
 
-\item{id}{TODO}
+\item{id}{An identifier. Not documented by the API reference material.}
 
 \item{max_cloud_coverage}{Maximum cloud cover to be included in the
 process. Value between 0 and 100 (default) percent.}
 
-\item{mosaicking_order}{TODO}
+\item{mosaicking_order}{Sets the order of overlapping tiles from which
+the output result is mosaicked. Should be any of \code{"default"},
+\code{"mostRecent"}, \code{"leastRecent"}, or \code{"leastCC"}. See also
+\href{https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l2a/#mosaickingorder}{the API documentation}.}
 
-\item{upsampling}{TODO}
+\item{upsampling, downsampling}{Specify the interpolation technique
+when the output resolution is smaller or larger respectively than
+the available source data.
+See also
+\href{https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l2a/#processing-options}{the API documentation}.}
 
-\item{downsampling}{TODO}
+\item{harmonize_values}{A \code{logical} value indicating whether units
+are harmonised as indicated in
+\href{https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l2a/#harmonize-values}{the API documentation}.}
 
-\item{harmonize_values}{TODO}
+\item{...}{Ignored}
 
-\item{...}{TODO}
+\item{width, height}{Size of the output image in pixels. These
+are ignored if \code{bbox} is specified.}
 
-\item{width}{TODO}
+\item{output_format}{File format for the output file. Should
+be one of \code{"tiff"} (default), \code{"jpeg"}, \code{"png"}, or \code{"json"}.}
 
-\item{height}{TODO}
-
-\item{output_identifier}{TODO}
-
-\item{output_format}{TODO}
-
-\item{bbox}{description}
+\item{bbox}{You can optionally provide a bounding box (i.e., a
+copy of \code{bounds}) to calculate width and height with fixed
+aspect ratio. Width will be 512 be definition, the height is choosen
+such that it matches with the bounding box}
 }
 \value{
-TODO
+A named \code{list} that can be used as \code{input} and \code{output}
+argument to \code{\link[=dse_sh_process]{dse_sh_process()}}.
 }
 \description{
-TODO
+\code{\link[=dse_sh_process]{dse_sh_process()}} requires a named \code{list} for \code{input} and
+\code{output} settings. The functions documented here produce those lists
+required by such a process request.
 }
 \examples{
-# TODO
-library(sf)
-
-shape <- st_bbox(c(xmin = 5.261, ymin = 52.680,
-                   xmax = 5.319, ymax = 52.715), crs = 4326) |>
-           st_as_sfc()
 dse_sh_prepare_input(
   bounds = c(5.261, 52.680, 5.319, 52.715),
   time_range = c("2025-06-01 UTC", "2025-07-01 UTC")
 )
+
+library(sf)
+shape <- st_bbox(c(xmin = 5.261, ymin = 52.680,
+                   xmax = 5.319, ymax = 52.715), crs = 4326) |>
+           st_as_sfc()
 dse_sh_prepare_input(
   bounds = shape,
   time_range = c("2025-06-01 UTC", "2025-07-01 UTC")
