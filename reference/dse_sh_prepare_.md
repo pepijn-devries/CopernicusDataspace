@@ -1,6 +1,8 @@
 # Prepare Input and Output Fields for Sentinel Hub Request
 
-TODO
+[`dse_sh_process()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_process.md)
+requires a named `list` for `input` and `output` settings. The functions
+documented here produce those lists required by such a process request.
 
 ## Usage
 
@@ -21,8 +23,7 @@ dse_sh_prepare_input(
 dse_sh_prepare_output(
   width = 512,
   height = 512,
-  output_identifier = "default",
-  output_format = "image/tiff",
+  output_format = "tiff",
   bbox,
   ...
 )
@@ -32,19 +33,24 @@ dse_sh_prepare_output(
 
 - bounds:
 
-  TODO
+  A bounding box or geometry (classes `sf::bbox`,
+  [`sf::sf`](https://r-spatial.github.io/sf/reference/sf.html),
+  [`sf::sfc`](https://r-spatial.github.io/sf/reference/sfc.html))
+  defining the boundaries of the output image.
 
 - time_range:
 
-  TODO
+  A `vector` of two date-time values, specifying the time range for
+  satellite data to include in the process.
 
 - collection_name:
 
-  TODO
+  A collection name. defaults to `"sentinel-2-l2a"` to ensure you get
+  Sentinel-2 L2A data.
 
 - id:
 
-  TODO
+  An identifier. Not documented by the API reference material.
 
 - max_cloud_coverage:
 
@@ -53,47 +59,49 @@ dse_sh_prepare_output(
 
 - mosaicking_order:
 
-  TODO
+  Sets the order of overlapping tiles from which the output result is
+  mosaicked. Should be any of `"default"`, `"mostRecent"`,
+  `"leastRecent"`, or `"leastCC"`. See also [the API
+  documentation](https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l2a/#mosaickingorder).
 
-- upsampling:
+- upsampling, downsampling:
 
-  TODO
-
-- downsampling:
-
-  TODO
+  Specify the interpolation technique when the output resolution is
+  smaller or larger respectively than the available source data. See
+  also [the API
+  documentation](https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l2a/#processing-options).
 
 - harmonize_values:
 
-  TODO
+  A `logical` value indicating whether units are harmonised as indicated
+  in [the API
+  documentation](https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l2a/#harmonize-values).
 
 - ...:
 
-  TODO
+  Ignored
 
-- width:
+- width, height:
 
-  TODO
-
-- height:
-
-  TODO
-
-- output_identifier:
-
-  TODO
+  Size of the output image in pixels. These are ignored if `bbox` is
+  specified.
 
 - output_format:
 
-  TODO
+  File format for the output file. Should be one of `"tiff"` (default),
+  `"jpeg"`, `"png"`, or `"json"`.
 
 - bbox:
 
-  description
+  You can optionally provide a bounding box (i.e., a copy of `bounds`)
+  to calculate width and height with fixed aspect ratio. Width will be
+  512 be definition, the height is choosen such that it matches with the
+  bounding box
 
 ## Value
 
-TODO
+A named `list` that can be used as `input` and `output` argument to
+[`dse_sh_process()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_process.md).
 
 ## References
 
@@ -106,13 +114,6 @@ TODO
 ## Examples
 
 ``` r
-# TODO
-library(sf)
-#> Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE
-
-shape <- st_bbox(c(xmin = 5.261, ymin = 52.680,
-                   xmax = 5.319, ymax = 52.715), crs = 4326) |>
-           st_as_sfc()
 dse_sh_prepare_input(
   bounds = c(5.261, 52.680, 5.319, 52.715),
   time_range = c("2025-06-01 UTC", "2025-07-01 UTC")
@@ -147,6 +148,12 @@ dse_sh_prepare_input(
 #> 
 #> 
 #> 
+
+library(sf)
+#> Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE
+shape <- st_bbox(c(xmin = 5.261, ymin = 52.680,
+                   xmax = 5.319, ymax = 52.715), crs = 4326) |>
+           st_as_sfc()
 dse_sh_prepare_input(
   bounds = shape,
   time_range = c("2025-06-01 UTC", "2025-07-01 UTC")
