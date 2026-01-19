@@ -158,7 +158,7 @@ if (dse_has_client_info()) {
   dse_sh_process(input, output, evalscript, fl)
 
   enkhuizen <- read_stars(fl) |> suppressWarnings()
-  plot(enkhuizen, rgb = 1:3, axes = TRUE, main = "Enkhuizen")
+  plot(enkhuizen, rgb = 1:3, main = "Enkhuizen")
 }
 ```
 

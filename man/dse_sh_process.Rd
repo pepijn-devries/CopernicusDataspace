@@ -14,15 +14,25 @@ dse_sh_process(
 )
 }
 \arguments{
-\item{input}{TODO}
+\item{input}{A named \code{list} specifying the input satellite data to
+be processed with \code{evalscript} to an image. A correctly formatted
+\code{list} can be created with \code{\link[=dse_sh_prepare_input]{dse_sh_prepare_input()}}.}
 
-\item{output}{TODO}
+\item{output}{A named \code{list} specifying the how to present the output
+image, create with \code{evalscript}. A correctly formatted \code{list} can be
+created with \code{\link[=dse_sh_prepare_output]{dse_sh_prepare_output()}}.}
 
-\item{evalscript}{TODO}
+\item{evalscript}{A \code{character} string containing a piece of JavaScript,
+that will be run on the Sentinel Hub server. It is used to translate
+satellite data to pixel data in a georeferenced image. For more information
+on setting up such a script please consult
+\href{https://docs.sentinel-hub.com/api/latest/evalscript/}{the API documentation}.
+You can also use \code{\link[=dse_sh_get_custom_script]{dse_sh_get_custom_script()}} to obtain ready-to-go
+scripts from the SentinelHub repository.}
 
 \item{destination}{A file name to store the downloaded image.}
 
-\item{...}{TODO}
+\item{...}{Ignored}
 
 \item{token}{For authentication, many of the Dataspace Ecosystem uses
 an access token. Either provide your access token, or obtain one automatically
@@ -34,7 +44,10 @@ A \code{httr2_response} class object containing the
 location of the downloaded file at its \code{destination}.
 }
 \description{
-TODO
+Users can request raw satellite data, simple band combinations such
+as false colour composites, calculations of simple remote sensing
+indices like NDVI, or more advanced processing such as calculation
+of Leaf area index (LAI).
 }
 \examples{
 if (interactive() && dse_has_client_info()) {
@@ -63,5 +76,14 @@ if (interactive() && dse_has_client_info()) {
     enkhuizen <- read_stars(fl) |> suppressWarnings()
     plot(enkhuizen, rgb = 1:3, axes = TRUE, main = "Enkhuizen")
   }
+}
+}
+\references{
+\itemize{
+\item \url{https://docs.sentinel-hub.com/api/latest/api/process/}
+\item \url{https://apps.sentinel-hub.com/requests-builder/}
+\item \url{https://custom-scripts.sentinel-hub.com/}
+\item \url{https://github.com/sentinel-hub/custom-scripts}
+\item \url{https://docs.sentinel-hub.com/api/latest/evalscript/}
 }
 }

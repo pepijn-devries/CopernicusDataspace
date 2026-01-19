@@ -39,6 +39,7 @@ Imports:
     xml2
 Suggests:
     knitr,
+    lwgeom,
     rmarkdown,
     rstudioapi,
     stars,

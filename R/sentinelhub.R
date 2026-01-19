@@ -1,8 +1,3 @@
-
-# https://documentation.dataspace.copernicus.eu/APIs/SentinelHub/ApiReference.html
-# https://shapps.dataspace.copernicus.eu/requests-builder/
-# https://documentation.dataspace.copernicus.eu/APIs/SentinelHub/ApiReference/openapi.v1.yaml
-
 #' @include helpers.R
 #' @include account.R
 NULL
@@ -96,15 +91,34 @@ dse_sh_queryables <- memoise::memoise(.dse_sh_queryables)
 
 #' Process Satellite Data and Download Result
 #' 
-#' TODO
-#' @param input TODO
-#' @param output TODO
-#' @param evalscript TODO
+#' Users can request raw satellite data, simple band combinations such
+#' as false colour composites, calculations of simple remote sensing
+#' indices like NDVI, or more advanced processing such as calculation
+#' of Leaf area index (LAI).
+#' @param input A named `list` specifying the input satellite data to
+#' be processed with `evalscript` to an image. A correctly formatted
+#' `list` can be created with [dse_sh_prepare_input()].
+#' @param output A named `list` specifying the how to present the output
+#' image, create with `evalscript`. A correctly formatted `list` can be
+#' created with [dse_sh_prepare_output()].
+#' @param evalscript A `character` string containing a piece of JavaScript,
+#' that will be run on the Sentinel Hub server. It is used to translate
+#' satellite data to pixel data in a georeferenced image. For more information
+#' on setting up such a script please consult
+#' [the API documentation](https://docs.sentinel-hub.com/api/latest/evalscript/).
+#' You can also use [dse_sh_get_custom_script()] to obtain ready-to-go
+#' scripts from the SentinelHub repository.
 #' @param destination A file name to store the downloaded image.
-#' @param ... TODO
+#' @param ... Ignored
+#' @inheritParams dse_usage
 #' @returns A `httr2_response` class object containing the
 #' location of the downloaded file at its `destination`.
-#' @inheritParams dse_usage
+#' @references
+#'  * <https://docs.sentinel-hub.com/api/latest/api/process/>
+#'  * <https://apps.sentinel-hub.com/requests-builder/>
+#'  * <https://custom-scripts.sentinel-hub.com/>
+#'  * <https://github.com/sentinel-hub/custom-scripts>
+#'  * <https://docs.sentinel-hub.com/api/latest/evalscript/>
 #' @examples
 #' if (interactive() && dse_has_client_info()) {
 #' 
@@ -236,35 +250,51 @@ dse_sh_get_custom_script <-
 
 #' Prepare Input and Output Fields for Sentinel Hub Request
 #' 
-#' TODO
-#' @param bounds TODO
-#' @param time_range TODO
-#' @param collection_name TODO
-#' @param id TODO
+#' [dse_sh_process()] requires a named `list` for `input` and
+#' `output` settings. The functions documented here produce those lists
+#' required by such a process request.
+#' @param bounds A bounding box or geometry (classes `sf::bbox`,
+#' `sf::sf`, `sf::sfc`) defining the boundaries of the output image.
+#' @param time_range A `vector` of two date-time values, specifying
+#' the time range for satellite data to include in the process.
+#' @param collection_name A collection name. defaults to `"sentinel-2-l2a"`
+#' to ensure you get Sentinel-2 L2A data.
+#' @param id An identifier. Not documented by the API reference material.
 #' @param max_cloud_coverage Maximum cloud cover to be included in the
 #' process. Value between 0 and 100 (default) percent.
-#' @param mosaicking_order TODO
-#' @param upsampling TODO
-#' @param downsampling TODO
-#' @param harmonize_values TODO
-#' @param width TODO
-#' @param height TODO
-#' @param bbox description
-#' @param output_identifier TODO
-#' @param output_format TODO
-#' @param ... TODO
-#' @returns TODO
+#' @param mosaicking_order Sets the order of overlapping tiles from which
+#' the output result is mosaicked. Should be any of `"default"`,
+#' `"mostRecent"`, `"leastRecent"`, or `"leastCC"`. See also
+#' [the API documentation](https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l2a/#mosaickingorder).
+#' @param upsampling,downsampling Specify the interpolation technique
+#' when the output resolution is smaller or larger respectively than
+#' the available source data.
+#' See also
+#' [the API documentation](https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l2a/#processing-options).
+#' @param harmonize_values A `logical` value indicating whether units
+#' are harmonised as indicated in
+#' [the API documentation](https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l2a/#harmonize-values).
+#' @param width,height Size of the output image in pixels. These
+#' are ignored if `bbox` is specified.
+#' @param bbox You can optionally provide a bounding box (i.e., a
+#' copy of `bounds`) to calculate width and height with fixed
+#' aspect ratio. Width will be 512 be definition, the height is choosen
+#' such that it matches with the bounding box
+#' @param output_format File format for the output file. Should
+#' be one of `"tiff"` (default), `"jpeg"`, `"png"`, or `"json"`.
+#' @param ... Ignored
+#' @returns A named `list` that can be used as `input` and `output`
+#' argument to [dse_sh_process()].
 #' @examples
-#' # TODO
-#' library(sf)
-#' 
-#' shape <- st_bbox(c(xmin = 5.261, ymin = 52.680,
-#'                    xmax = 5.319, ymax = 52.715), crs = 4326) |>
-#'            st_as_sfc()
 #' dse_sh_prepare_input(
 #'   bounds = c(5.261, 52.680, 5.319, 52.715),
 #'   time_range = c("2025-06-01 UTC", "2025-07-01 UTC")
 #' )
+#' 
+#' library(sf)
+#' shape <- st_bbox(c(xmin = 5.261, ymin = 52.680,
+#'                    xmax = 5.319, ymax = 52.715), crs = 4326) |>
+#'            st_as_sfc()
 #' dse_sh_prepare_input(
 #'   bounds = shape,
 #'   time_range = c("2025-06-01 UTC", "2025-07-01 UTC")
@@ -353,14 +383,17 @@ dse_sh_prepare_input <-
 dse_sh_prepare_output <-
   function(
     width = 512, height = 512,
-    output_identifier = "default",
-    output_format     = "image/tiff",
+    output_format     = "tiff",
     bbox,
     ...
   ) {
     output_format <-
-      match.arg(output_format, c("image/tiff", "image/jpeg",
-                                 "image/png", "application/json"))
+      match.arg(output_format, c("tiff", "jpeg", "png", "json"))
+    
+    is_json <- output_format == "json"
+    output_format[is_json] <- "application/json"
+    output_format[!is_json] <- paste0("image/", output_format[!is_json])
+    
     if (!missing(bbox)) {
       points <-
         .prepare_bounds(bbox) |>
@@ -385,10 +418,12 @@ dse_sh_prepare_output <-
         function(id, fm) {
           list(identifier = id, format = list(type = fm))
         },
-        id = output_identifier,
+        id = "default",
         fm = output_format,
         SIMPLIFY = FALSE
       ) |>
       unname()
     result
   }
+
+## TODO https://sh.dataspace.copernicus.eu/api/v1/catalog/1.0.0/search
