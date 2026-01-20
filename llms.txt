@@ -114,24 +114,26 @@ TODO
 if (dse_has_client_info()) {
   bounds <- c(5.261, 52.680, 5.319, 52.715)
 
-  ## prepare input data
+  ## prepare input data:
   input <-
     dse_sh_prepare_input(
       bounds = bounds,
       time_range = c("2025-06-01 UTC", "2025-07-01 UTC")
     )
 
-  ## prepare ouput format
+  ## prepare ouput format:
   output <- dse_sh_prepare_output(bbox = bounds)
 
-  ## retrieve processing script
+  ## retrieve processing script:
   evalscript <- dse_sh_get_custom_script("/sentinel-2/l2a_optimized/")
 
+  ## destination file:
   fl <- tempfile(fileext = ".tiff")
   
   ## send request and download result:
   dse_sh_process(input, output, evalscript, fl)
 
+  ## read and plot result:
   enkhuizen <- read_stars(fl) |> suppressWarnings()
   plot(enkhuizen, rgb = 1:3, main = "Enkhuizen")
 }
@@ -196,6 +198,8 @@ By contributing to this project, you agree to abide by its terms.
   : List Sentinel Hub Collections
 - [`dse_sh_custom_scripts()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_custom_scripts.md)
   : List Custom JavaScripts for Processing Sentinel Hub Data
+- [`dse_sh_features()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_features.md)
+  : List Sentinel Hub Features
 - [`dse_sh_get_custom_script()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_get_custom_script.md)
   : Retrieve Custom JavaScripts to be Used by Sentinel Hub
 - [`dse_sh_prepare_input()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_prepare_.md)
@@ -205,6 +209,8 @@ By contributing to this project, you agree to abide by its terms.
   : Process Satellite Data and Download Result
 - [`dse_sh_queryables()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_queryables.md)
   : List Queryable Fields on Sentinel Hub
+- [`dse_sh_search_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_search_request.md)
+  : Create a Request for the SentinelHub Catalogue
 - [`dse_stac_client()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_client.md)
   : Obtain Information About the STAC Client
 - [`dse_stac_collections()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_collections.md)
@@ -220,23 +226,27 @@ By contributing to this project, you agree to abide by its terms.
 - [`dse_usage()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)
   [`dse_user_statistics()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)
   : Get Dataspace Account Information
-- [`st_intersects.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
-  [`st_intersects.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
+- [`st_intersects(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
+  [`st_intersects(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
   : Filter OData and STAC Requests Using Geometries
 - [`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
   : Perform a Request to Get a Response
-- [`filter.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`filter.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`compute.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`collect.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`collect.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`arrange.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`arrange.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`slice_head.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`slice_head.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`select.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`select.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  : Tidy Verbs for OData API and STAC Requests
+- [`filter(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`filter(`*`<sentinel_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`filter(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`compute(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`collect(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`collect(`*`<sentinel_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`collect(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`arrange(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`arrange(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`slice_head(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`slice_head(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`slice_head(`*`<sentinel_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`select(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`select(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`select(`*`<sentinel_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  : Tidy Verbs for OData, SentinelHub and STAC API Requests
 
 # Articles
 

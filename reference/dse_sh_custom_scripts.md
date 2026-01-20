@@ -23,6 +23,12 @@ dse_sh_custom_scripts(...)
 Returns a `data.frame` with custom scripts, containing a column with a
 title and one with a relative URL.
 
+## Details
+
+Make sure that you have sufficient monthly quota left to process images.
+You can check with
+[`dse_usage()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md).
+
 ## References
 
 - <https://custom-scripts.sentinel-hub.com/>

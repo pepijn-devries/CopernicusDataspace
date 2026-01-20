@@ -1,48 +1,75 @@
-# Tidy Verbs for OData API and STAC Requests
+# Tidy Verbs for OData, SentinelHub and STAC API Requests
 
-Implementation of tidy generics for features supported by either OData
-or STAC API requests. They can be called on objects of either class:
-`odata_request` or `stac_request`. The first is produced by
+Implementation of tidy generics for features supported any of OData,
+SentinelHub or STAC API requests. They can be called on objects any of
+the classe: `odata_request`, `sentinel_request` or `stac_request`. The
+first is produced by
 [`dse_odata_products_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_products_request.md)
 and
 [`dse_odata_bursts_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_bursts.md);
-the latter by
+the second by
+[`dse_sh_search_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_search_request.md);
+and the last by
 [`dse_stac_search_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_search_request.md).
 
 ## Usage
 
 ``` r
-filter.odata_request(.data, ..., .by = NULL, .preserve = FALSE)
+# S3 method for class 'odata_request'
+filter(.data, ..., .by = NULL, .preserve = FALSE)
 
-filter.stac_request(.data, ..., .by = NULL, .preserve = FALSE)
+# S3 method for class 'sentinel_request'
+filter(.data, ..., .by = NULL, .preserve = FALSE)
 
-compute.odata_request(x, skip = 0L, ...)
+# S3 method for class 'stac_request'
+filter(.data, ..., .by = NULL, .preserve = FALSE)
 
-collect.odata_request(x, skip = 0L, ...)
+# S3 method for class 'odata_request'
+compute(x, skip = 0L, ...)
 
-collect.stac_request(x, ...)
+# S3 method for class 'odata_request'
+collect(x, skip = 0L, ...)
 
-arrange.odata_request(.data, ..., .by_group = FALSE)
+# S3 method for class 'sentinel_request'
+collect(x, skip = 0L, ...)
 
-arrange.stac_request(.data, ..., .by_group = FALSE)
+# S3 method for class 'stac_request'
+collect(x, ...)
 
-slice_head.odata_request(.data, ..., n, prop, by = NULL)
+# S3 method for class 'odata_request'
+arrange(.data, ..., .by_group = FALSE)
 
-slice_head.stac_request(.data, ..., n, prop, by = NULL)
+# S3 method for class 'stac_request'
+arrange(.data, ..., .by_group = FALSE)
 
-select.odata_request(.data, ...)
+# S3 method for class 'odata_request'
+slice_head(.data, ..., n, prop, by = NULL)
 
-select.stac_request(.data, ...)
+# S3 method for class 'stac_request'
+slice_head(.data, ..., n, prop, by = NULL)
+
+# S3 method for class 'sentinel_request'
+slice_head(.data, ..., n, prop, by = NULL)
+
+# S3 method for class 'odata_request'
+select(.data, ...)
+
+# S3 method for class 'stac_request'
+select(.data, ...)
+
+# S3 method for class 'sentinel_request'
+select(.data, ...)
 ```
 
 ## Arguments
 
 - .data, x:
 
-  An object of either class `odata_request` or `stac_request`. These are
-  produced by
+  An object of any of the following classes `odata_request`,
+  `sentinel_request` or `stac_request`. These are produced by
   [`dse_odata_products_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_products_request.md),
-  [`dse_odata_bursts_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_bursts.md)
+  [`dse_odata_bursts_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_bursts.md),
+  [`dse_sh_search_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_search_request.md)
   and
   [`dse_stac_search_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_search_request.md)
 
@@ -52,9 +79,9 @@ select.stac_request(.data, ...)
 
 - skip:
 
-  Number of rows to skip when collecting results. The API never returns
-  more than 20 rows. Specify the number of rows to skip in order to get
-  results beyond the first 20 rows.
+  Number of rows to skip when collecting results. The APIs return a
+  limited number rows. Specify the number of rows to skip in order to
+  get results beyond the predefined limit.
 
 - n:
 
@@ -69,15 +96,15 @@ select.stac_request(.data, ...)
 ## Value
 
 All functions (except `collect()`) return a modified
-`stac_request`/`odata_request` object, containing the lazy tidy
-operations. `collect()` will return a
+`stac_request`/`sentinel_request`/`odata_request` object, containing the
+lazy tidy operations. `collect()` will return a
 [`data.frame()`](https://rdrr.io/r/base/data.frame.html) yielding the
 result of the request.
 
 ## Details
 
-The `odata_request` and `stac_request` class objects use lazy
-evaluation. This means that functions are only evaluated after calling
+These special request class objects use lazy evaluation. This means that
+functions are only evaluated after calling
 [`dplyr::collect()`](https://dplyr.tidyverse.org/reference/compute.html)
 on a request.
 
@@ -91,10 +118,11 @@ In order to manage server traffic, the OData API never returns more than
 20 rows. If you want to obtain results beyond the first 20 rows, you
 need to specify the `skip` argument.
 
-The STAC API limits its results to the first 10 rows. You can expand
-that limit with
+The Sentinel and STAC API limits its results to the first 10 rows. You
+can expand that limit with
 [`dplyr::slice_head()`](https://dplyr.tidyverse.org/reference/slice.html).
-For STAC the number of rows is capped at 10,000 records.
+For STAC the number of rows is capped at 10,000 records. For SentinelHub
+this number is capped at 100.
 
 ### Deviations
 
@@ -115,12 +143,12 @@ from its tidy standards. Most notably:
 
 - Grouping is not supported
 
-- Only tidy methods documented on this page are supported for
-  `odata_request` and `stac_request` objects. If you want to apply the
-  full spectrum of tidyverse methods, call
+- Only tidy methods listed in the usage section are supported for the
+  special request class objects. If you want to apply the full spectrum
+  of tidyverse methods, call
   [`dplyr::collect()`](https://dplyr.tidyverse.org/reference/compute.html)
-  on the `stac_request`/`odata_request` object first. That will return a
-  normal `data.frame`, which can be manipulated further.
+  on the request class object first. That will return a normal
+  `data.frame`, which can be manipulated further.
 
 ## Examples
 
@@ -146,5 +174,15 @@ if (interactive()) {
     filter(`sat:orbit_state` == "ascending") |>
     arrange("id") |>
     collect()
+  
+  if (dse_has_client_info()) {
+    dse_sh_search_request(
+      collection = "sentinel-2-l2a",
+      bbox       = c(5.261, 52.680, 5.319, 52.715),
+      datetime   = c("2025-01-01 UTC", "2025-01-31 UTC")
+    ) |>
+      filter(`eo:cloud_cover` <= 10) |>
+      collect()
+  }
 }
 ```
