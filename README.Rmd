@@ -139,24 +139,26 @@ TODO
 if (dse_has_client_info()) {
   bounds <- c(5.261, 52.680, 5.319, 52.715)
 
-  ## prepare input data
+  ## prepare input data:
   input <-
     dse_sh_prepare_input(
       bounds = bounds,
       time_range = c("2025-06-01 UTC", "2025-07-01 UTC")
     )
 
-  ## prepare ouput format
+  ## prepare ouput format:
   output <- dse_sh_prepare_output(bbox = bounds)
 
-  ## retrieve processing script
+  ## retrieve processing script:
   evalscript <- dse_sh_get_custom_script("/sentinel-2/l2a_optimized/")
 
+  ## destination file:
   fl <- tempfile(fileext = ".tiff")
   
   ## send request and download result:
   dse_sh_process(input, output, evalscript, fl)
 
+  ## read and plot result:
   enkhuizen <- read_stars(fl) |> suppressWarnings()
   plot(enkhuizen, rgb = 1:3, main = "Enkhuizen")
 }

@@ -4,11 +4,13 @@
 \alias{tidy_verbs}
 \alias{filter}
 \alias{filter.odata_request}
+\alias{filter.sentinel_request}
 \alias{filter.stac_request}
 \alias{compute}
 \alias{compute.odata_request}
 \alias{collect}
 \alias{collect.odata_request}
+\alias{collect.sentinel_request}
 \alias{collect.stac_request}
 \alias{arrange}
 \alias{arrange.odata_request}
@@ -16,44 +18,55 @@
 \alias{slice_head}
 \alias{slice_head.odata_request}
 \alias{slice_head.stac_request}
+\alias{slice_head.sentinel_request}
 \alias{select}
 \alias{select.odata_request}
 \alias{select.stac_request}
-\title{Tidy Verbs for OData API and STAC Requests}
+\alias{select.sentinel_request}
+\title{Tidy Verbs for OData, SentinelHub and STAC API Requests}
 \usage{
-filter.odata_request(.data, ..., .by = NULL, .preserve = FALSE)
+\method{filter}{odata_request}(.data, ..., .by = NULL, .preserve = FALSE)
 
-filter.stac_request(.data, ..., .by = NULL, .preserve = FALSE)
+\method{filter}{sentinel_request}(.data, ..., .by = NULL, .preserve = FALSE)
 
-compute.odata_request(x, skip = 0L, ...)
+\method{filter}{stac_request}(.data, ..., .by = NULL, .preserve = FALSE)
 
-collect.odata_request(x, skip = 0L, ...)
+\method{compute}{odata_request}(x, skip = 0L, ...)
 
-collect.stac_request(x, ...)
+\method{collect}{odata_request}(x, skip = 0L, ...)
 
-arrange.odata_request(.data, ..., .by_group = FALSE)
+\method{collect}{sentinel_request}(x, skip = 0L, ...)
 
-arrange.stac_request(.data, ..., .by_group = FALSE)
+\method{collect}{stac_request}(x, ...)
 
-slice_head.odata_request(.data, ..., n, prop, by = NULL)
+\method{arrange}{odata_request}(.data, ..., .by_group = FALSE)
 
-slice_head.stac_request(.data, ..., n, prop, by = NULL)
+\method{arrange}{stac_request}(.data, ..., .by_group = FALSE)
 
-select.odata_request(.data, ...)
+\method{slice_head}{odata_request}(.data, ..., n, prop, by = NULL)
 
-select.stac_request(.data, ...)
+\method{slice_head}{stac_request}(.data, ..., n, prop, by = NULL)
+
+\method{slice_head}{sentinel_request}(.data, ..., n, prop, by = NULL)
+
+\method{select}{odata_request}(.data, ...)
+
+\method{select}{stac_request}(.data, ...)
+
+\method{select}{sentinel_request}(.data, ...)
 }
 \arguments{
-\item{.data, x}{An object of either class \code{odata_request} or \code{stac_request}.
+\item{.data, x}{An object of any of the following classes \code{odata_request},
+\code{sentinel_request} or \code{stac_request}.
 These are produced by
-\code{\link[=dse_odata_products_request]{dse_odata_products_request()}}, \code{\link[=dse_odata_bursts_request]{dse_odata_bursts_request()}} and
-\code{\link[=dse_stac_search_request]{dse_stac_search_request()}}}
+\code{\link[=dse_odata_products_request]{dse_odata_products_request()}}, \code{\link[=dse_odata_bursts_request]{dse_odata_bursts_request()}},
+\code{\link[=dse_sh_search_request]{dse_sh_search_request()}} and \code{\link[=dse_stac_search_request]{dse_stac_search_request()}}}
 
 \item{...}{Data masking expressions, or arguments passed to embedded functions}
 
-\item{skip}{Number of rows to skip when collecting results. The API
-never returns more than 20 rows. Specify the number of rows to skip
-in order to get results beyond the first 20 rows.}
+\item{skip}{Number of rows to skip when collecting results. The APIs
+return a limited number rows. Specify the number of rows to skip
+in order to get results beyond the predefined limit.}
 
 \item{n}{Maximum number of rows to return.}
 
@@ -63,20 +76,22 @@ is not allowed for an OData API request or is otherwise not supported.}
 }
 \value{
 All functions (except \code{collect()}) return a modified
-\code{stac_request}/\code{odata_request}
+\code{stac_request}/\code{sentinel_request}/\code{odata_request}
 object, containing the lazy tidy operations. \code{collect()} will return a
 \code{data.frame()} yielding the result of the request.
 }
 \description{
-Implementation of tidy generics for features supported by either OData or STAC
-API requests.
-They can be called on objects of either class: \code{odata_request} or \code{stac_request}.
+Implementation of tidy generics for features supported any of OData,
+SentinelHub or STAC API requests.
+They can be called on objects any of the classe: \code{odata_request},
+\code{sentinel_request} or \code{stac_request}.
 The first is produced
 by \code{\link[=dse_odata_products_request]{dse_odata_products_request()}} and \code{\link[=dse_odata_bursts_request]{dse_odata_bursts_request()}};
-the latter by \code{\link[=dse_stac_search_request]{dse_stac_search_request()}}.
+the second by \code{\link[=dse_sh_search_request]{dse_sh_search_request()}}; and the last
+by \code{\link[=dse_stac_search_request]{dse_stac_search_request()}}.
 }
 \details{
-The \code{odata_request} and \code{stac_request} class objects use lazy evaluation.
+These special request class objects use lazy evaluation.
 This means that functions are only evaluated after calling \code{\link[dplyr:compute]{dplyr::collect()}}
 on a request.
 
@@ -89,8 +104,9 @@ In order to manage server traffic, the OData API never returns more than
 20 rows. If you want to obtain results beyond the first 20 rows, you need
 to specify the \code{skip} argument.
 
-The STAC API limits its results to the first 10 rows. You can expand that limit
+The Sentinel and STAC API limits its results to the first 10 rows. You can expand that limit
 with \code{\link[dplyr:slice]{dplyr::slice_head()}}. For STAC the number of rows is capped at 10,000 records.
+For SentinelHub this number is capped at 100.
 }
 
 \subsection{Deviations}{
@@ -104,9 +120,9 @@ affact which columns are selected. Also, tidy selection helpers like
 \item \code{\link[dplyr:arrange]{dplyr::arrange()}}: OData only allows to sort up to 32 columns.
 Adding more columns will produce a warning.
 \item Grouping is not supported
-\item Only tidy methods documented on this page are supported for \code{odata_request}
-and \code{stac_request} objects. If you want to apply the full spectrum of
-tidyverse methods, call \code{dplyr::collect()} on the \code{stac_request}/\code{odata_request}
+\item Only tidy methods listed in the usage section are supported for the
+special request class objects. If you want to apply the full spectrum of
+tidyverse methods, call \code{dplyr::collect()} on the request class
 object first. That will return a normal \code{data.frame}, which can be
 manipulated further.
 }
@@ -126,5 +142,15 @@ if (interactive()) {
     filter(`sat:orbit_state` == "ascending") |>
     arrange("id") |>
     collect()
+  
+  if (dse_has_client_info()) {
+    dse_sh_search_request(
+      collection = "sentinel-2-l2a",
+      bbox       = c(5.261, 52.680, 5.319, 52.715),
+      datetime   = c("2025-01-01 UTC", "2025-01-31 UTC")
+    ) |>
+      filter(`eo:cloud_cover` <= 10) |>
+      collect()
+  }
 }
 }

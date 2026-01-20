@@ -19,6 +19,10 @@ for processing data. This functions lists scripts available
 from \url{https://github.com/sentinel-hub/custom-scripts}. They
 can be retrieved with \code{\link[=dse_sh_get_custom_script]{dse_sh_get_custom_script()}}.
 }
+\details{
+Make sure that you have sufficient monthly quota left to
+process images. You can check with \code{\link[=dse_usage]{dse_usage()}}.
+}
 \examples{
 if (interactive()) {
   dse_sh_custom_scripts()
