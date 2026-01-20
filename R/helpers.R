@@ -1,3 +1,10 @@
+.wrap_sh_features <- function(features) {
+  links <- features$links |> .simplify()
+  features <- features$features |> .simplify()
+  attr(features, "links") <- links
+  features
+}
+
 .simplify <- function(x, do_unnest = TRUE, what = "") {
   if (any(c("Product", "product") %in% names(x))) {
     nm <- names(x)

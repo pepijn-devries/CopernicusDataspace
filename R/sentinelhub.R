@@ -3,6 +3,7 @@
 NULL
 
 .sh_catalog_url <- paste0(.sh_api_url, "/catalog/1.0.0")
+.sh_search_url <- paste0(.sh_catalog_url, "/search")
 
 .sh_error <- function(resp) {
   if (grepl("text/html", resp$headers$`content-type`)) {
@@ -44,6 +45,15 @@ NULL
   collections
 }
 
+.prepare_datetime <- function(datetime) {
+  datetime <-
+    lubridate::as_datetime(datetime) |>
+    format("%Y-%m-%dT%H:%M:%SZ")
+  datetime[is.na(datetime)] <- ".."
+  datetime <- paste(datetime, collapse = "/")
+  datetime
+}
+
 #' List Sentinel Hub Collections
 #' 
 #' List collections that are available from the Sentinel Hub.
@@ -58,6 +68,50 @@ NULL
 #' @include helpers.R
 #' @export
 dse_sh_collections <- memoise::memoise(.dse_sh_collections)
+
+#' List Sentinel Hub Features
+#' 
+#' List Sentinel Hub features for a specified period and region.
+#' @param collection A collection for which to list the features.
+#' See [dse_sh_collections()] for a list of Sentinel Hub collections.
+#' @param bbox An object that can be converted into a `bbox` class
+#' object (see [sf::st_bbox()]).
+#' @param datetime A date-time object, or a vector of two date time
+#' objects (in case of a range). Or an object that can be converted into
+#' a datetime object.
+#' @param limit The number of records to which the output is limited.
+#' Should be between 1 and 100, and defaults to 10.
+#' @inheritParams dse_usage
+#' @returns Returns a `data.frame` listing features available on
+#' SentinelHub for processing.
+#' @examples
+#' if (interactive() && dse_has_client_info()) {
+#'   dse_sh_features(
+#'     collection = "sentinel-2-l2a",
+#'     bbox       = c(5.261, 52.680, 5.319, 52.715),
+#'     datetime   = c("2025-01-01 UTC", "2025-01-07 UTC"))
+#' }
+#' @include helpers.R
+#' @export
+dse_sh_features <- function(
+    collection, bbox, datetime, limit = 10, ..., token = dse_access_token()) {
+  bbox <- .prepare_bounds(bbox) |> sf::st_bbox() |> as.numeric()
+  datetime <- .prepare_datetime(datetime)
+  
+  .sh_catalog_url |>
+    paste("collections", collection, "items", sep = "/") |>
+    httr2::request() |>
+    .add_token(token) |>
+    httr2::req_error(body = .sh_error) |>
+    httr2::req_url_query(datetime = datetime,
+                         bbox     = bbox,
+                         limit    = limit,
+                         .multi   = "comma") |>
+    httr2::req_perform() |>
+    httr2::resp_body_json() |>
+    .wrap_sh_features()
+  
+}
 
 .dse_sh_queryables <- function(collection, ..., token = dse_access_token()) {
   .sh_catalog_url |>
@@ -191,6 +245,9 @@ dse_sh_process <- function(
 #' for processing data. This functions lists scripts available
 #' from <https://github.com/sentinel-hub/custom-scripts>. They
 #' can be retrieved with [dse_sh_get_custom_script()].
+#' 
+#' Make sure that you have sufficient monthly quota left to
+#' process images. You can check with [dse_usage()].
 #' @references
 #'  * <https://custom-scripts.sentinel-hub.com/>
 #'  * <https://github.com/sentinel-hub/custom-scripts>
@@ -426,4 +483,53 @@ dse_sh_prepare_output <-
     result
   }
 
-## TODO https://sh.dataspace.copernicus.eu/api/v1/catalog/1.0.0/search
+#' Create a Request for the SentinelHub Catalogue
+#' 
+#' In order to perform a search using the STAC API, you first need to
+#' create a request using [dse_sh_search_request()]. This creates
+#' a [httr2::request()] to which tidy verbs `?tidy_verbs` can be applied
+#' (e.g., [dplyr::select()] and [dplyr::filter()].
+#' Results are retrieved by calling [dplyr::collect()] on the request.
+#' @inheritParams dse_sh_features
+#' @param ... Ignored
+#' @inheritParams dse_usage
+#' @returns Returns a `sentinel_request` class object, which inherits
+#' from the `httr2::request` class. Call [dplyr::collect()] on it to
+#' retrieve results.
+#' @references
+#'  * <https://docs.sentinel-hub.com/api/latest/api/catalog/>
+#' @examples
+#' if (interactive() && dse_has_client_info()) {
+#'   library(dplyr)
+#'   
+#'   dse_sh_search_request(
+#'     collection = "sentinel-2-l2a",
+#'     bbox       = c(5.261, 52.680, 5.319, 52.715),
+#'     datetime   = c("2025-01-01 UTC", "2025-01-31 UTC")
+#'   ) |>
+#'     filter(`eo:cloud_cover` <= 10) |>
+#'     collect()
+#' }
+#' @export
+dse_sh_search_request <-
+  function(collection, bbox, datetime, ..., token = dse_access_token()) {
+    bbox <- .prepare_bounds(bbox) |> sf::st_bbox() |> as.numeric()
+    datetime <- .prepare_datetime(datetime)
+    result <-
+      .sh_search_url |>
+      httr2::request() |>
+      httr2::req_method("POST") |>
+      httr2::req_error(body = .sh_error) |>
+      httr2::req_body_json(
+        list(
+          collections   = as.list(collection),
+          bbox          = bbox,
+          datetime      = datetime,
+          filter        = NA,
+          `filter-lang` = "cql2-json"
+        )
+      ) |>
+      .add_token(token)
+    class(result) <- union("sentinel_request", class(result))
+    result
+  }

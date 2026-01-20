@@ -1,16 +1,18 @@
 #' @include geometry.R
 NULL
 
-#' Tidy Verbs for OData API and STAC Requests
+#' Tidy Verbs for OData, SentinelHub and STAC API Requests
 #' 
-#' Implementation of tidy generics for features supported by either OData or STAC
-#' API requests.
-#' They can be called on objects of either class: `odata_request` or `stac_request`.
+#' Implementation of tidy generics for features supported any of OData,
+#' SentinelHub or STAC API requests.
+#' They can be called on objects any of the classe: `odata_request`,
+#' `sentinel_request` or `stac_request`.
 #' The first is produced
 #' by [dse_odata_products_request()] and [dse_odata_bursts_request()];
-#' the latter by [dse_stac_search_request()].
+#' the second by [dse_sh_search_request()]; and the last
+#' by [dse_stac_search_request()].
 #' 
-#' The `odata_request` and `stac_request` class objects use lazy evaluation.
+#' These special request class objects use lazy evaluation.
 #' This means that functions are only evaluated after calling [dplyr::collect()]
 #' on a request.
 #' 
@@ -23,8 +25,9 @@ NULL
 #' 20 rows. If you want to obtain results beyond the first 20 rows, you need
 #' to specify the `skip` argument.
 #' 
-#' The STAC API limits its results to the first 10 rows. You can expand that limit
+#' The Sentinel and STAC API limits its results to the first 10 rows. You can expand that limit
 #' with [dplyr::slice_head()]. For STAC the number of rows is capped at 10,000 records.
+#' For SentinelHub this number is capped at 100.
 #' 
 #' ## Deviations
 #' Due to limitations posed by the OData API, some tidyverse verbs deviate
@@ -36,25 +39,26 @@ NULL
 #'  * [dplyr::arrange()]: OData only allows to sort up to 32 columns.
 #'    Adding more columns will produce a warning.
 #'  * Grouping is not supported
-#'  * Only tidy methods documented on this page are supported for `odata_request`
-#'    and `stac_request` objects. If you want to apply the full spectrum of
-#'    tidyverse methods, call `dplyr::collect()` on the `stac_request`/`odata_request`
+#'  * Only tidy methods listed in the usage section are supported for the
+#'    special request class objects. If you want to apply the full spectrum of
+#'    tidyverse methods, call `dplyr::collect()` on the request class
 #'    object first. That will return a normal `data.frame`, which can be
 #'    manipulated further.
-#' @param .data,x An object of either class `odata_request` or `stac_request`.
+#' @param .data,x An object of any of the following classes `odata_request`,
+#' `sentinel_request` or `stac_request`.
 #' These are produced by
-#' [dse_odata_products_request()], [dse_odata_bursts_request()] and
-#' [dse_stac_search_request()]
+#' [dse_odata_products_request()], [dse_odata_bursts_request()],
+#' [dse_sh_search_request()] and [dse_stac_search_request()]
 #' @param n Maximum number of rows to return.
-#' @param skip Number of rows to skip when collecting results. The API
-#' never returns more than 20 rows. Specify the number of rows to skip
-#' in order to get results beyond the first 20 rows.
+#' @param skip Number of rows to skip when collecting results. The APIs
+#' return a limited number rows. Specify the number of rows to skip
+#' in order to get results beyond the predefined limit.
 #' @param by,.by,.by_group,.preserve,prop Arguments inherited from generic
 #' `dplyr` functions. Ignored in the current context as either grouping
 #' is not allowed for an OData API request or is otherwise not supported.
 #' @param ... Data masking expressions, or arguments passed to embedded functions
 #' @returns All functions (except `collect()`) return a modified
-#' `stac_request`/`odata_request`
+#' `stac_request`/`sentinel_request`/`odata_request`
 #' object, containing the lazy tidy operations. `collect()` will return a
 #' `data.frame()` yielding the result of the request.
 #' @examples
@@ -71,6 +75,16 @@ NULL
 #'     filter(`sat:orbit_state` == "ascending") |>
 #'     arrange("id") |>
 #'     collect()
+#'   
+#'   if (dse_has_client_info()) {
+#'     dse_sh_search_request(
+#'       collection = "sentinel-2-l2a",
+#'       bbox       = c(5.261, 52.680, 5.319, 52.715),
+#'       datetime   = c("2025-01-01 UTC", "2025-01-31 UTC")
+#'     ) |>
+#'       filter(`eo:cloud_cover` <= 10) |>
+#'       collect()
+#'   }
 #' }
 #' @name tidy_verbs
 #' @rdname tidy_verbs
@@ -86,25 +100,37 @@ filter.odata_request <-
     .data
   }
 
+.update_cql2_filter <- function(.data, ..., format) {
+  old_filter <- .data$body$data$filter
+  if (length(old_filter) == 1 && is.na(old_filter)) old_filter <- NULL
+  new_filter <-
+    .translate_filters(rlang::enquos(..., .named = TRUE)[[1]], format)
+  if (!is.null(old_filter)) {
+    new_filter <- list(
+      args = list(old_filter, new_filter),
+      op = "and"
+    )
+  }
+  .data |>
+    httr2::req_body_json_modify(
+      filter = new_filter
+    )
+}
+
+#' @rdname tidy_verbs
+#' @name filter
+#' @export filter.sentinel_request
+filter.sentinel_request <-
+  function (.data, ..., .by = NULL, .preserve = FALSE) {
+    .update_cql2_filter(.data, ..., format = "sh")
+  }
+
 #' @rdname tidy_verbs
 #' @name filter
 #' @export filter.stac_request
 filter.stac_request <-
   function (.data, ..., .by = NULL, .preserve = FALSE) {
-    old_filter <- .data$body$data$filter
-    if (length(old_filter) == 1 && is.na(old_filter)) old_filter <- NULL
-    new_filter <-
-      .translate_filters(rlang::enquos(..., .named = TRUE)[[1]], "stac")
-    if (!is.null(old_filter)) {
-      new_filter <- list(
-        args = list(old_filter, new_filter),
-        op = "and"
-      )
-    }
-    .data |>
-      httr2::req_body_json_modify(
-        filter = new_filter
-      )
+    .update_cql2_filter(.data, ..., format = "stac")
   }
 
 #' @rdname tidy_verbs
@@ -143,6 +169,19 @@ collect.odata_request <-
     at <- c(at, meta_columns = dplyr::select(result, dplyr::starts_with("@odata")))
     result <- dplyr::select(result, !dplyr::starts_with("@odata"))
     result
+  }
+
+#' @rdname tidy_verbs
+#' @name collect
+#' @export collect.sentinel_request
+collect.sentinel_request <-
+  function(x, skip = 0L, ...) {
+    if (skip > 0)
+      x <- httr2::req_body_json_modify(x, `next` = skip)
+    x |>
+      httr2::req_perform() |>
+      httr2::resp_body_json() |>
+      .wrap_sh_features()
   }
 
 #' @rdname tidy_verbs
@@ -186,6 +225,12 @@ arrange.stac_request <-
     )
   }
 
+.prop_error <- function(class) {
+  rlang::abort(c(
+    x = sprintf("'prop' argument is not implemented for %s requests", class),
+    i = "Use 'n' instead."))
+}
+
 #' @rdname tidy_verbs
 #' @name slice_head
 #' @export slice_head.odata_request
@@ -193,10 +238,7 @@ slice_head.odata_request <-
   function(.data, ..., n, prop, by = NULL) {
     if (!is.null(.data$odata$slice_head))
       warning("Previously defined slice will be replaced with latest")
-    if (!missing(prop))
-      rlang::abort(c(
-        x = "'prop' argument is not implemented for OData requests",
-        i = "Use 'n' instead."))
+    if (!missing(prop)) .prop_error("OData")
     .data$odata$slice_head <- n
     .data
   }
@@ -206,10 +248,17 @@ slice_head.odata_request <-
 #' @export slice_head.stac_request
 slice_head.stac_request <-
   function(.data, ..., n, prop, by = NULL) {
-    if (!missing(prop))
-      rlang::abort(c(
-        x = "'prop' argument is not implemented for STAC requests",
-        i = "Use 'n' instead."))
+    if (!missing(prop)) .prop_error("STAC")
+    
+    httr2::req_body_json_modify(.data, limit = n)
+  }
+
+#' @rdname tidy_verbs
+#' @name slice_head
+#' @export slice_head.sentinel_request
+slice_head.sentinel_request <-
+  function(.data, ..., n, prop, by = NULL) {
+    if (!missing(prop)) .prop_error("Sentinel")
     
     httr2::req_body_json_modify(.data, limit = n)
   }
@@ -224,18 +273,30 @@ select.odata_request <-
     .data
   }
 
+.update_fields <- function(.data, ...) {
+  new_select <-
+    rlang::enquos(..., .named = TRUE) |>
+    .column_select()
+  if (is.na(.data$body$data$fields)) .data$body$data$fields <- NULL
+  new_select <- c(.data$body$data$fields$include |> unlist(), new_select)
+  .data$body$data$fields$include <- as.list(new_select)
+  .data
+}
+
 #' @rdname tidy_verbs
 #' @name select
 #' @export select.stac_request
 select.stac_request <-
   function(.data, ...) {
-    new_select <-
-      rlang::enquos(..., .named = TRUE) |>
-      .column_select()
-    if (is.na(.data$body$data$fields)) .data$body$data$fields <- NULL
-    new_select <- c(.data$body$data$fields$include |> unlist(), new_select)
-    .data$body$data$fields$include <- as.list(new_select)
-    .data
+    .update_fields(.data, ...)
+  }
+
+#' @rdname tidy_verbs
+#' @name select
+#' @export select.sentinel_request
+select.sentinel_request <-
+  function(.data, ...) {
+    .update_fields(.data, ...)
   }
 
 .parse_filters <- function(.data) {
@@ -367,9 +428,17 @@ select.stac_request <-
                "isNull", "in", "between")
 )
 
+.sh_operators <- dplyr::tibble(
+  r_code = list(`==`, `!=`, `>`, `>=`, `<`, `<=`, `&`),
+  api_code = c("=", "<>", ">", ">=", "<", "<=", "and")
+)
+
 .match_function <- function(expr, format = "odata") {
-  base <- if (format == "odata") .odata_operators else
-    if (format == "stac") .stac_operators
+  base <- if (format == "odata") .odata_operators else {
+    if (format == "stac") .stac_operators else {
+      if(format == "sh") .sh_operators
+    }
+  }
   result <- NA_integer_
   for (i in seq_len(nrow(base))) {
     if (identical(base$r_code[[i]], rlang::eval_tidy(expr))) {
@@ -377,17 +446,18 @@ select.stac_request <-
       break
     }
   }
-  return (result)
+  return (list(idx = result, lookup = base))
 }
 
 .translate_filters <- function(quo, format = "odata") {
-  expr <- rlang::quo_get_expr(quo)
-  env  <- rlang::quo_get_env(quo)
-  idx <- .match_function(expr[[1]], format)
+  expr   <- rlang::quo_get_expr(quo)
+  env    <- rlang::quo_get_env(quo)
+  idx    <- .match_function(expr[[1]], format)
+  lookup <- idx$lookup
+  idx    <- idx$idx
   op <- ""
   if (!is.na(idx)) {
-    op <- if (format == "odata") .odata_operators$api_code[idx] else
-      if (format == "stac") .stac_operators$api_code[idx]
+    op <- lookup$api_code[idx]
     if (rlang::is_call(expr[[2]])) {
       left <- .translate_filters(rlang::as_quosure(expr[[2]], env), format)
       if (format == "odata") left <- sprintf("(%s)", left)
@@ -404,7 +474,7 @@ select.stac_request <-
       if (format == "odata") {
         if (is.character(result)) result <- sprintf("'%s'", result)
         return (paste(result, collapse = ","))
-      } else if (format == "stac") {
+      } else if (format %in% c("stac", "sh")) {
         return (result)
       }
     } else if (identical(`%in%`, rlang::eval_tidy(expr[[1]])) &&
@@ -438,7 +508,7 @@ select.stac_request <-
     }
   } else {
     if (length(expr) < 3) {
-      if (format == "stac") return( list( args = left, op = op ) )
+      if (format %in% c("stac", "sh")) return( list( args = left, op = op ) )
       return(sprintf(op, left))
     } else {
       quote_right <- TRUE
@@ -457,7 +527,7 @@ select.stac_request <-
           !is.list(right) && quote_right) {
         right <- lubridate::as_datetime(right)
         right <- lubridate::format_ISO8601(right, usetz = TRUE)
-        if (format == "stac") right <- list(timestamp = right)
+        if (format %in% c("sh", "stac")) right <- list(timestamp = right)
       }
       if (quote_right && is.character(right) && format == "odata")
         right <- sprintf("'%s'", right)
@@ -465,7 +535,7 @@ select.stac_request <-
 
     if (format == "odata") {
       return(sprintf(op, left, right))
-    } else if (format == "stac") {
+    } else if (format %in% c("stac", "sh")) {
       if (is.character(left)) {
         left <- strsplit(left, "[.]")[[1]]
         domain <- "property"
