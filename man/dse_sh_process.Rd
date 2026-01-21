@@ -49,6 +49,12 @@ as false colour composites, calculations of simple remote sensing
 indices like NDVI, or more advanced processing such as calculation
 of Leaf area index (LAI).
 }
+\details{
+Use \code{\link[=dse_sh_use_requests_builder]{dse_sh_use_requests_builder()}} if you want to use the graphical
+user interface at
+\href{https://apps.sentinel-hub.com/requests-builder/}{Sentinel Requests Builder}.
+to define a request.
+}
 \examples{
 if (interactive() && dse_has_client_info()) {
 

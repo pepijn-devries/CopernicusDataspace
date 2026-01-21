@@ -1,0 +1,50 @@
+curl -X POST https://services.sentinel-hub.com/api/v1/process \
+ -H 'Content-Type: multipart/form-data' \
+ -H 'Authorization: Bearer <YOU NEED TO LOGIN TO GET A TOKEN>' \
+ --form-string 'request={
+  "input": {
+    "bounds": {
+      "bbox": [
+        5.261,
+        52.68,
+        5.319,
+        52.715
+      ]
+    },
+    "data": [
+      {
+        "dataFilter": {
+          "timeRange": {
+            "from": "2025-06-01T00:00:00Z",
+            "to": "2025-07-01T00:00:00Z"
+          }
+        },
+        "type": "sentinel-2-l2a"
+      }
+    ]
+  },
+  "output": {
+    "width": 512,
+    "height": 509.62,
+    "responses": [
+      {
+        "identifier": "default",
+        "format": {
+          "type": "image/tiff"
+        }
+      }
+    ]
+  }
+}' \
+ --form-string 'evalscript=//VERSION=3
+
+function setup() {
+  return {
+    input: ["B02", "B03", "B04"],
+    output: { bands: 3 }
+  };
+}
+
+function evaluatePixel(sample) {
+  return [2.5 * sample.B04, 2.5 * sample.B03, 2.5 * sample.B02];
+}'

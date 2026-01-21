@@ -38,6 +38,7 @@ Imports:
     tidyr,
     xml2
 Suggests:
+    clipr,
     knitr,
     lwgeom,
     rmarkdown,
