@@ -66,6 +66,14 @@ dse_sh_process(
 A `httr2_response` class object containing the location of the
 downloaded file at its `destination`.
 
+## Details
+
+Use
+[`dse_sh_use_requests_builder()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_use_requests_builder.md)
+if you want to use the graphical user interface at [Sentinel Requests
+Builder](https://apps.sentinel-hub.com/requests-builder/). to define a
+request.
+
 ## References
 
 - <https://docs.sentinel-hub.com/api/latest/api/process/>

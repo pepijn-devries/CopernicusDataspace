@@ -198,6 +198,14 @@ install.packages("CopernicusDataspace", repos = c('https://pepijn-devries.r-univ
 <p><img src="reference/figures/README-download-sentinelhub-1.png" alt="Example of downloading with Sentinel Hub API" width="100%"></p>
 </div>
 <div class="section level2">
+<h2 id="function-names">Function Names<a class="anchor" aria-label="anchor" href="#function-names"></a>
+</h2>
+<p>Understanding the naming logic of the functions in this package, will help you navigating through all features, and effictively use them.</p>
+<p>Most function names in this package start with the acronym <code>dse</code> (Data Space Ecosystem). This is done to avoid confusion with other Copernicus packages (see below) and unintended masking of other functions.</p>
+<p>Exceptions are functions that (intentionally) mask functions from other packages (like <code><a href="reference/req_perform.html">req_perform()</a></code>), and functions that implement generic functions from tidyverse packages (see <code><a href="reference/tidy_verbs.html">?tidy_verbs</a></code>).</p>
+<p>Functions are also grouped to highlight the specific API they support. After the <code>dse</code> acronym, these function names contain a reference to the relevant API (<code>odata</code>, <code>stac</code> and <code>sh</code> (SentinelHub)). If a function name starts with <code>dse</code> but is not followed by a reference to a specific API, it will have a more generic purpose (like for instance authorisation).</p>
+</div>
+<div class="section level2">
 <h2 id="more-of-copernicus">More of Copernicus<a class="anchor" aria-label="anchor" href="#more-of-copernicus"></a>
 </h2>
 <p>More R packages for exploring other Copernicus data services:</p>
