@@ -163,6 +163,26 @@ if (dse_has_client_info()) {
 
 <img src="man/figures/README-download-sentinelhub-1.png" alt="Example of downloading with Sentinel Hub API" width="100%" />
 
+## Function Names
+
+Understanding the naming logic of the functions in this package, will
+help you navigating through all features, and effictively use them.
+
+Most function names in this package start with the acronym `dse` (Data
+Space Ecosystem). This is done to avoid confusion with other Copernicus
+packages (see below) and unintended masking of other functions.
+
+Exceptions are functions that (intentionally) mask functions from other
+packages (like `req_perform()`), and functions that implement generic
+functions from tidyverse packages (see `?tidy_verbs`).
+
+Functions are also grouped to highlight the specific API they support.
+After the `dse` acronym, these function names contain a reference to the
+relevant API (`odata`, `stac` and `sh` (SentinelHub)). If a function
+name starts with `dse` but is not followed by a reference to a specific
+API, it will have a more generic purpose (like for instance
+authorisation).
+
 ## More of Copernicus
 
 More R packages for exploring other Copernicus data services:

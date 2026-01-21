@@ -149,6 +149,11 @@ dse_sh_queryables <- memoise::memoise(.dse_sh_queryables)
 #' as false colour composites, calculations of simple remote sensing
 #' indices like NDVI, or more advanced processing such as calculation
 #' of Leaf area index (LAI).
+#' 
+#' Use [dse_sh_use_requests_builder()] if you want to use the graphical
+#' user interface at
+#' [Sentinel Requests Builder](https://apps.sentinel-hub.com/requests-builder/).
+#' to define a request.
 #' @param input A named `list` specifying the input satellite data to
 #' be processed with `evalscript` to an image. A correctly formatted
 #' `list` can be created with [dse_sh_prepare_input()].
@@ -533,3 +538,82 @@ dse_sh_search_request <-
     class(result) <- union("sentinel_request", class(result))
     result
   }
+
+#' Use Requests Builder to Send Processing Request to SentinelHub
+#' 
+#' Use
+#' [Sentinel Requests Builder](https://apps.sentinel-hub.com/requests-builder/)
+#' to compose a request. Copy the text from the 'Request Preview' panel
+#' and submit with this function. Use [dse_sh_process()] when you want
+#' to define a request in R, without using a web browser.
+#' @param build A `character` string copied from the Request Preview
+#' panel at
+#' [Sentinel Requests Builder](https://apps.sentinel-hub.com/requests-builder/).
+#' See `system.file("requests-builder.txt", package = "CopernicusDataspace")`
+#' for an example of such a text. When you omit this argument, this function
+#' will attempt to retrieve the text from the system's clipboard.
+#' @inheritParams dse_sh_process
+#' @param ... Ignored
+#' @inheritParams dse_usage
+#' @returns A `httr2_response` class object obtained after sending the request.
+#' @references
+#'  * <https://apps.sentinel-hub.com/requests-builder/>
+#' @examples
+#' ## Read text copied from 'Request Preview' panel on
+#' ## <https://apps.sentinel-hub.com/requests-builder/>:
+#' requests_builder <-
+#'   system.file("requests-builder.txt", package = "CopernicusDataspace") |>
+#'     readLines(warn = FALSE) |>
+#'     paste(collapse = "\n")
+#' 
+#' if (interactive() && dse_has_client_info()) {
+#'   dest <- tempfile(fileext = ".tiff")
+#'   dse_sh_use_requests_builder(requests_builder, destination = dest)
+#' }
+#' @export
+dse_sh_use_requests_builder <- function(
+  build, destination, ..., token = dse_access_token()
+) {
+  if (missing(build)) {
+    if (requireNamespace("clipr")) {
+      build <- clipr::read_clip()
+    } else {
+      if (clipr::clipr_available()) {
+        rlang::abort(
+          c(x = "Trying to get 'build', however, system clipboard is not accessible",
+            i = "Pass the request code explicitly as 'build' argument")
+        )
+      } else {
+        rlang::abort(
+          c(x = "Trying to get 'build' from clipboard, but missing required 'clipr' package",
+            i = "Install package 'clipr' and try again")
+        )
+      }
+    }
+  }
+  if (startsWith(build, "curl -X POST")) {
+    build <-
+      stringr::str_extract_all(
+        build,
+        "(?<=((-d \\')|(--form-string \\'request\\=)|(--form-string \\'evalscript\\=)))((.|\n|\r)*?)(?=\\')")
+    result <- jsonlite::fromJSON(
+      build[[1]][1],
+      simplifyVector = FALSE)
+    if (length(build[[1]]) > 1)
+      result$evalscript <- build[[1]][2] 
+  } else if (startsWith(build, "{")) {
+    result <- jsonlite::fromJSON(build, simplifyVector = FALSE)
+  } else {
+    rlang::abort(c(
+      x = "Cannot translate `build` to a SentinelHub request",
+      i = "Make sure that you use either the 'curl' or 'body' option on the requests-builder"
+    ))
+  }
+  dse_sh_process(
+    input       = result$input,
+    output      = result$output,
+    evalscript  = result$evalscript,
+    destination = destination,
+    token       = token
+  )
+}
