@@ -134,6 +134,7 @@ test_that("st_intersects warns when adding shape after bbox to stac request", {
 test_that("Non existing assets produce error on STAC", {
   skip_if_offline()
   skip_on_cran()
+  skip_if_not(dse_has_client_info())
   expect_error({
     dse_stac_download("foo", "bar", "foobar")
   }, "Asset not found")
