@@ -214,7 +214,7 @@ dse_stac_search_request <- function(collections, ids, ...) {
 #' @param destination Directory path where to store the downloaded file.
 #' @param ... Ignored
 #' @inheritParams dse_usage
-#' @inheritParams dse_s3
+#' @inheritParams dse_s3_download
 #' @returns Returns the path to the downloaded file.
 #' @examples
 #' if (interactive() && (dse_has_s3_secret() || dse_has_client_info())) {
@@ -229,7 +229,7 @@ dse_stac_download <- function(
     asset_id, asset, collection = dse_stac_guess_collection, destination, ...,
     s3_key    = dse_s3_key(),
     s3_secret = dse_s3_secret(),
-    token     = dse_access_token()) {
+    token     = dse_public_access_token()) {
 
   type <- if (s3_key != "" && s3_secret != "") "s3" else
     if (!is.null(token)) "odata" else
@@ -282,7 +282,6 @@ dse_stac_get_uri <- function(
     asset_id, asset, collection = dse_stac_guess_collection,
     type = "s3", ...) {
   if (is.function(collection)) collection <- collection(asset_id)
-  
   asset_info <-
     dse_stac_search_request(ids = asset_id, collections = collection) |>
     dplyr::select(!!paste0("assets.", asset)) |>

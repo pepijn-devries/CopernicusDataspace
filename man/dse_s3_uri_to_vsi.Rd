@@ -4,11 +4,17 @@
 \alias{dse_s3_uri_to_vsi}
 \title{Convert Uniform Resource Identifier to Virtual System Identifier}
 \usage{
-dse_s3_uri_to_vsi(uri)
+dse_s3_uri_to_vsi(uri, streaming = TRUE)
 }
 \arguments{
 \item{uri}{A Uniform Resource Identifier, pointing to an
 S3 storage file. You can retrieve one with \code{\link[=dse_stac_get_uri]{dse_stac_get_uri()}}.}
+
+\item{streaming}{A \code{logical} value that allows to toggle between
+\code{"\\\\vsis3\\\\"} and \code{"\\\\vsis3_streaming\\\\"} (default). The latter is
+faster for reading files from its resource, but does not allow
+random access. The first supports random access, but is not as fast
+at reading.}
 }
 \value{
 A \code{character} string representing the VSI

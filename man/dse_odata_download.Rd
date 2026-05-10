@@ -20,7 +20,7 @@ product or burst specifications.}
 \item{destination}{A \code{character} string specifying the directory path,
 where to store downloaded products}
 
-\item{...}{Arguments passed to \code{\link[=dse_s3]{dse_s3()}}.}
+\item{...}{Ignored.}
 
 \item{s3_key, s3_secret}{The s3 key and secret registered under your Data Space
 Ecosystem account}

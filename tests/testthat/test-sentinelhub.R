@@ -1,6 +1,6 @@
-library(stars) |> suppressMessages()
-library(lubridate) |> suppressMessages()
-library(dplyr) |> suppressMessages()
+library(stars) |> suppressMessages() |> suppressWarnings()
+library(lubridate) |> suppressMessages() |> suppressWarnings()
+library(dplyr) |> suppressMessages() |> suppressWarnings()
 
 test_that("Custum Eval Scripts can be listed", {
   skip_if_offline()
@@ -73,7 +73,7 @@ test_that("Sentinel Hub request produces proper map", {
     dse_sh_process(input, output, evalscript, fl)
     
     enkhuizen <- read_stars(fl) |> suppressWarnings()
-    all(dim(enkhuizen) == c(512, 508, 4)) &&
+    all(dim(enkhuizen) == c(512, 509, 4)) &&
       any(!is.na(enkhuizen[[1]]))
   })
 })

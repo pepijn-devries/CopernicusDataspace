@@ -1,4 +1,4 @@
-library(sf) |> suppressMessages()
+library(sf) |> suppressMessages() |> suppressWarnings()
 
 test_that("Invalid URI does not start S3 download", {
   expect_error({

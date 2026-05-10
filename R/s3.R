@@ -1,19 +1,53 @@
 #' @include login.R
 
-.download_s3 <- function(s3_path, destination, ps3) {
-  prefix  <- gsub("^/eodata/", "", s3_path)
-  objects <- ps3$list_objects("eodata", Prefix = prefix)
-  keys    <- lapply(objects$Contents, `[[`, "Key") |> unlist()
-  lapply(keys, \(k) {
-    fn   <- gsub(paste0(dirname(prefix), "[/]"), "", k)
+.download_s3 <- function(s3_path, destination, s3_key, s3_secret) {
+  base_url    <- gsub("^https://", "", .odata_s3_endpoint)
+  s3_path     <- paste0("s3:/", s3_path)
+  bucket      <- aws.s3::get_bucketname(s3_path)
+  object_key  <- aws.s3::get_objectkey(s3_path)
+  
+  bucket_list <- aws.s3::get_bucket_df(
+    bucket   = bucket,
+    prefix   = object_key,
+    base_url = base_url,
+    region   = "",
+    key      = s3_key,
+    secret   = s3_secret,
+    max = Inf
+  )
+  keys <- bucket_list$Key
+
+  result <- character(0)
+  cli::cli_progress_bar(
+    total = sum(as.numeric(bucket_list$Size)),
+    format = "Downloading file {i} of {nrow(bucket_list)} | {cli::pb_bar} {cli::pb_percent} | {cli::pb_eta_str}",
+    format_done = "Done")
+  for (i in seq_along(bucket_list$Key)) {
+    fn   <- gsub(paste0(dirname(object_key), "[/]"), "", bucket_list$Key[i])
     dest <- file.path(destination, fn)
     if (!dir.exists(dirname(dest))) {
       dirresult <- dir.create(dirname(dest), recursive = TRUE)
       if (!dirresult) stop("Failed to create subdirectory for download file")
     }
-    ps3$download_file("eodata", k, dest)
-    return(fn)
-  })
+    con_in <- aws.s3::s3connection(
+      bucket   = bucket,
+      object   = aws.s3::get_objectkey(keys[[i]]),
+      base_url = base_url,
+      region   = "",
+      key      = s3_key,
+      secret   = s3_secret
+    )
+    con_out <- file(dest, open = "wb")
+    repeat {
+      buffer <- readBin(con_in, "raw", 10*1024*1024)
+      if (length(buffer) == 0) break
+      writeBin(buffer, con_out)
+      cli::cli_progress_update(inc = length(buffer))
+    }
+    close(con_in); close(con_out)
+    result <- c(result, fn)
+  }
+  result
 }
 
 #' Download Asset Through Uniform Resource Identifier
@@ -26,7 +60,8 @@
 #' [dse_stac_search_request()] (see example).
 #' @param destination Destination path to a directory where to store the downloaded file(s)
 #' @param ... Ignored
-#' @inheritParams dse_s3
+#' @param s3_key,s3_secret The s3 key and secret registered under your Data Space
+#' Ecosystem account
 #' @returns A vector of file names stored at `destination`
 #' @examples
 #' if (interactive() && dse_has_s3_secret()) {
@@ -55,8 +90,7 @@ dse_s3_download <- function(
       i = "Make sure the path starts with 's3://'"
     ))
   uri <- gsub("^[s|S]3\\:\\/", "", uri)
-  ds3 <- dse_s3(s3_key = s3_key, s3_secret = s3_secret)
-  .download_s3(uri, destination, ds3) |> unlist()
+  .download_s3(uri, destination, s3_key, s3_secret)
 }
 
 #' Convert Uniform Resource Identifier to Virtual System Identifier
@@ -69,6 +103,11 @@ dse_s3_download <- function(
 #' to convert such an URI to a VIS.
 #' @param uri A Uniform Resource Identifier, pointing to an
 #' S3 storage file. You can retrieve one with [dse_stac_get_uri()].
+#' @param streaming A `logical` value that allows to toggle between
+#' `"\\vsis3\\"` and `"\\vsis3_streaming\\"` (default). The latter is
+#' faster for reading files from its resource, but does not allow
+#' random access. The first supports random access, but is not as fast
+#' at reading.
 #' @returns A `character` string representing the VSI
 #' @examples
 #' if (interactive()) {
@@ -78,8 +117,11 @@ dse_s3_download <- function(
 #'     dse_s3_uri_to_vsi()
 #' }
 #' @export
-dse_s3_uri_to_vsi <- function(uri) {
-  gsub("s3://", "/vsis3/", uri)
+dse_s3_uri_to_vsi <- function(uri, streaming = TRUE) {
+  vsi <- sprintf(
+    "/vsis3%s/",
+    ifelse(streaming, "_streaming", ""))
+  gsub("s3://", vsi, uri)
 }
 
 #' Set-up S3 Configuration for GDAL Library
@@ -90,7 +132,9 @@ dse_s3_uri_to_vsi <- function(uri) {
 #' by any package depending on the GDAL library. Most notably:
 #' `stars`, `terra`, and `gdalraster`.
 #' @param ... Ignored
-#' @inheritParams dse_s3
+#' @param region [AWS Region](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/)
+#' used in instantiating the S3 client
+#' @inheritParams dse_s3_download
 #' @returns Returns a `logical` value. `TRUE` if all variables
 #' were successfully set. `FALSE` otherwise.
 #' @examples

@@ -13,7 +13,7 @@ dse_s3_set_gdal_options(
 }
 \arguments{
 \item{region}{\href{https://aws.amazon.com/about-aws/global-infrastructure/regions_az/}{AWS Region}
-used in instantiating the client}
+used in instantiating the S3 client}
 
 \item{...}{Ignored}
 

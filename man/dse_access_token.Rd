@@ -2,11 +2,17 @@
 % Please edit documentation in R/login.R
 \name{dse_access_token}
 \alias{dse_access_token}
+\alias{dse_public_access_token}
 \alias{dse_client_id}
 \alias{dse_client_id<-}
+\alias{dse_username<-}
+\alias{dse_password<-}
 \alias{dse_client_secret}
+\alias{dse_username}
+\alias{dse_password}
 \alias{dse_client_secret<-}
 \alias{dse_has_client_info}
+\alias{dse_has_password}
 \title{Client Information and Access Token for the Data Space Store API}
 \usage{
 dse_access_token(
@@ -15,15 +21,27 @@ dse_access_token(
   ...
 )
 
+dse_public_access_token(username = dse_username(), password = dse_password())
+
 dse_client_id(...)
 
 dse_client_id(...) <- value
 
+dse_username(...) <- value
+
+dse_password(...) <- value
+
 dse_client_secret(...)
+
+dse_username(...)
+
+dse_password(...)
 
 dse_client_secret(...) <- value
 
 dse_has_client_info(...)
+
+dse_has_password(...)
 }
 \arguments{
 \item{client_id}{ID of the client registered under your account.}
@@ -32,9 +50,13 @@ dse_has_client_info(...)
 
 \item{...}{Ignored}
 
-\item{value}{Assignment value for setting \code{client_id} or \code{client_secret} as
-environment variable. Once set, it will persist for the remainder of the
-R session.}
+\item{username}{Your Copernicus Dataspace username (usually your e-mail address).}
+
+\item{password}{Your Copernicus Dataspace passeword for your account.}
+
+\item{value}{Assignment value for setting \code{username}, \code{password}, \code{client_id}
+or \code{client_secret} as environment variable. Once set, it will persist for
+the remainder of the R session.}
 }
 \value{
 In case of \code{dse_client_id()} and \code{dse_client_secret()}, you can get (or
@@ -46,7 +68,8 @@ whether client details (id and secret) are available as environmental variable.
 Note that if this function returns \code{TRUE}, it doesn't guarantee that the details
 are valid (just that they are available).
 
-In case of \code{dse_access_token()} a named \code{list} is returned, containing the
+In case of \code{dse_access_token()} and \code{dse_public_access_token()}
+a named \code{list} is returned, containing the
 access token (named \code{"token"}) and some additional meta information.
 }
 \description{
@@ -62,7 +85,7 @@ manage your usage and rate limiting (see also \code{\link[=dse_usage]{dse_usage(
 \code{\link[=dse_user_statistics]{dse_user_statistics()}}).
 
 Note that \href{https://aws.amazon.com/s3/}{Amazon Simple Storage Service (s3)}
-has separate authentication requirements. See \code{\link[=dse_s3]{dse_s3()}} for details.
+has separate authentication requirements. See \code{\link[=dse_s3_key]{dse_s3_key()}} for details.
 \subsection{Creating an Account}{
 
 First step is creating an account. You can create one by visiting the
@@ -87,12 +110,20 @@ You can avoid using your \code{client_id} and \code{client_secret} in your scrip
 setting them as environment variable. You can do this yourself manually by
 calling \verb{dse_client_id()<-} and \verb{dse_client_secret()<-} at the start of each session.
 
+You can download OData simply through https with just you username and
+password. You can also store those as environment variables for your convenience.
+If you name those \code{CDSE_API_USERNAME} and \code{CDSE_API_PASSWORD} respectively,
+they are picked up automatically with \code{\link[=dse_username]{dse_username()}} and \code{\link[=dse_password]{dse_password()}}.
+OData needs a public access token which is generated with
+\code{dse_public_access_token()}, which needs your username and password.
+
 You can also define them in your \code{.Rprofile} file with
 \code{Sys.setenv(CDSE_API_CLIENTID = "<your id>")} and
 \code{Sys.setenv(CDSE_API_CLIENTSECRET = "<your secret>")}. This way,
 they are set each time you start a new R session.
 
-The environment variables are used by default by \code{dse_access_token()}, so you
+The environment variables are used by default by \code{dse_access_token()},
+and \code{dse_public_access_token()} so you
 don't have to specify the client details as arguments.
 }
 
@@ -116,6 +147,9 @@ the R session.
 \examples{
 if (interactive() && dse_has_client_info()) {
   token <- dse_access_token()
+}
+if (interactive() && dse_has_password()) {
+  token_public <- dse_public_access_token()
 }
 }
 \references{
