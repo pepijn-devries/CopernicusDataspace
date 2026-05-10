@@ -12,6 +12,7 @@
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/news/index.html</loc></url>
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/CopernicusDataspace-package.html</loc></url>
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.html</loc></url>
+<url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_get_token_details.html</loc></url>
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_attributes.html</loc></url>
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_bursts.html</loc></url>
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_download.html</loc></url>
@@ -21,6 +22,9 @@
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_quicklook.html</loc></url>
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.html</loc></url>
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3_download.html</loc></url>
+<url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3_set_gdal_options.html</loc></url>
+<url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3_uri_to_vsi.html</loc></url>
+<url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_set_gdal_token.html</loc></url>
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_collections.html</loc></url>
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_custom_scripts.html</loc></url>
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_features.html</loc></url>
@@ -33,6 +37,7 @@
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_client.html</loc></url>
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_collections.html</loc></url>
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_download.html</loc></url>
+<url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_get_uri.html</loc></url>
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_guess_collection.html</loc></url>
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_queryables.html</loc></url>
 <url><loc>https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_search_request.html</loc></url>

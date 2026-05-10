@@ -13,7 +13,7 @@ dse_odata_download_path(
   node_path = "",
   destination,
   ...,
-  token = dse_access_token()
+  token = dse_public_access_token()
 )
 ```
 
@@ -53,7 +53,7 @@ filename of the downloaded file
 ## Examples
 
 ``` r
-if (interactive() && dse_has_client_info()) {
+if (interactive() && dse_has_password()) {
 
   dse_odata_download_path(
     product     = "2f497806-0101-5eea-83fa-c8f68bc56b0c",

@@ -11,7 +11,7 @@ for details."><meta property="og:image" content="https://pepijn-devries.github.i
 
     <a class="navbar-brand me-2" href="../index.html">CopernicusDataspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,9 +86,10 @@ you can't affect directly.</p></dd>
 
 
 <dt id="arg-mock">mock<a class="anchor" aria-label="anchor" href="#arg-mock"></a></dt>
-<dd><p>A mocking function. If supplied, this function is called with the
-request. It should return either NULL (if it doesn't want to handle the request)
-or a response (if it does). See <code><a href="https://httr2.r-lib.org/reference/with_mocked_responses.html" class="external-link">httr2::with_mock()</a></code>/ local_mock() for more details.</p></dd>
+<dd><p>A mocking function. If supplied, this function is called
+with the request. It should return either <code>NULL</code> (if it doesn't want to
+handle the request) or a <a href="https://httr2.r-lib.org/reference/response.html" class="external-link">response</a> (if it does). See
+<code><a href="https://httr2.r-lib.org/reference/with_mocked_responses.html" class="external-link">with_mocked_responses()</a></code>/<code>local_mocked_responses()</code> for more details.</p></dd>
 
 
 <dt id="arg-error-call">error_call<a class="anchor" aria-label="anchor" href="#arg-error-call"></a></dt>

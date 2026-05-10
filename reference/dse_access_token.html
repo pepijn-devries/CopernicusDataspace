@@ -11,7 +11,7 @@ your usage."><meta property="og:image" content="https://pepijn-devries.github.io
 
     <a class="navbar-brand me-2" href="../index.html">CopernicusDataspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,15 +57,27 @@ your usage.</p>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">dse_public_access_token</span><span class="op">(</span>username <span class="op">=</span> <span class="fu">dse_username</span><span class="op">(</span><span class="op">)</span>, password <span class="op">=</span> <span class="fu">dse_password</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">dse_client_id</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">dse_client_id</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
 <span></span>
+<span><span class="fu">dse_username</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="fu">dse_password</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
 <span><span class="fu">dse_client_secret</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">dse_username</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">dse_password</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">dse_client_secret</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
 <span></span>
-<span><span class="fu">dse_has_client_info</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">dse_has_client_info</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">dse_has_password</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -84,10 +96,18 @@ your usage.</p>
 <dd><p>Ignored</p></dd>
 
 
+<dt id="arg-username">username<a class="anchor" aria-label="anchor" href="#arg-username"></a></dt>
+<dd><p>Your Copernicus Dataspace username (usually your e-mail address).</p></dd>
+
+
+<dt id="arg-password">password<a class="anchor" aria-label="anchor" href="#arg-password"></a></dt>
+<dd><p>Your Copernicus Dataspace passeword for your account.</p></dd>
+
+
 <dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
-<dd><p>Assignment value for setting <code>client_id</code> or <code>client_secret</code> as
-environment variable. Once set, it will persist for the remainder of the
-R session.</p></dd>
+<dd><p>Assignment value for setting <code>username</code>, <code>password</code>, <code>client_id</code>
+or <code>client_secret</code> as environment variable. Once set, it will persist for
+the remainder of the R session.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -99,7 +119,8 @@ throughout your R session.</p>
 whether client details (id and secret) are available as environmental variable.
 Note that if this function returns <code>TRUE</code>, it doesn't guarantee that the details
 are valid (just that they are available).</p>
-<p>In case of <code>dse_access_token()</code> a named <code>list</code> is returned, containing the
+<p>In case of <code>dse_access_token()</code> and <code>dse_public_access_token()</code>
+a named <code>list</code> is returned, containing the
 access token (named <code>"token"</code>) and some additional meta information.</p>
     </div>
     <div class="section level2">
@@ -110,7 +131,7 @@ that can be used for authentication purposes in API requests. It is also used to
 manage your usage and rate limiting (see also <code><a href="dse_usage.html">dse_usage()</a></code> and
 <code><a href="dse_usage.html">dse_user_statistics()</a></code>).</p>
 <p>Note that <a href="https://aws.amazon.com/s3/" class="external-link">Amazon Simple Storage Service (s3)</a>
-has separate authentication requirements. See <code><a href="dse_s3.html">dse_s3()</a></code> for details.</p><div class="section">
+has separate authentication requirements. See <code><a href="dse_s3.html">dse_s3_key()</a></code> for details.</p><div class="section">
 <h3 id="creating-an-account">Creating an Account<a class="anchor" aria-label="anchor" href="#creating-an-account"></a></h3>
 
 
@@ -139,11 +160,18 @@ The latter is only displayed once. More detailed instructions are provided by th
 You can avoid using your <code>client_id</code> and <code>client_secret</code> in your script by
 setting them as environment variable. You can do this yourself manually by
 calling <code>dse_client_id()&lt;-</code> and <code>dse_client_secret()&lt;-</code> at the start of each session.</p>
+<p>You can download OData simply through https with just you username and
+password. You can also store those as environment variables for your convenience.
+If you name those <code>CDSE_API_USERNAME</code> and <code>CDSE_API_PASSWORD</code> respectively,
+they are picked up automatically with <code>dse_username()</code> and <code>dse_password()</code>.
+OData needs a public access token which is generated with
+<code>dse_public_access_token()</code>, which needs your username and password.</p>
 <p>You can also define them in your <code>.Rprofile</code> file with
 <code>Sys.setenv(CDSE_API_CLIENTID = "&lt;your id&gt;")</code> and
 <code>Sys.setenv(CDSE_API_CLIENTSECRET = "&lt;your secret&gt;")</code>. This way,
 they are set each time you start a new R session.</p>
-<p>The environment variables are used by default by <code>dse_access_token()</code>, so you
+<p>The environment variables are used by default by <code>dse_access_token()</code>,
+and <code>dse_public_access_token()</code> so you
 don't have to specify the client details as arguments.</p>
 </div>
 
@@ -179,6 +207,9 @@ the R session.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="fu">dse_has_client_info</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="va">token</span> <span class="op">&lt;-</span> <span class="fu">dse_access_token</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="fu">dse_has_password</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">token_public</span> <span class="op">&lt;-</span> <span class="fu">dse_public_access_token</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

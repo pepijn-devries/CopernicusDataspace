@@ -7,13 +7,6 @@ help you managing these details and setting up an s3 client.
 ## Usage
 
 ``` r
-dse_s3(
-  region = "us-east-1",
-  ...,
-  s3_key = dse_s3_key(),
-  s3_secret = dse_s3_secret()
-)
-
 dse_has_s3_secret()
 
 dse_s3_key(...)
@@ -27,30 +20,15 @@ dse_s3_secret(...) <- value
 
 ## Arguments
 
-- region:
-
-  [AWS
-  Region](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/)
-  used in instantiating the client
-
 - ...:
 
   Ignored
-
-- s3_key, s3_secret:
-
-  The s3 key and secret registered under your Data Space Ecosystem
-  account
 
 - value:
 
   Replacement value for the `s3_key` or `s3_secret`.
 
 ## Value
-
-`dse_s3()` returns a client for the Data Space Ecosystem s3 service. For
-more details see
-[`paws::s3()`](https://paws-r.r-universe.dev/paws/reference/s3.html).
 
 `dse_s3_key()` and `dse_s3_secret()` will return the requested s3
 details if set as environment variable (see details).
@@ -101,12 +79,3 @@ set each time you start a new R session.
 ## References
 
 <https://documentation.dataspace.copernicus.eu/APIs/S3.html>
-
-## Examples
-
-``` r
-if (interactive() && dse_has_s3_secret()) {
-  my_s3 <- dse_s3()
-  my_s3$get_object(Bucket = "", Key = "") |> summary()
-}
-```

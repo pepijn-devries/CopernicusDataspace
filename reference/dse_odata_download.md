@@ -40,8 +40,7 @@ dse_odata_download(
 
 - ...:
 
-  Arguments passed to
-  [`dse_s3()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md).
+  Ignored.
 
 - s3_key, s3_secret:
 

@@ -56,10 +56,12 @@ req_perform(
 - mock:
 
   A mocking function. If supplied, this function is called with the
-  request. It should return either NULL (if it doesn't want to handle
-  the request) or a response (if it does). See
-  [`httr2::with_mock()`](https://httr2.r-lib.org/reference/with_mocked_responses.html)/
-  local_mock() for more details.
+  request. It should return either `NULL` (if it doesn't want to handle
+  the request) or a
+  [response](https://httr2.r-lib.org/reference/response.html) (if it
+  does). See
+  [`with_mocked_responses()`](https://httr2.r-lib.org/reference/with_mocked_responses.html)/`local_mocked_responses()`
+  for more details.
 
 - error_call:
 

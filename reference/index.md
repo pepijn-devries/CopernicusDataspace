@@ -3,12 +3,20 @@
 ## All functions
 
 - [`dse_access_token()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
+  [`dse_public_access_token()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
   [`dse_client_id()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
   [`` `dse_client_id<-`() ``](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
+  [`` `dse_username<-`() ``](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
+  [`` `dse_password<-`() ``](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
   [`dse_client_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
+  [`dse_username()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
+  [`dse_password()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
   [`` `dse_client_secret<-`() ``](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
   [`dse_has_client_info()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
+  [`dse_has_password()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
   : Client Information and Access Token for the Data Space Store API
+- [`dse_get_token_details()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_get_token_details.md)
+  : Decode Access Token
 - [`dse_odata_attributes()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_attributes.md)
   : List OData Attributes
 - [`dse_odata_bursts_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_bursts.md)
@@ -25,8 +33,7 @@
   : Create a OData Request for a Data Space Ecosystem Product
 - [`dse_odata_quicklook()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_quicklook.md)
   : Download a Quicklook for a Product
-- [`dse_s3()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
-  [`dse_has_s3_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
+- [`dse_has_s3_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
   [`dse_s3_key()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
   [`` `dse_s3_key<-`() ``](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
   [`dse_s3_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
@@ -34,6 +41,12 @@
   : Setup Amazon Simple Storage Service for the Data Space Ecosystem
 - [`dse_s3_download()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3_download.md)
   : Download Asset Through Uniform Resource Identifier
+- [`dse_s3_set_gdal_options()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3_set_gdal_options.md)
+  : Set-up S3 Configuration for GDAL Library
+- [`dse_s3_uri_to_vsi()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3_uri_to_vsi.md)
+  : Convert Uniform Resource Identifier to Virtual System Identifier
+- [`dse_set_gdal_token()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_set_gdal_token.md)
+  : Set Copernicus Data Space Ecosystem Access Token for GDAL Driver
 - [`dse_sh_collections()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_collections.md)
   : List Sentinel Hub Collections
 - [`dse_sh_custom_scripts()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_custom_scripts.md)
@@ -59,6 +72,8 @@
   : Get a Summary of all Data Space Ecosystem Collections
 - [`dse_stac_download()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_download.md)
   : Download Asset From STAC Catalogue
+- [`dse_stac_get_uri()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_get_uri.md)
+  : Get a Uniform Resource Identifier (URI) for an Asset in a Product
 - [`dse_stac_guess_collection()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_guess_collection.md)
   : Guess the Collection id from an Asset id
 - [`dse_stac_queryables()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_queryables.md)

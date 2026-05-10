@@ -29,6 +29,7 @@ Other contributors:
   member\]
 
 - LVVN (Ministerie van Landbouw, Visserij, Voedselzekerheid en Natuur)
-  (03b1hdw57) \[funder\]
+  ([ROR](https://ror.org/03b1hdw57)) \[funder\]
 
-- WMR (Wageningen Marine Research) (013dzwk66) \[contractor\]
+- WMR (Wageningen Marine Research) ([ROR](https://ror.org/013dzwk66))
+  \[contractor\]

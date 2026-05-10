@@ -13,15 +13,27 @@ dse_access_token(
   ...
 )
 
+dse_public_access_token(username = dse_username(), password = dse_password())
+
 dse_client_id(...)
 
 dse_client_id(...) <- value
 
+dse_username(...) <- value
+
+dse_password(...) <- value
+
 dse_client_secret(...)
+
+dse_username(...)
+
+dse_password(...)
 
 dse_client_secret(...) <- value
 
 dse_has_client_info(...)
+
+dse_has_password(...)
 ```
 
 ## Arguments
@@ -38,11 +50,19 @@ dse_has_client_info(...)
 
   Ignored
 
+- username:
+
+  Your Copernicus Dataspace username (usually your e-mail address).
+
+- password:
+
+  Your Copernicus Dataspace passeword for your account.
+
 - value:
 
-  Assignment value for setting `client_id` or `client_secret` as
-  environment variable. Once set, it will persist for the remainder of
-  the R session.
+  Assignment value for setting `username`, `password`, `client_id` or
+  `client_secret` as environment variable. Once set, it will persist for
+  the remainder of the R session.
 
 ## Value
 
@@ -56,8 +76,9 @@ environmental variable. Note that if this function returns `TRUE`, it
 doesn't guarantee that the details are valid (just that they are
 available).
 
-In case of `dse_access_token()` a named `list` is returned, containing
-the access token (named `"token"`) and some additional meta information.
+In case of `dse_access_token()` and `dse_public_access_token()` a named
+`list` is returned, containing the access token (named `"token"`) and
+some additional meta information.
 
 ## Details
 
@@ -73,7 +94,7 @@ and
 Note that [Amazon Simple Storage Service
 (s3)](https://aws.amazon.com/s3/) has separate authentication
 requirements. See
-[`dse_s3()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
+[`dse_s3_key()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
 for details.
 
 ### Creating an Account
@@ -101,13 +122,22 @@ your script by setting them as environment variable. You can do this
 yourself manually by calling `dse_client_id()<-` and
 `dse_client_secret()<-` at the start of each session.
 
+You can download OData simply through https with just you username and
+password. You can also store those as environment variables for your
+convenience. If you name those `CDSE_API_USERNAME` and
+`CDSE_API_PASSWORD` respectively, they are picked up automatically with
+`dse_username()` and `dse_password()`. OData needs a public access token
+which is generated with `dse_public_access_token()`, which needs your
+username and password.
+
 You can also define them in your `.Rprofile` file with
 `Sys.setenv(CDSE_API_CLIENTID = "<your id>")` and
 `Sys.setenv(CDSE_API_CLIENTSECRET = "<your secret>")`. This way, they
 are set each time you start a new R session.
 
 The environment variables are used by default by `dse_access_token()`,
-so you don't have to specify the client details as arguments.
+and `dse_public_access_token()` so you don't have to specify the client
+details as arguments.
 
 ### Obtain Token and Validity
 
@@ -141,5 +171,8 @@ need to wipe the cache. You can do so by calling
 ``` r
 if (interactive() && dse_has_client_info()) {
   token <- dse_access_token()
+}
+if (interactive() && dse_has_password()) {
+  token_public <- dse_public_access_token()
 }
 ```

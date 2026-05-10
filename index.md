@@ -12,6 +12,7 @@ At the moment, the package is still only experimental. It can therefore
 only be installed from GitHub:
 
 ``` r
+
 remotes::install_github("pepijn-devries/CopernicusDataspace")
 ```
 
@@ -54,6 +55,7 @@ see
 for more details on working with the STAC catalogue.
 
 ``` r
+
 library(CopernicusDataspace)
 library(stars) ## For reading and plotting the downloaded file
 
@@ -81,6 +83,7 @@ This produces a tile in the Southern Ocean near Antarctica.
 ## Downloading Using OData API
 
 ``` r
+
 
 ## Only run this if client info is available:
 if (dse_has_client_info()) {
@@ -110,6 +113,7 @@ TODO
 TODO
 
 ``` r
+
 ## Only run this if client info is available:
 if (dse_has_client_info()) {
   bounds <- c(5.261, 52.680, 5.319, 52.715)

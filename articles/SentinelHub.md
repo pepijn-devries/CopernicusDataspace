@@ -7,6 +7,7 @@ TODO
 ## Data Exploration
 
 ``` r
+
 library(CopernicusDataspace)
 library(stars)
 #> Loading required package: abind
@@ -19,6 +20,7 @@ library(stars)
 TODO
 
 ``` r
+
 if (dse_has_client_info()) {
   bounds <- c(5.261, 52.680, 5.319, 52.715)
 
@@ -45,7 +47,7 @@ if (dse_has_client_info()) {
 #> POST https://sh.dataspace.copernicus.eu/api/v1/process
 #> Status: 200 OK
 #> Content-Type: image/tiff
-#> Body: On disk /tmp/RtmpyEcptJ/file222f324e5b25.tiff (484658 bytes)
+#> Body: On disk /tmp/RtmpajVd7t/file219e44616cb7.tiff (484658 bytes)
 ```
 
 ## Eval Scripts
@@ -54,6 +56,7 @@ if (dse_has_client_info()) {
 TODO
 
 ``` r
+
 if (dse_has_client_info()) {
   evalscript <-
     dse_sh_get_custom_script("/sentinel-2/simple_water_bodies_mapping-swbm/")
@@ -78,6 +81,7 @@ false-positives). It must be noted that here the script was just used as
 is, and might need some tweaking of parameters for better performance.
 
 ``` r
+
 if (dse_has_client_info()) {
   evalscript <-
     dse_sh_get_custom_script("/sentinel-2/land_use_with_linear_discriminant_analysis/")
