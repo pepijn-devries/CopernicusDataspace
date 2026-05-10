@@ -3,6 +3,7 @@ NULL
 
 .odata_url <- "https://catalogue.dataspace.copernicus.eu/odata/v1"
 .odata_s3_endpoint <- "https://eodata.dataspace.copernicus.eu"
+.authent_url <- "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token"
 
 ## Template used by roxygen for documentation:
 .roxygen_account <- function() {
@@ -15,10 +16,28 @@ NULL
   )
 }
 
+.dse_public_access_token <- function(username = dse_username(),
+                                     password = dse_password()) {
+  .authent_url |>
+    httr2::request() |>
+    httr2::req_headers(
+      `Content-Type` = "application/x-www-form-urlencoded"
+    ) |>
+    httr2::req_body_form(
+      username   = username,
+      password   = password,
+      grant_type = "password",
+      client_id  = "cdse-public"
+    ) |>
+    httr2::req_method("POST") |>
+    httr2::req_perform() |>
+    httr2::resp_body_json()
+}
+
 .dse_access_token <- function(client_id     = dse_client_id(),
                               client_secret = dse_client_secret(), ...) {
   access_token <-
-    "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token" |>
+    .authent_url |>
     httr2::request() |>
     httr2::req_body_form(
       client_id = client_id,
@@ -43,7 +62,7 @@ NULL
 #' [dse_user_statistics()]).
 #' 
 #' Note that [Amazon Simple Storage Service (s3)](https://aws.amazon.com/s3/)
-#' has separate authentication requirements. See [dse_s3()] for details.
+#' has separate authentication requirements. See [dse_s3_key()] for details.
 #' 
 #' `r .roxygen_account()`
 #' 
@@ -61,12 +80,20 @@ NULL
 #' setting them as environment variable. You can do this yourself manually by
 #' calling `dse_client_id()<-` and `dse_client_secret()<-` at the start of each session.
 #' 
+#' You can download OData simply through https with just you username and
+#' password. You can also store those as environment variables for your convenience.
+#' If you name those `CDSE_API_USERNAME` and `CDSE_API_PASSWORD` respectively,
+#' they are picked up automatically with [dse_username()] and [dse_password()].
+#' OData needs a public access token which is generated with
+#' `dse_public_access_token()`, which needs your username and password.
+#' 
 #' You can also define them in your `.Rprofile` file with
 #' `Sys.setenv(CDSE_API_CLIENTID = "<your id>")` and
 #' `Sys.setenv(CDSE_API_CLIENTSECRET = "<your secret>")`. This way,
 #' they are set each time you start a new R session.
 #' 
-#' The environment variables are used by default by `dse_access_token()`, so you
+#' The environment variables are used by default by `dse_access_token()`,
+#' and `dse_public_access_token()` so you
 #' don't have to specify the client details as arguments.
 #' 
 #' ## Obtain Token and Validity
@@ -85,9 +112,11 @@ NULL
 #' the R session.
 #' @param client_id ID of the client registered under your account.
 #' @param client_secret Secret provided for the client registered under your account.
-#' @param value Assignment value for setting `client_id` or `client_secret` as
-#' environment variable. Once set, it will persist for the remainder of the
-#' R session.
+#' @param username Your Copernicus Dataspace username (usually your e-mail address).
+#' @param password Your Copernicus Dataspace passeword for your account.
+#' @param value Assignment value for setting `username`, `password`, `client_id`
+#' or `client_secret` as environment variable. Once set, it will persist for
+#' the remainder of the R session.
 #' @param ... Ignored
 #' @seealso [dse_usage()]
 #' @seealso [dse_user_statistics()]
@@ -101,14 +130,22 @@ NULL
 #' Note that if this function returns `TRUE`, it doesn't guarantee that the details
 #' are valid (just that they are available).
 #' 
-#' In case of `dse_access_token()` a named `list` is returned, containing the
+#' In case of `dse_access_token()` and `dse_public_access_token()`
+#' a named `list` is returned, containing the
 #' access token (named `"token"`) and some additional meta information.
 #' @examples
 #' if (interactive() && dse_has_client_info()) {
 #'   token <- dse_access_token()
 #' }
+#' if (interactive() && dse_has_password()) {
+#'   token_public <- dse_public_access_token()
+#' }
 #' @export
 dse_access_token <- memoise::memoise(.dse_access_token) # Using memoise to avoid rate limiting errors
+
+#' @rdname dse_access_token
+#' @export
+dse_public_access_token <- memoise::memoise(.dse_public_access_token) # Using memoise to avoid rate limiting errors
 
 #' @rdname dse_access_token
 #' @export
@@ -124,8 +161,32 @@ dse_client_id <- function(...) {
 
 #' @rdname dse_access_token
 #' @export
+`dse_username<-` <- function(..., value) {
+  Sys.setenv(CDSE_API_USERNAME = as.character(value))
+}
+
+#' @rdname dse_access_token
+#' @export
+`dse_password<-` <- function(..., value) {
+  Sys.setenv(CDSE_API_PASSWORD = as.character(value))
+}
+
+#' @rdname dse_access_token
+#' @export
 dse_client_secret <- function(...) {
   Sys.getenv("CDSE_API_CLIENTSECRET")
+}
+
+#' @rdname dse_access_token
+#' @export
+dse_username <- function(...) {
+  Sys.getenv("CDSE_API_USERNAME")
+}
+
+#' @rdname dse_access_token
+#' @export
+dse_password <- function(...) {
+  Sys.getenv("CDSE_API_PASSWORD")
 }
 
 #' @rdname dse_access_token
@@ -138,6 +199,12 @@ dse_client_secret <- function(...) {
 #' @export
 dse_has_client_info <- function(...) {
   dse_client_id() != "" && dse_client_secret() != ""
+}
+
+#' @rdname dse_access_token
+#' @export
+dse_has_password <- function(...) {
+  dse_password() != ""
 }
 
 #' Setup Amazon Simple Storage Service for the Data Space Ecosystem
@@ -173,40 +240,14 @@ dse_has_client_info <- function(...) {
 #' `Sys.setenv(CDSE_API_S3SECRET = "<your secret>")`. This way,
 #' they are set each time you start a new R session.
 #' @references <https://documentation.dataspace.copernicus.eu/APIs/S3.html>
-#' @param region [AWS Region](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/)
-#' used in instantiating the client
 #' @param ... Ignored
-#' @param s3_key,s3_secret The s3 key and secret registered under your Data Space
-#' Ecosystem account
 #' @param value Replacement value for the `s3_key` or `s3_secret`.
-#' @returns [dse_s3()] returns a client for the Data Space Ecosystem s3 service.
-#' For more details see [paws::s3()].
-#' 
+#' @returns
 #' [dse_s3_key()] and [dse_s3_secret()] will return the requested s3 details
 #' if set as environment variable (see details).
 #' 
 #' [dse_has_s3_secret()] returns a logical value indicating whether s3 details
 #' (key and secret) are set. It will not determine whether the details are valid.
-#' @examples
-#' if (interactive() && dse_has_s3_secret()) {
-#'   my_s3 <- dse_s3()
-#'   my_s3$get_object(Bucket = "", Key = "") |> summary()
-#' }
-#' @export
-dse_s3 <- function(region = "us-east-1",
-                   ..., s3_key = dse_s3_key(), s3_secret = dse_s3_secret()) {
-  paws::s3(
-    credentials = list(
-      creds = list(
-        access_key_id     = s3_key,
-        secret_access_key = s3_secret
-      )
-    ),
-    endpoint = .odata_s3_endpoint,
-    region   = region
-  )
-}
-
 #' @rdname dse_s3
 #' @export
 dse_has_s3_secret <- function() {
@@ -235,4 +276,57 @@ dse_s3_secret <- function(...) {
 #' @export
 `dse_s3_secret<-` <- function(..., value) {
   Sys.setenv(CDSE_API_S3SECRET = as.character(value))
+}
+
+#' Set Copernicus Data Space Ecosystem Access Token for GDAL Driver
+#' 
+#' This function sets system environment variables, such
+#' that the GDAL library can access the Copernicus Data Space
+#' Ecosystem https storage. Note that these settings can be used
+#' by any package depending on the GDAL library. Most notably:
+#' `stars`, `terra`, and `gdalraster`.
+#' @inheritParams dse_usage
+#' @returns Returns a `logical` value. `TRUE` if all variables
+#' were successfully set. `FALSE` otherwise.
+#' @examples
+#' if (interactive() && dse_has_client_info() &&
+#'     requireNamespace("stars")) {
+#'   uri <-
+#'     dse_stac_get_uri(
+#'       "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
+#'       "B01", type = "odata")
+#'    
+#'   dse_set_gdal_token()
+#'
+#'   ## As this URI is zipped, it need to be downloaded.
+#'   ## But you can access it directly:
+#'   jp2 <- stars::read_stars(uri)
+#' }
+#' @export
+dse_set_gdal_token  <- function(token = dse_access_token()) {
+  Sys.setenv(GDAL_HTTP_AUTH = "BEARER") &&
+    Sys.setenv(GDAL_HTTP_BEARER = token$access_token)
+}
+
+#' Decode Access Token
+#' 
+#' This function decodes an access token and returns a named `list` with
+#' information from the token.
+#' @param token A token obtained with [dse_access_token()] or
+#' [dse_public_access_token()].
+#' @returns A named `list` with token info
+#' @examples
+#' if (interactive() && dse_has_client_info()) {
+#'   dse_get_token_details()
+#' }
+#' @export
+dse_get_token_details <- function(token = dse_access_token()) {
+  if (requireNamespace("jose")) {
+    jose::jwt_split(token$access_token)
+  } else {
+    rlang::abort(c(
+      x = "Namespace 'jose' not found",
+      i = "Install package 'jose' and try again"
+    ))
+  }
 }

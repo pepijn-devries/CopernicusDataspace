@@ -12,7 +12,7 @@ dse_stac_download(
   ...,
   s3_key = dse_s3_key(),
   s3_secret = dse_s3_secret(),
-  token = dse_access_token()
+  token = dse_public_access_token()
 )
 }
 \arguments{

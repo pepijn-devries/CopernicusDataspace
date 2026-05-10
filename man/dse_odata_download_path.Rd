@@ -9,7 +9,7 @@ dse_odata_download_path(
   node_path = "",
   destination,
   ...,
-  token = dse_access_token()
+  token = dse_public_access_token()
 )
 }
 \arguments{
@@ -37,7 +37,7 @@ Downloading data using the OData API is probably fastest by using
 which uses the https protocol to download a product.
 }
 \examples{
-if (interactive() && dse_has_client_info()) {
+if (interactive() && dse_has_password()) {
 
   dse_odata_download_path(
     product     = "2f497806-0101-5eea-83fa-c8f68bc56b0c",

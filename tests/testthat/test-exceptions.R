@@ -1,4 +1,4 @@
-library(sf) |> suppressMessages()
+library(sf) |> suppressMessages() |> suppressWarnings()
 
 test_that("Invalid URI does not start S3 download", {
   expect_error({
@@ -38,6 +38,7 @@ test_that("Files cannot be downloaded via STAC when authentication is missing", 
 test_that("Quicklook cannot be downloaded if it doesn't exist", {
   skip_if_offline()
   skip_on_cran()
+  skip_on_ci()
   expect_error({
     dse_odata_quicklook( "ce4576eb-975b-40ff-8319-e04b00d8d444", tempfile())
     NULL
@@ -134,6 +135,7 @@ test_that("st_intersects warns when adding shape after bbox to stac request", {
 test_that("Non existing assets produce error on STAC", {
   skip_if_offline()
   skip_on_cran()
+  skip_if_not(dse_has_client_info())
   expect_error({
     dse_stac_download("foo", "bar", "foobar")
   }, "Asset not found")

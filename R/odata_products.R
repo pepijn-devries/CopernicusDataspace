@@ -193,8 +193,8 @@ dse_odata_attributes <- memoise::memoise(.dse_odata_attributes)
 #' product or burst specifications.
 #' @param destination A `character` string specifying the directory path,
 #' where to store downloaded products
-#' @param ... Arguments passed to [dse_s3()].
-#' @inheritParams dse_s3
+#' @param ... Ignored.
+#' @inheritParams dse_s3_download
 #' @returns A vector of downloaded file names stored at `destination`
 #' @examples
 #' if (interactive() && dse_has_s3_secret()) {
@@ -216,10 +216,9 @@ dse_odata_attributes <- memoise::memoise(.dse_odata_attributes)
 dse_odata_download <- function(request, destination, ...,
                               s3_key = dse_s3_key(), s3_secret = dse_s3_secret()) {
   product_details <- request |> dplyr::collect()
-  ps3 <- dse_s3(..., s3_key = s3_key, s3_secret = s3_secret)
-  
+
   lapply(product_details$S3Path, .download_s3,
-         destination = destination, ps3 = ps3) |> unlist()
+         destination = destination, s3_key, s3_secret) |> unlist()
 }
 
 .path_to_url <- function(product, node_path) {
@@ -249,7 +248,7 @@ dse_odata_download <- function(request, destination, ...,
 #' @returns Returns a `httr2_response` class object. It's body will hold the filename
 #' of the downloaded file
 #' @examples
-#' if (interactive() && dse_has_client_info()) {
+#' if (interactive() && dse_has_password()) {
 #' 
 #'   dse_odata_download_path(
 #'     product     = "2f497806-0101-5eea-83fa-c8f68bc56b0c",
@@ -268,7 +267,7 @@ dse_odata_download <- function(request, destination, ...,
 #' @export
 dse_odata_download_path <- function(
     product, node_path = "", destination, ...,
-    token = dse_access_token()) {
+    token = dse_public_access_token()) {
   .np_error(node_path)
   
   node_details <-

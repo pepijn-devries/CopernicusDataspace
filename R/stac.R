@@ -214,7 +214,7 @@ dse_stac_search_request <- function(collections, ids, ...) {
 #' @param destination Directory path where to store the downloaded file.
 #' @param ... Ignored
 #' @inheritParams dse_usage
-#' @inheritParams dse_s3
+#' @inheritParams dse_s3_download
 #' @returns Returns the path to the downloaded file.
 #' @examples
 #' if (interactive() && (dse_has_s3_secret() || dse_has_client_info())) {
@@ -229,10 +229,59 @@ dse_stac_download <- function(
     asset_id, asset, collection = dse_stac_guess_collection, destination, ...,
     s3_key    = dse_s3_key(),
     s3_secret = dse_s3_secret(),
-    token     = dse_access_token()) {
+    token     = dse_public_access_token()) {
 
-  if (is.function(collection)) collection <- collection(asset_id)
+  type <- if (s3_key != "" && s3_secret != "") "s3" else
+    if (!is.null(token)) "odata" else
+      rlang::abort(c(
+        x = "Need authentication details in order to download asset",
+        i = ("Pass either S3 key and secret or OData access token")
+      ))
+  uri <- dse_stac_get_uri(asset_id, asset, collection, type)
+  local_path <- attr(uri, "local_path")
   
+  if (is.null(local_path)) fn <- NULL else
+    fn <- file.path(destination, basename(local_path))
+  
+  if (s3_key != "" && s3_secret != "") {
+    if (is.null(fn))
+      fn <- file.path(destination, basename(uri))
+    dse_s3_download(uri, destination,
+                    s3_key = s3_key, s3_secret = s3_secret)
+    return(fn)
+  } else if (!is.null(token)) {
+    if (is.null(fn))
+      fn <- file.path(destination, basename(uri))
+    uri |>
+      httr2::request() |>
+      .add_token(token) |>
+      httr2::req_perform(path = fn)
+    return(fn)
+  }
+}
+
+#' Get a Uniform Resource Identifier (URI) for an Asset in a Product
+#' 
+#' Get a Uniform Resource Identifier (URI) for an asset in a product.
+#' This can be used to download a file manually or connect to the
+#' asset directly straight from the source.
+#' @inheritParams dse_stac_download
+#' @param type Which type of URI should be returned? Defaults
+#' to `"s3"`. Use `"odata"` to get the alternative https URI.
+#' @returns Returns the URI as a `character` string.
+#' If available, the local path for an asset is returned as attribute.
+#' @examples
+#' if (interactive()) {
+#'   dse_stac_get_uri(
+#'     asset_id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
+#'     asset = "B01"
+#'   )
+#' }
+#' @export
+dse_stac_get_uri <- function(
+    asset_id, asset, collection = dse_stac_guess_collection,
+    type = "s3", ...) {
+  if (is.function(collection)) collection <- collection(asset_id)
   asset_info <-
     dse_stac_search_request(ids = asset_id, collections = collection) |>
     dplyr::select(!!paste0("assets.", asset)) |>
@@ -249,30 +298,10 @@ dse_stac_download <- function(
     dplyr::bind_rows()
   
   local_path <- asset_info[[paste0(asset, ".file:local_path")]]
-  if (is.null(local_path)) fn <- NULL else
-    fn <- file.path(destination, basename(local_path))
-  if (s3_key != "" && s3_secret != "") {
-    source <- asset_info[[paste0(asset, ".href")]]
-    if (is.null(fn))
-      fn <- file.path(destination, basename(source))
-    dse_s3_download(source, destination,
-                    s3_key = s3_key, s3_secret = s3_secret)
-    return(fn)
-  } else if (!is.null(token)) {
-    source <- asset_info[[paste0(asset, ".alternate.https.href")]]
-    if (is.null(fn))
-      fn <- file.path(destination, basename(source))
-    source |>
-      httr2::request() |>
-      .add_token(token) |>
-      httr2::req_perform(path = fn)
-    return(fn)
-  } else {
-    rlang::abort(c(
-      x = "Need authentication details in order to download asset",
-      i = ("Pass either S3 key and secret or OData access token")
-    ))
-  }
+  el <- ifelse(type == "s3", ".href", ".alternate.https.href")
+  result <- asset_info[[paste0(asset, el)]]
+  attr(result, "local_path") <- local_path
+  result
 }
 
 .dse_stac_queryables <- function(collection, ...) {
