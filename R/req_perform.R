@@ -8,6 +8,7 @@
 #' [dse_odata_bursts_request()].
 #' @inheritParams httr2::req_perform
 #' @returns Returns a `httr2::response` class object
+#' @family tidyverse
 #' @export
 req_perform <- function(
     req,

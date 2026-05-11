@@ -56,3 +56,21 @@ if (interactive()) {
 \references{
 \url{https://documentation.dataspace.copernicus.eu/APIs/OData.html}
 }
+\seealso{
+Other odata: 
+\code{\link{dse_odata_attributes}()},
+\code{\link{dse_odata_bursts_request}()},
+\code{\link{dse_odata_download}()},
+\code{\link{dse_odata_download_path}()},
+\code{\link{dse_odata_product_nodes}()},
+\code{\link{dse_odata_quicklook}()}
+
+Other odata: 
+\code{\link{dse_odata_attributes}()},
+\code{\link{dse_odata_bursts_request}()},
+\code{\link{dse_odata_download}()},
+\code{\link{dse_odata_download_path}()},
+\code{\link{dse_odata_product_nodes}()},
+\code{\link{dse_odata_quicklook}()}
+}
+\concept{odata}

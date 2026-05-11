@@ -50,3 +50,8 @@ A wrapper around \code{\link[httr2:req_perform]{httr2::req_perform()}}, which ca
 \code{odata_request} class objects. Check \code{\link[httr2:req_perform]{httr2::req_perform()}}
 for details.
 }
+\seealso{
+Other tidyverse: 
+\code{\link{tidy_verbs}}
+}
+\concept{tidyverse}

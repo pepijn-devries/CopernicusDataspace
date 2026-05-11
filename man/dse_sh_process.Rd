@@ -93,3 +93,15 @@ if (interactive() && dse_has_client_info()) {
 \item \url{https://docs.sentinel-hub.com/api/latest/evalscript/}
 }
 }
+\seealso{
+Other sentinelhub: 
+\code{\link{dse_sh_collections}()},
+\code{\link{dse_sh_custom_scripts}()},
+\code{\link{dse_sh_features}()},
+\code{\link{dse_sh_get_custom_script}()},
+\code{\link{dse_sh_prepare_input}()},
+\code{\link{dse_sh_queryables}()},
+\code{\link{dse_sh_search_request}()},
+\code{\link{dse_sh_use_requests_builder}()}
+}
+\concept{sentinelhub}

@@ -70,6 +70,7 @@ NULL
 #'     dplyr::slice_head(n = 100) |>
 #'     dplyr::collect()
 #' }
+#' @family odata
 #' @export
 dse_odata_products_request <- function(..., expand) {
   exp_f <- if (missing(expand)) {
@@ -90,6 +91,7 @@ dse_odata_products_request <- function(..., expand) {
 }
 
 #' @rdname dse_odata_products_request
+#' @family odata
 #' @export
 dse_odata_products <- function(..., expand = NULL) {
   dse_odata_products_request(expand = expand) |>
@@ -115,6 +117,7 @@ dse_odata_products <- function(..., expand = NULL) {
 #'   nodes <- dse_odata_product_nodes("c8ed8edb-9bef-4717-abfd-1400a57171a4",
 #'                                    recursive = TRUE)
 #' }
+#' @family odata
 #' @export
 dse_odata_product_nodes <- function(product, node_path = "", recursive = FALSE, ...) {
   .np_error(node_path)
@@ -178,6 +181,7 @@ dse_odata_product_nodes <- function(product, node_path = "", recursive = FALSE, 
 #' if (interactive()) {
 #'   dse_odata_attributes()
 #' }
+#' @family odata
 #' @export
 dse_odata_attributes <- memoise::memoise(.dse_odata_attributes)
 
@@ -212,6 +216,7 @@ dse_odata_attributes <- memoise::memoise(.dse_odata_attributes)
 #'                 "86288a07-560c-364f-b8ce-669d95f06fa0")),
 #'     destination = tempdir())
 #' }
+#' @family odata
 #' @export
 dse_odata_download <- function(request, destination, ...,
                               s3_key = dse_s3_key(), s3_secret = dse_s3_secret()) {
@@ -264,6 +269,7 @@ dse_odata_download <- function(request, destination, ...,
 #'     destination = tempdir())
 #'
 #' }
+#' @family odata
 #' @export
 dse_odata_download_path <- function(
     product, node_path = "", destination, ...,
@@ -306,6 +312,7 @@ dse_odata_download_path <- function(
 #'     "91822f33-b15c-5b60-aa39-6d9f6f5c773b",
 #'     tempfile(fileext = ".jpg"))
 #' }
+#' @family odata
 #' @export
 dse_odata_quicklook <- function(product, destination, ...) {
   assets <-

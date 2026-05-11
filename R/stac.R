@@ -47,6 +47,7 @@ NULL
 #' if (interactive()) {
 #'   dse_stac_client()
 #' }
+#' @family stac
 #' @export
 dse_stac_client <- memoise::memoise(.dse_stac_client)
 
@@ -77,6 +78,7 @@ dse_stac_client <- memoise::memoise(.dse_stac_client)
 #'   dse_stac_collections()
 #'   dse_stac_collections("sentinel-2-l2a")
 #' }
+#' @family stac
 #' @export
 dse_stac_collections <- memoise::memoise(.dse_stac_collections)
 
@@ -183,6 +185,7 @@ dse_stac_collections <- memoise::memoise(.dse_stac_collections)
 #'     st_intersects(bbox) |>
 #'     collect()
 #' }
+#' @family stac
 #' @export
 dse_stac_search_request <- function(collections, ids, ...) {
   if (missing(collections)) collections <- NA
@@ -224,6 +227,7 @@ dse_stac_search_request <- function(collections, ids, ...) {
 #'     destination = tempdir()
 #'   )
 #' }
+#' @family stac
 #' @export
 dse_stac_download <- function(
     asset_id, asset, collection = dse_stac_guess_collection, destination, ...,
@@ -277,6 +281,7 @@ dse_stac_download <- function(
 #'     asset = "B01"
 #'   )
 #' }
+#' @family stac
 #' @export
 dse_stac_get_uri <- function(
     asset_id, asset, collection = dse_stac_guess_collection,
@@ -328,6 +333,7 @@ dse_stac_get_uri <- function(
 #' if (interactive()) {
 #'   dse_stac_queryables("sentinel-1-grd")
 #' }
+#' @family stac
 #' @export
 dse_stac_queryables <- memoise::memoise(.dse_stac_queryables)
 
@@ -381,6 +387,7 @@ dse_stac_queryables <- memoise::memoise(.dse_stac_queryables)
 #' @examples
 #' dse_stac_guess_collection(
 #'   "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148")
+#' @family stac
 #' @export
 dse_stac_guess_collection <- function(asset_id) {
   idx <- lapply(asset_id, stringr::str_detect, pattern = .collection_codes$code) |>

@@ -49,3 +49,4 @@ if (interactive()) {
     dplyr::collect()
 }
 }
+\concept{geometry}

@@ -35,3 +35,10 @@ if (interactive()) {
     dse_s3_uri_to_vsi()
 }
 }
+\seealso{
+Other s3: 
+\code{\link{dse_has_s3_secret}()},
+\code{\link{dse_s3_download}()},
+\code{\link{dse_s3_set_gdal_options}()}
+}
+\concept{s3}

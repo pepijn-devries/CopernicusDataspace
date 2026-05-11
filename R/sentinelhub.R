@@ -66,6 +66,7 @@ NULL
 #'   dse_sh_collections()
 #' }
 #' @include helpers.R
+#' @family sentinelhub
 #' @export
 dse_sh_collections <- memoise::memoise(.dse_sh_collections)
 
@@ -92,6 +93,7 @@ dse_sh_collections <- memoise::memoise(.dse_sh_collections)
 #'     datetime   = c("2025-01-01 UTC", "2025-01-07 UTC"))
 #' }
 #' @include helpers.R
+#' @family sentinelhub
 #' @export
 dse_sh_features <- function(
     collection, bbox, datetime, limit = 10, ..., token = dse_access_token()) {
@@ -139,6 +141,7 @@ dse_sh_features <- function(
 #' if (interactive() && dse_has_client_info()) {
 #'   dse_sh_queryables("sentinel-2-l1c")
 #' }
+#' @family sentinelhub
 #' @export
 dse_sh_queryables <- memoise::memoise(.dse_sh_queryables)
 
@@ -206,6 +209,7 @@ dse_sh_queryables <- memoise::memoise(.dse_sh_queryables)
 #'     plot(enkhuizen, rgb = 1:3, axes = TRUE, main = "Enkhuizen")
 #'   }
 #' }
+#' @family sentinelhub
 #' @export
 dse_sh_process <- function(
     input, output, evalscript, destination,
@@ -263,6 +267,7 @@ dse_sh_process <- function(
 #' if (interactive()) {
 #'   dse_sh_custom_scripts()
 #' }
+#' @family sentinelhub
 #' @export
 dse_sh_custom_scripts <- memoise::memoise(.dse_sh_custom_scripts)
 
@@ -288,6 +293,7 @@ dse_sh_custom_scripts <- memoise::memoise(.dse_sh_custom_scripts)
 #' if (interactive()) {
 #'   dse_sh_get_custom_script("/sentinel-2/tonemapped_natural_color/")
 #' }
+#' @family sentinelhub
 #' @export
 dse_sh_get_custom_script <-
   memoise::memoise(.dse_sh_get_custom_script)
@@ -367,6 +373,7 @@ dse_sh_get_custom_script <-
 #'  * <https://apps.sentinel-hub.com/requests-builder/>
 #' @seealso [dse_sh_process()]
 #' @rdname dse_sh_prepare_
+#' @family sentinelhub
 #' @export
 dse_sh_prepare_input <-
   function(
@@ -441,6 +448,7 @@ dse_sh_prepare_input <-
   }
 
 #' @rdname dse_sh_prepare_
+#' @family sentinelhub
 #' @export
 dse_sh_prepare_output <-
   function(
@@ -515,6 +523,7 @@ dse_sh_prepare_output <-
 #'     filter(`eo:cloud_cover` <= 10) |>
 #'     collect()
 #' }
+#' @family sentinelhub
 #' @export
 dse_sh_search_request <-
   function(collection, bbox, datetime, ..., token = dse_access_token()) {
@@ -570,6 +579,7 @@ dse_sh_search_request <-
 #'   dest <- tempfile(fileext = ".tiff")
 #'   dse_sh_use_requests_builder(requests_builder, destination = dest)
 #' }
+#' @family sentinelhub
 #' @export
 dse_sh_use_requests_builder <- function(
   build, destination, ..., token = dse_access_token()

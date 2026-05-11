@@ -38,3 +38,10 @@ if (interactive() && dse_has_client_info() &&
   jp2 <- stars::read_stars(uri)
 }
 }
+\seealso{
+Other authentication: 
+\code{\link{dse_access_token}()},
+\code{\link{dse_get_token_details}()},
+\code{\link{dse_has_s3_secret}()}
+}
+\concept{authentication}

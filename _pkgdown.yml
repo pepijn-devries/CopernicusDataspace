@@ -1,4 +1,32 @@
 url: https://pepijn-devries.github.io/CopernicusDataspace/
 template:
   bootstrap: 5
-
+reference:
+  - title: "Authentication Functions"
+    desc: "Authentication methods for Copernicus Dataspace Ecosystem services"
+    contents:
+      - has_concept("authentication")
+  - title: "STAC Functions"
+    desc: "Functions accessing the STAC catalogue"
+    contents:
+      - has_concept("stac")
+  - title: "OData Functions"
+    desc: "Functions for handling OData services"
+    contents:
+      - has_concept("odata")
+  - title: "S3 Functions"
+    desc: "Functions accessing the S3 buckets"
+    contents:
+      - has_concept("s3")
+  - title: "SH Functions"
+    desc: "Functions for using SentinelHub"
+    contents:
+      - has_concept("sentinelhub")
+  - title: "Tidyverse Functions"
+    desc: "Specific implementations of Tidyverse generics"
+    contents:
+      - has_concept("tidyverse")
+  - title: "Geometry Functions"
+    desc: "Functions for filtering geometries"
+    contents:
+      - has_concept("geometry")

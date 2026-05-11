@@ -32,3 +32,13 @@ if (interactive()) {
                                    recursive = TRUE)
 }
 }
+\seealso{
+Other odata: 
+\code{\link{dse_odata_attributes}()},
+\code{\link{dse_odata_bursts_request}()},
+\code{\link{dse_odata_download}()},
+\code{\link{dse_odata_download_path}()},
+\code{\link{dse_odata_products_request}()},
+\code{\link{dse_odata_quicklook}()}
+}
+\concept{odata}
