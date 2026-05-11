@@ -26,3 +26,13 @@ a collection id to a request.
 dse_stac_guess_collection(
   "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148")
 }
+\seealso{
+Other stac: 
+\code{\link{dse_stac_client}()},
+\code{\link{dse_stac_collections}()},
+\code{\link{dse_stac_download}()},
+\code{\link{dse_stac_get_uri}()},
+\code{\link{dse_stac_queryables}()},
+\code{\link{dse_stac_search_request}()}
+}
+\concept{stac}

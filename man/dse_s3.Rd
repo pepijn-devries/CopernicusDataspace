@@ -78,7 +78,8 @@ they are set each time you start a new R session.
 Other authentication: 
 \code{\link{dse_access_token}()},
 \code{\link{dse_get_token_details}()},
-\code{\link{dse_set_gdal_token}()}
+\code{\link{dse_set_gdal_token}()},
+\code{\link{dse_usage}()}
 
 Other s3: 
 \code{\link{dse_s3_download}()},
@@ -88,7 +89,8 @@ Other s3:
 Other authentication: 
 \code{\link{dse_access_token}()},
 \code{\link{dse_get_token_details}()},
-\code{\link{dse_set_gdal_token}()}
+\code{\link{dse_set_gdal_token}()},
+\code{\link{dse_usage}()}
 
 Other s3: 
 \code{\link{dse_s3_download}()},
@@ -98,7 +100,8 @@ Other s3:
 Other authentication: 
 \code{\link{dse_access_token}()},
 \code{\link{dse_get_token_details}()},
-\code{\link{dse_set_gdal_token}()}
+\code{\link{dse_set_gdal_token}()},
+\code{\link{dse_usage}()}
 
 Other s3: 
 \code{\link{dse_s3_download}()},
@@ -108,7 +111,8 @@ Other s3:
 Other authentication: 
 \code{\link{dse_access_token}()},
 \code{\link{dse_get_token_details}()},
-\code{\link{dse_set_gdal_token}()}
+\code{\link{dse_set_gdal_token}()},
+\code{\link{dse_usage}()}
 
 Other s3: 
 \code{\link{dse_s3_download}()},
@@ -118,7 +122,8 @@ Other s3:
 Other authentication: 
 \code{\link{dse_access_token}()},
 \code{\link{dse_get_token_details}()},
-\code{\link{dse_set_gdal_token}()}
+\code{\link{dse_set_gdal_token}()},
+\code{\link{dse_usage}()}
 
 Other s3: 
 \code{\link{dse_s3_download}()},

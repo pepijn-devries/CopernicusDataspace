@@ -29,6 +29,7 @@ NULL
 #'   dse_user_statistics()
 #' }
 #' @seealso [dse_access_token()]
+#' @family authentication
 #' @export
 dse_usage <- function(..., token = dse_access_token()) {
   result <-
@@ -47,6 +48,7 @@ dse_usage <- function(..., token = dse_access_token()) {
 }
 
 #' @rdname dse_usage
+#' @family authentication
 #' @export
 dse_user_statistics <- function(
     range = "DAYS-31",
