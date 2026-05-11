@@ -92,6 +92,7 @@ NULL
 
 #' @rdname tidy_verbs
 #' @name filter
+#' @family tidyverse
 #' @export filter.odata_request
 filter.odata_request <-
   function (.data, ..., .by = NULL, .preserve = FALSE) {
@@ -119,6 +120,7 @@ filter.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name filter
+#' @family tidyverse
 #' @export filter.sentinel_request
 filter.sentinel_request <-
   function (.data, ..., .by = NULL, .preserve = FALSE) {
@@ -148,6 +150,7 @@ compute.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name collect
+#' @family tidyverse
 #' @export collect.odata_request
 collect.odata_request <-
   function(x, skip = 0L, ...) {
@@ -173,6 +176,7 @@ collect.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name collect
+#' @family tidyverse
 #' @export collect.sentinel_request
 collect.sentinel_request <-
   function(x, skip = 0L, ...) {
@@ -186,6 +190,7 @@ collect.sentinel_request <-
 
 #' @rdname tidy_verbs
 #' @name collect
+#' @family tidyverse
 #' @export collect.stac_request
 collect.stac_request <-
   function(x, ...) {
@@ -207,6 +212,7 @@ arrange.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name arrange
+#' @family tidyverse
 #' @export arrange.stac_request
 arrange.stac_request <-
   function(.data, ..., .by_group = FALSE) {
@@ -233,6 +239,7 @@ arrange.stac_request <-
 
 #' @rdname tidy_verbs
 #' @name slice_head
+#' @family tidyverse
 #' @export slice_head.odata_request
 slice_head.odata_request <-
   function(.data, ..., n, prop, by = NULL) {
@@ -255,6 +262,7 @@ slice_head.stac_request <-
 
 #' @rdname tidy_verbs
 #' @name slice_head
+#' @family tidyverse
 #' @export slice_head.sentinel_request
 slice_head.sentinel_request <-
   function(.data, ..., n, prop, by = NULL) {
@@ -265,6 +273,7 @@ slice_head.sentinel_request <-
 
 #' @rdname tidy_verbs
 #' @name select
+#' @family tidyverse
 #' @export select.odata_request
 select.odata_request <-
   function(.data, ...) {
@@ -285,6 +294,7 @@ select.odata_request <-
 
 #' @rdname tidy_verbs
 #' @name select
+#' @family tidyverse
 #' @export select.stac_request
 select.stac_request <-
   function(.data, ...) {
@@ -293,6 +303,7 @@ select.stac_request <-
 
 #' @rdname tidy_verbs
 #' @name select
+#' @family tidyverse
 #' @export select.sentinel_request
 select.sentinel_request <-
   function(.data, ...) {

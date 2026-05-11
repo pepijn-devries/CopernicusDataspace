@@ -81,6 +81,7 @@
 #'   dse_s3_download(my_uri, tempdir())
 #'
 #' }
+#' @family s3
 #' @export
 dse_s3_download <- function(
     uri, destination, ..., s3_key = dse_s3_key(), s3_secret = dse_s3_secret()) {
@@ -116,6 +117,7 @@ dse_s3_download <- function(
 #'     "vh", "sentinel-1-grd") |>
 #'     dse_s3_uri_to_vsi()
 #' }
+#' @family s3
 #' @export
 dse_s3_uri_to_vsi <- function(uri, streaming = TRUE) {
   vsi <- sprintf(
@@ -159,6 +161,7 @@ dse_s3_uri_to_vsi <- function(uri, streaming = TRUE) {
 #'   ## You can also easily plot a downsampled version
 #'   plot(cog, downsample = 50)
 #' }
+#' @family s3
 #' @export
 dse_s3_set_gdal_options <- function(
     region = "us-east-1", ...,

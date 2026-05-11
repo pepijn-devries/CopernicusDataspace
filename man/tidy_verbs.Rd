@@ -154,3 +154,38 @@ if (interactive()) {
   }
 }
 }
+\seealso{
+Other tidyverse: 
+\code{\link{req_perform}()}
+
+Other tidyverse: 
+\code{\link{req_perform}()}
+
+Other tidyverse: 
+\code{\link{req_perform}()}
+
+Other tidyverse: 
+\code{\link{req_perform}()}
+
+Other tidyverse: 
+\code{\link{req_perform}()}
+
+Other tidyverse: 
+\code{\link{req_perform}()}
+
+Other tidyverse: 
+\code{\link{req_perform}()}
+
+Other tidyverse: 
+\code{\link{req_perform}()}
+
+Other tidyverse: 
+\code{\link{req_perform}()}
+
+Other tidyverse: 
+\code{\link{req_perform}()}
+
+Other tidyverse: 
+\code{\link{req_perform}()}
+}
+\concept{tidyverse}

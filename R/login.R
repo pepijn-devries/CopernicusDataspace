@@ -140,20 +140,24 @@ NULL
 #' if (interactive() && dse_has_password()) {
 #'   token_public <- dse_public_access_token()
 #' }
+#' @family authentication
 #' @export
 dse_access_token <- memoise::memoise(.dse_access_token) # Using memoise to avoid rate limiting errors
 
 #' @rdname dse_access_token
+#' @family authentication
 #' @export
 dse_public_access_token <- memoise::memoise(.dse_public_access_token) # Using memoise to avoid rate limiting errors
 
 #' @rdname dse_access_token
+#' @family authentication
 #' @export
 dse_client_id <- function(...) {
   Sys.getenv("CDSE_API_CLIENTID")
 }
 
 #' @rdname dse_access_token
+#' @family authentication
 #' @export
 `dse_client_id<-` <- function(..., value) {
   Sys.setenv(CDSE_API_CLIENTID = as.character(value))
@@ -166,6 +170,7 @@ dse_client_id <- function(...) {
 }
 
 #' @rdname dse_access_token
+#' @family authentication
 #' @export
 `dse_password<-` <- function(..., value) {
   Sys.setenv(CDSE_API_PASSWORD = as.character(value))
@@ -184,24 +189,28 @@ dse_username <- function(...) {
 }
 
 #' @rdname dse_access_token
+#' @family authentication
 #' @export
 dse_password <- function(...) {
   Sys.getenv("CDSE_API_PASSWORD")
 }
 
 #' @rdname dse_access_token
+#' @family authentication
 #' @export
 `dse_client_secret<-` <- function(..., value) {
   Sys.setenv(CDSE_API_CLIENTSECRET = as.character(value))
 }
 
 #' @rdname dse_access_token
+#' @family authentication
 #' @export
 dse_has_client_info <- function(...) {
   dse_client_id() != "" && dse_client_secret() != ""
 }
 
 #' @rdname dse_access_token
+#' @family authentication
 #' @export
 dse_has_password <- function(...) {
   dse_password() != ""
@@ -249,30 +258,40 @@ dse_has_password <- function(...) {
 #' [dse_has_s3_secret()] returns a logical value indicating whether s3 details
 #' (key and secret) are set. It will not determine whether the details are valid.
 #' @rdname dse_s3
+#' @family authentication
+#' @family s3
 #' @export
 dse_has_s3_secret <- function() {
   dse_s3_key() != "" && dse_s3_secret() != ""
 }
 
 #' @rdname dse_s3
+#' @family authentication
+#' @family s3
 #' @export
 dse_s3_key <- function(...) {
   Sys.getenv("CDSE_API_S3ID")
 }
 
 #' @rdname dse_s3
+#' @family authentication
+#' @family s3
 #' @export
 `dse_s3_key<-` <- function(..., value) {
   Sys.setenv(CDSE_API_S3ID = as.character(value))
 }
 
 #' @rdname dse_s3
+#' @family authentication
+#' @family s3
 #' @export
 dse_s3_secret <- function(...) {
   Sys.getenv("CDSE_API_S3SECRET")
 }
 
 #' @rdname dse_s3
+#' @family authentication
+#' @family s3
 #' @export
 `dse_s3_secret<-` <- function(..., value) {
   Sys.setenv(CDSE_API_S3SECRET = as.character(value))
@@ -302,6 +321,7 @@ dse_s3_secret <- function(...) {
 #'   ## But you can access it directly:
 #'   jp2 <- stars::read_stars(uri)
 #' }
+#' @family authentication
 #' @export
 dse_set_gdal_token  <- function(token = dse_access_token()) {
   Sys.setenv(GDAL_HTTP_AUTH = "BEARER") &&
@@ -319,6 +339,7 @@ dse_set_gdal_token  <- function(token = dse_access_token()) {
 #' if (interactive() && dse_has_client_info()) {
 #'   dse_get_token_details()
 #' }
+#' @family authentication
 #' @export
 dse_get_token_details <- function(token = dse_access_token()) {
   if (requireNamespace("jose")) {

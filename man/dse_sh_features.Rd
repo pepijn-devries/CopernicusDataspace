@@ -49,3 +49,15 @@ if (interactive() && dse_has_client_info()) {
     datetime   = c("2025-01-01 UTC", "2025-01-07 UTC"))
 }
 }
+\seealso{
+Other sentinelhub: 
+\code{\link{dse_sh_collections}()},
+\code{\link{dse_sh_custom_scripts}()},
+\code{\link{dse_sh_get_custom_script}()},
+\code{\link{dse_sh_prepare_input}()},
+\code{\link{dse_sh_process}()},
+\code{\link{dse_sh_queryables}()},
+\code{\link{dse_sh_search_request}()},
+\code{\link{dse_sh_use_requests_builder}()}
+}
+\concept{sentinelhub}

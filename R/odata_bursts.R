@@ -4,6 +4,7 @@
 NULL
 
 #' @rdname dse_odata_bursts
+#' @family odata
 #' @export
 dse_odata_bursts_request <- function(...) {
   result <-
@@ -40,6 +41,7 @@ dse_odata_bursts_request <- function(...) {
 #'     tempdir()
 #'   )
 #' }
+#' @family odata
 #' @export
 dse_odata_bursts <- function(...) {
   dse_odata_bursts_request() |>

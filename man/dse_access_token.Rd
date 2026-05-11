@@ -159,4 +159,50 @@ if (interactive() && dse_has_password()) {
 \code{\link[=dse_usage]{dse_usage()}}
 
 \code{\link[=dse_user_statistics]{dse_user_statistics()}}
+
+Other authentication: 
+\code{\link{dse_get_token_details}()},
+\code{\link{dse_has_s3_secret}()},
+\code{\link{dse_set_gdal_token}()}
+
+Other authentication: 
+\code{\link{dse_get_token_details}()},
+\code{\link{dse_has_s3_secret}()},
+\code{\link{dse_set_gdal_token}()}
+
+Other authentication: 
+\code{\link{dse_get_token_details}()},
+\code{\link{dse_has_s3_secret}()},
+\code{\link{dse_set_gdal_token}()}
+
+Other authentication: 
+\code{\link{dse_get_token_details}()},
+\code{\link{dse_has_s3_secret}()},
+\code{\link{dse_set_gdal_token}()}
+
+Other authentication: 
+\code{\link{dse_get_token_details}()},
+\code{\link{dse_has_s3_secret}()},
+\code{\link{dse_set_gdal_token}()}
+
+Other authentication: 
+\code{\link{dse_get_token_details}()},
+\code{\link{dse_has_s3_secret}()},
+\code{\link{dse_set_gdal_token}()}
+
+Other authentication: 
+\code{\link{dse_get_token_details}()},
+\code{\link{dse_has_s3_secret}()},
+\code{\link{dse_set_gdal_token}()}
+
+Other authentication: 
+\code{\link{dse_get_token_details}()},
+\code{\link{dse_has_s3_secret}()},
+\code{\link{dse_set_gdal_token}()}
+
+Other authentication: 
+\code{\link{dse_get_token_details}()},
+\code{\link{dse_has_s3_secret}()},
+\code{\link{dse_set_gdal_token}()}
 }
+\concept{authentication}
