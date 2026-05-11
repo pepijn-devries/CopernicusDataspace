@@ -31,6 +31,13 @@ dse_s3_uri_to_vsi(uri, streaming = TRUE)
 
 A `character` string representing the VSI
 
+## See also
+
+Other s3:
+[`dse_has_s3_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md),
+[`dse_s3_download()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3_download.md),
+[`dse_s3_set_gdal_options()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3_set_gdal_options.md)
+
 ## Examples
 
 ``` r

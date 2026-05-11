@@ -76,3 +76,8 @@ req_perform(
 Returns a
 [`httr2::response`](https://httr2.r-lib.org/reference/response.html)
 class object
+
+## See also
+
+Other tidyverse:
+[`tidy_verbs`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)

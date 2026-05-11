@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">CopernicusDataspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,9 +38,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="authentication-functions">Authentication Functions<a class="anchor" aria-label="anchor" href="#authentication-functions"></a></h2>
 
-
+      <div class="section-desc"><p>Authentication methods for Copernicus Dataspace Ecosystem services</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -62,6 +62,94 @@
         <dd>Decode Access Token</dd>
 
         <dt>
+
+          <code><a href="dse_s3.html">dse_has_s3_secret()</a></code> <code><a href="dse_s3.html">dse_s3_key()</a></code> <code><a href="dse_s3.html">`dse_s3_key&lt;-`()</a></code> <code><a href="dse_s3.html">dse_s3_secret()</a></code> <code><a href="dse_s3.html">`dse_s3_secret&lt;-`()</a></code>
+
+        </dt>
+        <dd>Setup Amazon Simple Storage Service for the Data Space Ecosystem</dd>
+
+        <dt>
+
+          <code><a href="dse_set_gdal_token.html">dse_set_gdal_token()</a></code>
+
+        </dt>
+        <dd>Set Copernicus Data Space Ecosystem Access Token for GDAL Driver</dd>
+
+        <dt>
+
+          <code><a href="dse_usage.html">dse_usage()</a></code> <code><a href="dse_usage.html">dse_user_statistics()</a></code>
+
+        </dt>
+        <dd>Get Dataspace Account Information</dd>
+      </dl></div><div class="section level2">
+      <h2 id="stac-functions">STAC Functions<a class="anchor" aria-label="anchor" href="#stac-functions"></a></h2>
+
+      <div class="section-desc"><p>Functions accessing the STAC catalogue</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="dse_stac_client.html">dse_stac_client()</a></code>
+
+        </dt>
+        <dd>Obtain Information About the STAC Client</dd>
+
+        <dt>
+
+          <code><a href="dse_stac_collections.html">dse_stac_collections()</a></code>
+
+        </dt>
+        <dd>Get a Summary of all Data Space Ecosystem Collections</dd>
+
+        <dt>
+
+          <code><a href="dse_stac_download.html">dse_stac_download()</a></code>
+
+        </dt>
+        <dd>Download Asset From STAC Catalogue</dd>
+
+        <dt>
+
+          <code><a href="dse_stac_get_uri.html">dse_stac_get_uri()</a></code>
+
+        </dt>
+        <dd>Get a Uniform Resource Identifier (URI) for an Asset in a Product</dd>
+
+        <dt>
+
+          <code><a href="dse_stac_guess_collection.html">dse_stac_guess_collection()</a></code>
+
+        </dt>
+        <dd>Guess the Collection id from an Asset id</dd>
+
+        <dt>
+
+          <code><a href="dse_stac_queryables.html">dse_stac_queryables()</a></code>
+
+        </dt>
+        <dd>Get Queryables for a STAC Collection</dd>
+
+        <dt>
+
+          <code><a href="dse_stac_search_request.html">dse_stac_search_request()</a></code>
+
+        </dt>
+        <dd>Create a Request for a STAC Search in the Data Space Ecosystem</dd>
+      </dl></div><div class="section level2">
+      <h2 id="odata-functions">OData Functions<a class="anchor" aria-label="anchor" href="#odata-functions"></a></h2>
+
+      <div class="section-desc"><p>Functions for handling OData services</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
 
           <code><a href="dse_odata_attributes.html">dse_odata_attributes()</a></code>
 
@@ -109,8 +197,17 @@
 
         </dt>
         <dd>Download a Quicklook for a Product</dd>
+      </dl></div><div class="section level2">
+      <h2 id="s-functions">S3 Functions<a class="anchor" aria-label="anchor" href="#s-functions"></a></h2>
 
-        <dt>
+      <div class="section-desc"><p>Functions accessing the S3 buckets</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
 
           <code><a href="dse_s3.html">dse_has_s3_secret()</a></code> <code><a href="dse_s3.html">dse_s3_key()</a></code> <code><a href="dse_s3.html">`dse_s3_key&lt;-`()</a></code> <code><a href="dse_s3.html">dse_s3_secret()</a></code> <code><a href="dse_s3.html">`dse_s3_secret&lt;-`()</a></code>
 
@@ -137,15 +234,17 @@
 
         </dt>
         <dd>Convert Uniform Resource Identifier to Virtual System Identifier</dd>
+      </dl></div><div class="section level2">
+      <h2 id="sh-functions">SH Functions<a class="anchor" aria-label="anchor" href="#sh-functions"></a></h2>
 
-        <dt>
+      <div class="section-desc"><p>Functions for using SentinelHub</p></div>
 
-          <code><a href="dse_set_gdal_token.html">dse_set_gdal_token()</a></code>
+      <dl></dl></div><div class="section level2">
 
-        </dt>
-        <dd>Set Copernicus Data Space Ecosystem Access Token for GDAL Driver</dd>
 
-        <dt>
+
+
+      <dl><dt>
 
           <code><a href="dse_sh_collections.html">dse_sh_collections()</a></code>
 
@@ -207,71 +306,17 @@
 
         </dt>
         <dd>Use Requests Builder to Send Processing Request to SentinelHub</dd>
+      </dl></div><div class="section level2">
+      <h2 id="tidyverse-functions">Tidyverse Functions<a class="anchor" aria-label="anchor" href="#tidyverse-functions"></a></h2>
 
-        <dt>
+      <div class="section-desc"><p>Specific implementations of Tidyverse generics</p></div>
 
-          <code><a href="dse_stac_client.html">dse_stac_client()</a></code>
+      <dl></dl></div><div class="section level2">
 
-        </dt>
-        <dd>Obtain Information About the STAC Client</dd>
 
-        <dt>
 
-          <code><a href="dse_stac_collections.html">dse_stac_collections()</a></code>
 
-        </dt>
-        <dd>Get a Summary of all Data Space Ecosystem Collections</dd>
-
-        <dt>
-
-          <code><a href="dse_stac_download.html">dse_stac_download()</a></code>
-
-        </dt>
-        <dd>Download Asset From STAC Catalogue</dd>
-
-        <dt>
-
-          <code><a href="dse_stac_get_uri.html">dse_stac_get_uri()</a></code>
-
-        </dt>
-        <dd>Get a Uniform Resource Identifier (URI) for an Asset in a Product</dd>
-
-        <dt>
-
-          <code><a href="dse_stac_guess_collection.html">dse_stac_guess_collection()</a></code>
-
-        </dt>
-        <dd>Guess the Collection id from an Asset id</dd>
-
-        <dt>
-
-          <code><a href="dse_stac_queryables.html">dse_stac_queryables()</a></code>
-
-        </dt>
-        <dd>Get Queryables for a STAC Collection</dd>
-
-        <dt>
-
-          <code><a href="dse_stac_search_request.html">dse_stac_search_request()</a></code>
-
-        </dt>
-        <dd>Create a Request for a STAC Search in the Data Space Ecosystem</dd>
-
-        <dt>
-
-          <code><a href="dse_usage.html">dse_usage()</a></code> <code><a href="dse_usage.html">dse_user_statistics()</a></code>
-
-        </dt>
-        <dd>Get Dataspace Account Information</dd>
-
-        <dt>
-
-          <code><a href="geometry.html">st_intersects.odata_request()</a></code> <code><a href="geometry.html">st_intersects.stac_request()</a></code>
-
-        </dt>
-        <dd>Filter OData and STAC Requests Using Geometries</dd>
-
-        <dt>
+      <dl><dt>
 
           <code><a href="req_perform.html">req_perform()</a></code>
 
@@ -284,8 +329,25 @@
 
         </dt>
         <dd>Tidy Verbs for OData, SentinelHub and STAC API Requests</dd>
+      </dl></div><div class="section level2">
+      <h2 id="geometry-functions">Geometry Functions<a class="anchor" aria-label="anchor" href="#geometry-functions"></a></h2>
+
+      <div class="section-desc"><p>Functions for filtering geometries</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="geometry.html">st_intersects.odata_request()</a></code> <code><a href="geometry.html">st_intersects.stac_request()</a></code>
+
+        </dt>
+        <dd>Filter OData and STAC Requests Using Geometries</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

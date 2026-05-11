@@ -135,6 +135,41 @@ from its tidy standards. Most notably:
   on the request class object first. That will return a normal
   `data.frame`, which can be manipulated further.
 
+## See also
+
+Other tidyverse:
+[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
+
+Other tidyverse:
+[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
+
+Other tidyverse:
+[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
+
+Other tidyverse:
+[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
+
+Other tidyverse:
+[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
+
+Other tidyverse:
+[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
+
+Other tidyverse:
+[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
+
+Other tidyverse:
+[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
+
+Other tidyverse:
+[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
+
+Other tidyverse:
+[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
+
+Other tidyverse:
+[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
+
 ## Examples
 
 ``` r

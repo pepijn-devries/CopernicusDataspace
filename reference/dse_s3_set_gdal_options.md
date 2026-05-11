@@ -38,6 +38,13 @@ dse_s3_set_gdal_options(
 Returns a `logical` value. `TRUE` if all variables were successfully
 set. `FALSE` otherwise.
 
+## See also
+
+Other s3:
+[`dse_has_s3_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md),
+[`dse_s3_download()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3_download.md),
+[`dse_s3_uri_to_vsi()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3_uri_to_vsi.md)
+
 ## Examples
 
 ``` r
