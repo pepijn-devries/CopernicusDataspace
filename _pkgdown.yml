@@ -10,6 +10,7 @@ reference:
     desc: "Functions accessing the STAC catalogue"
     contents:
       - has_concept("stac")
+      - starts_with("dse_stac_")
   - title: "OData Functions"
     desc: "Functions for handling OData services"
     contents:

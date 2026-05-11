@@ -26,6 +26,7 @@ if (interactive() && dse_has_client_info()) {
 Other authentication: 
 \code{\link{dse_access_token}()},
 \code{\link{dse_has_s3_secret}()},
-\code{\link{dse_set_gdal_token}()}
+\code{\link{dse_set_gdal_token}()},
+\code{\link{dse_usage}()}
 }
 \concept{authentication}

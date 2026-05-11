@@ -25,3 +25,13 @@ if (interactive()) {
   dse_stac_collections("sentinel-2-l2a")
 }
 }
+\seealso{
+Other stac: 
+\code{\link{dse_stac_client}()},
+\code{\link{dse_stac_download}()},
+\code{\link{dse_stac_get_uri}()},
+\code{\link{dse_stac_guess_collection}()},
+\code{\link{dse_stac_queryables}()},
+\code{\link{dse_stac_search_request}()}
+}
+\concept{stac}
