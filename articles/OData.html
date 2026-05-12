@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">CopernicusDataspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,10 +72,174 @@
 
     
     
+<p>In the Copernicus Data Space Ecosystem (CDSE), OData (Open Data
+Protocol) is the primary <a href="https://en.wikipedia.org/wiki/REST" class="external-link">RESTful API</a> standard used
+for searching, discovering, and downloading satellite data products.</p>
+<p>Key functions of OData in CDSE are:</p>
+<ul>
+<li>
+<em>Metadata Querying</em>: You can search for products using
+complex filters such as collection name (e.g., Sentinel-2), geographical
+area (AOI), acquisition dates, and cloud cover percentage.</li>
+<li>
+<em>Data Download</em>: Once a specific product ID is retrieved via
+a search, the OData API can be used to trigger the actual download of
+the data files.</li>
+</ul>
+<p>This package provides convenient wrappers to access those features,
+and are described in this vignette.</p>
+<div class="section level2">
+<h2 id="searching-products">Searching Products<a class="anchor" aria-label="anchor" href="#searching-products"></a>
+</h2>
+<p>For searching products, you could simply use
+<code><a href="../reference/dse_odata_products_request.html">dse_odata_products()</a></code>, where you could directly add filters
+as arguments. But for more sophisticated queries, you can use
+<code><a href="../reference/dse_odata_products_request.html">dse_odata_products_request()</a></code>. It creates a special class of
+<code>httr2</code> request object. In essence, it is a request to the
+API server, which you can modify with tidyverse operators. This sounds
+more complicated than it is.</p>
+<p>Once you have created the request, you can add tidyverse operators
+(like <code><a href="../reference/tidy_verbs.html">filter()</a></code>, <code><a href="../reference/tidy_verbs.html">arrange()</a></code> and
+<code><a href="../reference/tidy_verbs.html">slice_head()</a></code>), to modify this request. You can join those
+modifications with the pipe operator (<code>|&gt;</code> or
+<code>%&gt;%</code>). You can also query products that interset with
+specific spatial features (<code>sf</code>) using
+<code><a href="../reference/geometry.html">st_intersects()</a></code>.</p>
+<p>Each collection will have specific fields which you can use to filter
+your product search. To discover which fields you use, call
+<code><a href="../reference/dse_odata_attributes.html">dse_odata_attributes()</a></code>.</p>
+<p>All of this is shown in the example below, where we filter products
+that were created after January first of 2025. Where the image overlaps
+with the bounding box we specify. We create a descending arrangement of
+identifiers, and select only the first 5 results. By calling
+<code><a href="../reference/tidy_verbs.html">collect()</a></code> we ensure that the request is performed and the
+result is returned in a human readable form
+(<code>data.frame</code>).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/pepijn-devries/CopernicusDataspace" class="external-link">CopernicusDataspace</a></span><span class="op">)</span></span></code></pre></div>
-<p>TODO</p>
-  </main>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/pepijn-devries/CopernicusDataspace" class="external-link">CopernicusDataspace</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span> <span class="co"># Tidiverse package for data manipulation</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span>    <span class="co"># package for handling simple (spatial) features</span></span>
+<span></span>
+<span><span class="co">## Define a bounding box for our search query:</span></span>
+<span><span class="va">bbox</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="fl">5.261</span>, ymin <span class="op">=</span> <span class="fl">52.680</span>, xmax <span class="op">=</span> <span class="fl">5.319</span>, ymax <span class="op">=</span> <span class="fl">52.715</span><span class="op">)</span>,</span>
+<span>    crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sfc.html" class="external-link">st_as_sfc</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create an API request:</span></span>
+<span><span class="fu"><a href="../reference/dse_odata_products_request.html">dse_odata_products_request</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="co">## Filter content on ContentDate/Start`:</span></span>
+<span>  <span class="fu"><a href="../reference/tidy_verbs.html">filter</a></span><span class="op">(</span></span>
+<span>    <span class="va">`ContentDate/Start`</span> <span class="op">&gt;</span> <span class="st">"2025-01-01"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="co">## Only data that intersects with our bounding box:</span></span>
+<span>  <span class="fu"><a href="../reference/geometry.html">st_intersects</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="co">## Arrange by descending Id:</span></span>
+<span>  <span class="fu"><a href="../reference/tidy_verbs.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">Id</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="co">## Only the first 5 hits:</span></span>
+<span>  <span class="fu"><a href="../reference/tidy_verbs.html">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="co">## Collect the results:</span></span>
+<span>  <span class="fu"><a href="../reference/tidy_verbs.html">collect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 16</span></span></span>
+<span><span class="co">#&gt;   Id                  Name  ContentType ContentLength OriginDate PublicationDate</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> ffff1bb2-405d-49c2… MCD4… applicatio…      54<span style="text-decoration: underline;">771</span>356 2025-04-3… 2025-11-09T22:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> fffec6a0-62da-45ef… c_gl… applicatio…       2<span style="text-decoration: underline;">281</span>083 2025-07-1… 2025-07-11T12:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> fffdd7f0-cd27-4c3e… S5P_… applicatio…      11<span style="text-decoration: underline;">349</span>305 2026-05-0… 2026-05-09T13:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> fffd6992-b724-4a5d… c_gl… applicatio…    <span style="text-decoration: underline;">1</span>080<span style="text-decoration: underline;">239</span>294 2026-02-2… 2026-02-23T02:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> fffd6520-0f19-49fc… c_gl… applicatio…      11<span style="text-decoration: underline;">559</span>794 2025-10-3… 2025-10-31T16:…</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 10 more variables: ModificationDate &lt;chr&gt;, Online &lt;lgl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   EvictionDate &lt;chr&gt;, S3Path &lt;chr&gt;, Checksum &lt;list&gt;, ContentDate.Start &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ContentDate.End &lt;chr&gt;, Footprint &lt;chr&gt;, GeoFootprint.type &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   GeoFootprint.coordinates &lt;list&gt;</span></span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="burst-data">Burst Data<a class="anchor" aria-label="anchor" href="#burst-data"></a>
+</h2>
+<p><a href="https://documentation.dataspace.copernicus.eu/APIs/Sentinel-1%20SLC%20Burst.html" class="external-link">Bursts</a>
+is a concept associated with the Sentinel-1 C-SAR instrument. They have
+dedicated functions for searching for specific burst data:
+<code><a href="../reference/dse_odata_bursts.html">dse_odata_bursts()</a></code> and
+<code><a href="../reference/dse_odata_bursts.html">dse_odata_bursts_request()</a></code>. These are the equivalents of
+<code><a href="../reference/dse_odata_products_request.html">dse_odata_products()</a></code> and
+<code><a href="../reference/dse_odata_products_request.html">dse_odata_products_request()</a></code>. They work with the same
+mechanisms and downloading them works the same as for normal OData
+products, as shown below. Below a basic example of looking for and
+downloading of burst data:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">burst_req</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/dse_odata_bursts.html">dse_odata_bursts_request</a></span><span class="op">(</span><span class="va">ParentProductId</span> <span class="op">==</span> <span class="st">"879d445c-2c67-5b30-8589-b1f478904269"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Note that these are large files and may take a while to download:</span></span>
+<span><span class="fu"><a href="../reference/dse_odata_download.html">dse_odata_download</a></span><span class="op">(</span></span>
+<span>  <span class="va">burst_req</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="exploring-a-product">Exploring a Product<a class="anchor" aria-label="anchor" href="#exploring-a-product"></a>
+</h2>
+<p>Once you have identified an interesting product, there are ways to
+further explore it. You need the product identifier (ID) to do so. With
+<code><a href="../reference/dse_odata_product_nodes.html">dse_odata_product_nodes()</a></code> you can see which files are
+associated with the product:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dse_odata_product_nodes.html">dse_odata_product_nodes</a></span><span class="op">(</span><span class="st">"c8ed8edb-9bef-4717-abfd-1400a57171a4"</span>,</span>
+<span>                        recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
+<span><span class="co">#&gt;   Id                                Name  ContentLength ChildrenNumber Nodes.uri</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> S6A_P4_2__LR______20250110T11091… S6A_…             0              5 https://…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> manifest.xml                      mani…          <span style="text-decoration: underline;">1</span>727              0 https://…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> xfdumanifest.xml                  xfdu…        <span style="text-decoration: underline;">126</span>456              0 https://…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> EOPMetadata.xml                   EOPM…         <span style="text-decoration: underline;">13</span>800              0 https://…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> S6A_P4_2__LR_RED__NT_153_196_202… S6A_…       1<span style="text-decoration: underline;">410</span>175              0 https://…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> S6A_P4_2__LR_STD__NT_153_196_202… S6A_…      10<span style="text-decoration: underline;">670</span>647              0 https://…</span></span></code></pre></div>
+<p>If available you can also get a quick peek at your product by calling
+<code><a href="../reference/dse_odata_quicklook.html">dse_odata_quicklook()</a></code>:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dse_odata_quicklook.html">dse_odata_quicklook</a></span><span class="op">(</span></span>
+<span>    <span class="st">"91822f33-b15c-5b60-aa39-6d9f6f5c773b"</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".jpg"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="downloading-data">Downloading Data<a class="anchor" aria-label="anchor" href="#downloading-data"></a>
+</h2>
+<p>As shown in the ‘exploring’ section above, products can contain
+‘nodes’, which could either represent a file or a directory. If you want
+to download all files in such a directory you can call
+<code><a href="../reference/dse_odata_download_path.html">dse_odata_download_path()</a></code>. It will download all files in
+the specified node path. This is demonstrated below:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="../reference/dse_access_token.html">dse_has_password</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/dse_odata_download_path.html">dse_odata_download_path</a></span><span class="op">(</span></span>
+<span>    product     <span class="op">=</span> <span class="st">"2f497806-0101-5eea-83fa-c8f68bc56b0c"</span>,</span>
+<span>    node_path   <span class="op">=</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"DEM1_SAR_DTE_90_20101213T034716_20130408T035028_ADS_000000_5033.DEM"</span>,</span>
+<span>            <span class="st">"Copernicus_DSM_30_S09_00_E026_00"</span>, <span class="st">"DEM"</span>,</span>
+<span>            <span class="st">"Copernicus_DSM_30_S09_00_E026_00_DEM.dt1"</span>, sep <span class="op">=</span> <span class="st">"/"</span><span class="op">)</span>,</span>
+<span>    destination <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>The example above uses an alternative https route and requires a
+private access token, which in turn requires your Copernicus Dataspace
+user id (usually your e-mail address) and password (see
+<code><a href="../articles/Authentication.html">vignette("Authentication")</a></code>).</p>
+<p>The formal OData route uses [S3 buckets](<a href="https://en.wikipedia.org/wiki/Amazon_S3" class="external-link uri">https://en.wikipedia.org/wiki/Amazon_S3</a> and requires S3
+authentication (see <code><a href="../articles/Authentication.html">vignette("Authentication")</a></code>). You can
+perform such downloads with <code>dse_odata_downloads()</code> as shown
+below</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="../reference/dse_s3.html">dse_has_s3_secret</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/dse_odata_download.html">dse_odata_download</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="../reference/dse_odata_products_request.html">dse_odata_products</a></span><span class="op">(</span></span>
+<span>        <span class="va">Name</span> <span class="op">==</span></span>
+<span>          <span class="st">"S1A_IW_OCN__2SDH_20250707T210608_20250707T210625_059983_07739B_893E.SAFE"</span><span class="op">)</span>,</span>
+<span>      destination <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
