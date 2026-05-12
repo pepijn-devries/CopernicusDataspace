@@ -4,6 +4,8 @@
 NULL
 
 setOldClass("odata_request")
+setOldClass("stac_request")
+setOldClass("sentinel_request")
 
 .onLoad = function(libname, pkgname) {
   register_all_s3_methods() # dynamically registers non-imported pkgs (tidyverse)

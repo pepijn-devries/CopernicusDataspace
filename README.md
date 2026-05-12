@@ -106,7 +106,7 @@ This produces a tile in the Southern Ocean near Antarctica.
 ``` r
 
 ## Only run this if client info is available:
-if (dse_has_client_info()) {
+if (dse_has_password()) {
   response <-
     dse_odata_download_path(
     product     = "2f497806-0101-5eea-83fa-c8f68bc56b0c",

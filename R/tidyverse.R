@@ -371,6 +371,7 @@ select.sentinel_request <-
 }
 
 .column_select <- function(q, allow_desc = FALSE) {
+
   result <-
     lapply(q, \(xpr) {
       xpr <- rlang::quo_get_expr(xpr)
@@ -390,11 +391,14 @@ select.sentinel_request <-
       if (rlang::is_call(xpr)) {
         xpr1 <- if (rlang::is_quosure(xpr))
           rlang::quo_get_expr(xpr) else xpr[[1]]
-        result <- if ((identical(rlang::eval_tidy(xpr1, env = env), `[[`)) ||
+        result <- if (length(xpr) > 2 &&
+                      ((identical(rlang::eval_tidy(xpr1, env = env), `[[`)) ||
                       (identical(rlang::eval_tidy(xpr1, env = env), `$`)) &&
-                      rlang::as_string(xpr[[2]]) == ".data")
+                      rlang::as_string(xpr[[2]]) == ".data"))
           rlang::as_string(xpr[[3]]) else
-            rlang::eval_tidy(xpr, env = env)
+            if (rlang::is_string(xpr[[2]]))
+              rlang::eval_tidy(xpr[[2]]) else
+                rlang::as_string(xpr[[2]])
         if (is.null(result))
           stop(sprintf("Sorry, '%s' is not implemented in this context",
                        rlang::as_string(xpr[[1]])))
