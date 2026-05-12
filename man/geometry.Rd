@@ -6,9 +6,9 @@
 \alias{st_intersects.stac_request}
 \title{Filter OData and STAC Requests Using Geometries}
 \usage{
-st_intersects.odata_request(x, y, sparse = FALSE, ...)
+\method{st_intersects}{odata_request}(x, y, sparse = FALSE, ...)
 
-st_intersects.stac_request(x, y, sparse = FALSE, ...)
+\method{st_intersects}{stac_request}(x, y, sparse = FALSE, ...)
 }
 \arguments{
 \item{x}{Either an \code{odata_request} class object, generated with
