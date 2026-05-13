@@ -155,7 +155,7 @@ dse_sh_queryables <- memoise::memoise(.dse_sh_queryables)
 #' 
 #' Use [dse_sh_use_requests_builder()] if you want to use the graphical
 #' user interface at
-#' [Sentinel Requests Builder](https://apps.sentinel-hub.com/requests-builder/).
+#' [Sentinel Requests Builder](https://shapps.dataspace.copernicus.eu/requests-builder/).
 #' to define a request.
 #' @param input A named `list` specifying the input satellite data to
 #' be processed with `evalscript` to an image. A correctly formatted
@@ -177,7 +177,7 @@ dse_sh_queryables <- memoise::memoise(.dse_sh_queryables)
 #' location of the downloaded file at its `destination`.
 #' @references
 #'  * <https://docs.sentinel-hub.com/api/latest/api/process/>
-#'  * <https://apps.sentinel-hub.com/requests-builder/>
+#'  * <https://shapps.dataspace.copernicus.eu/requests-builder/>
 #'  * <https://custom-scripts.sentinel-hub.com/>
 #'  * <https://github.com/sentinel-hub/custom-scripts>
 #'  * <https://docs.sentinel-hub.com/api/latest/evalscript/>
@@ -370,7 +370,7 @@ dse_sh_get_custom_script <-
 #' 
 #' dse_sh_prepare_output(bbox = shape)
 #' @references
-#'  * <https://apps.sentinel-hub.com/requests-builder/>
+#'  * <https://shapps.dataspace.copernicus.eu/requests-builder/>
 #' @seealso [dse_sh_process()]
 #' @rdname dse_sh_prepare_
 #' @family sentinelhub
@@ -551,13 +551,13 @@ dse_sh_search_request <-
 #' Use Requests Builder to Send Processing Request to SentinelHub
 #' 
 #' Use
-#' [Sentinel Requests Builder](https://apps.sentinel-hub.com/requests-builder/)
+#' [Sentinel Requests Builder](https://shapps.dataspace.copernicus.eu/requests-builder/)
 #' to compose a request. Copy the text from the 'Request Preview' panel
 #' and submit with this function. Use [dse_sh_process()] when you want
 #' to define a request in R, without using a web browser.
 #' @param build A `character` string copied from the Request Preview
 #' panel at
-#' [Sentinel Requests Builder](https://apps.sentinel-hub.com/requests-builder/).
+#' [Sentinel Requests Builder](https://shapps.dataspace.copernicus.eu/requests-builder/).
 #' See `system.file("requests-builder.txt", package = "CopernicusDataspace")`
 #' for an example of such a text. When you omit this argument, this function
 #' will attempt to retrieve the text from the system's clipboard.
@@ -566,10 +566,10 @@ dse_sh_search_request <-
 #' @inheritParams dse_usage
 #' @returns A `httr2_response` class object obtained after sending the request.
 #' @references
-#'  * <https://apps.sentinel-hub.com/requests-builder/>
+#'  * <https://shapps.dataspace.copernicus.eu/requests-builder/>
 #' @examples
 #' ## Read text copied from 'Request Preview' panel on
-#' ## <https://apps.sentinel-hub.com/requests-builder/>:
+#' ## <https://shapps.dataspace.copernicus.eu/requests-builder/:
 #' requests_builder <-
 #'   system.file("requests-builder.txt", package = "CopernicusDataspace") |>
 #'     readLines(warn = FALSE) |>
@@ -582,7 +582,7 @@ dse_sh_search_request <-
 #' @family sentinelhub
 #' @export
 dse_sh_use_requests_builder <- function(
-  build, destination, ..., token = dse_access_token()
+    build, destination, ..., token = dse_access_token()
 ) {
   if (missing(build)) {
     if (requireNamespace("clipr")) {

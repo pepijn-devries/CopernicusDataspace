@@ -25,35 +25,35 @@
 \alias{select.sentinel_request}
 \title{Tidy Verbs for OData, SentinelHub and STAC API Requests}
 \usage{
-\method{filter}{odata_request}(.data, ..., .by = NULL, .preserve = FALSE)
+filter.odata_request(.data, ..., .by = NULL, .preserve = FALSE)
 
-\method{filter}{sentinel_request}(.data, ..., .by = NULL, .preserve = FALSE)
+filter.sentinel_request(.data, ..., .by = NULL, .preserve = FALSE)
 
-\method{filter}{stac_request}(.data, ..., .by = NULL, .preserve = FALSE)
+filter.stac_request(.data, ..., .by = NULL, .preserve = FALSE)
 
-\method{compute}{odata_request}(x, skip = 0L, ...)
+compute.odata_request(x, skip = 0L, ...)
 
-\method{collect}{odata_request}(x, skip = 0L, ...)
+collect.odata_request(x, skip = 0L, ...)
 
-\method{collect}{sentinel_request}(x, skip = 0L, ...)
+collect.sentinel_request(x, skip = 0L, ...)
 
-\method{collect}{stac_request}(x, ...)
+collect.stac_request(x, ...)
 
-\method{arrange}{odata_request}(.data, ..., .by_group = FALSE)
+arrange.odata_request(.data, ..., .by_group = FALSE)
 
-\method{arrange}{stac_request}(.data, ..., .by_group = FALSE)
+arrange.stac_request(.data, ..., .by_group = FALSE)
 
-\method{slice_head}{odata_request}(.data, ..., n, prop, by = NULL)
+slice_head.odata_request(.data, ..., n, prop, by = NULL)
 
-\method{slice_head}{stac_request}(.data, ..., n, prop, by = NULL)
+slice_head.stac_request(.data, ..., n, prop, by = NULL)
 
-\method{slice_head}{sentinel_request}(.data, ..., n, prop, by = NULL)
+slice_head.sentinel_request(.data, ..., n, prop, by = NULL)
 
-\method{select}{odata_request}(.data, ...)
+select.odata_request(.data, ...)
 
-\method{select}{stac_request}(.data, ...)
+select.stac_request(.data, ...)
 
-\method{select}{sentinel_request}(.data, ...)
+select.sentinel_request(.data, ...)
 }
 \arguments{
 \item{.data, x}{An object of any of the following classes \code{odata_request},

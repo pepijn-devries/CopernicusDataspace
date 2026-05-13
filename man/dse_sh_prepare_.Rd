@@ -97,7 +97,7 @@ dse_sh_prepare_output(bbox = shape)
 }
 \references{
 \itemize{
-\item \url{https://apps.sentinel-hub.com/requests-builder/}
+\item \url{https://shapps.dataspace.copernicus.eu/requests-builder/}
 }
 }
 \seealso{

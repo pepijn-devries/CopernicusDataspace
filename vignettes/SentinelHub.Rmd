@@ -14,50 +14,119 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Generic Workflow
+Sentinel Hub functions as the core engine for accessing, processing, and
+visualizing massive amounts of satellite data. It acts as a cloud-based service
+that allows users to interact with the full archive of Sentinel and other Earth
+Observation (EO) data without needing to download large files to their local
+machines.
 
-TODO
+The overall process involves identifying relevant data sets. The send the
+description of the input data together with a special script to process data
+to the server. The server processes the data and you can download the result.
 
 ## Data Exploration
 
-```{r setup}
+A good point to start using SentinelHub is by listing the collections that
+are available for this service.
+
+```{r sh-collections, message=FALSE}
 library(CopernicusDataspace)
-library(stars)
+library(stars) ## required below for reading and plotting data
+library(dplyr) ## used for data manipulation below
+dse_sh_collections()
+```
+
+You can also search products using SentinelHub by creating a `dse_sh_search_request()`.
+You can add a narrow down the search with a tidyverse `filter()`. You need to retrieve
+the search results by calling `collect()`:
+
+```{r sh-search}
+bounds <- c(5.261, 52.680, 5.319, 52.715)
+if (dse_has_client_info()) {
+  dse_sh_search_request(
+    collection = "sentinel-2-l2a",
+    bbox       = bounds,
+    datetime   = c("2025-01-01 UTC", "2025-01-31 UTC")
+  ) |>
+    filter(`eo:cloud_cover` <= 10) |>
+    collect()
+}
 ```
 
 ## Data Downloading
 
-TODO
+SentinelHub is a processing service, meaning that you should not to attempt
+downloading raw data. Instead, you need to specify which subset of data you
+wish to process, how you wish to process it, and how you like to have your results.
 
-```{r download-sentinelhub, message=FALSE}
+In order to specify your input data you can use the helper function
+`dse_sh_prepare_input()`. The function `dse_sh_prepare_output()` is to help
+you formulate your output specifications.
+
+For the processing of the data, SentinelHub uses JavaScript. It is referred to
+as [EvalScript](https://docs.sentinel-hub.com/api/latest/evalscript/).
+The [technical manual](https://docs.sentinel-hub.com/api/latest/evalscript/v3/)
+describes what the script should look like.
+
+You can use `dse_sh_get_custom_script()` to retrieve existing custom scripts from
+the default [repository](https://custom-scripts.sentinel-hub.com/).
+
+The steps presented above are demonstrated below:
+
+```{r prepare-sentinelhub}
+## prepare input data:
+input <-
+  dse_sh_prepare_input(
+    bounds = bounds,
+    time_range = c("2025-06-01 UTC", "2025-07-01 UTC")
+  )
+
+## prepare ouput format:
+output <- dse_sh_prepare_output(bbox = bounds)
+
+## retrieve processing script:
+evalscript <- dse_sh_get_custom_script("/sentinel-2/l2a_optimized/")
+
+## destination file:
+fl <- tempfile(fileext = ".tiff")
+```
+
+Once you have all these elements ready, you can submit your request to
+SentinelHub and retrieve the result, using `dse_sh_process()`. In order
+to submit this request, you need an access token, which in turn requires
+a `client_id` and `client_secret`. For more information about this
+check out `vignette("Authentication")`.
+
+```{r download-sentinelhub, eval=FALSE}
 if (dse_has_client_info()) {
-  bounds <- c(5.261, 52.680, 5.319, 52.715)
-
-  ## prepare input data:
-  input <-
-    dse_sh_prepare_input(
-      bounds = bounds,
-      time_range = c("2025-06-01 UTC", "2025-07-01 UTC")
-    )
-
-  ## prepare ouput format:
-  output <- dse_sh_prepare_output(bbox = bounds)
-
-  ## retrieve processing script:
-  evalscript <- dse_sh_get_custom_script("/sentinel-2/l2a_optimized/")
-
-  ## destination file:
-  fl <- tempfile(fileext = ".tiff")
-  
   ## send request and download result:
   dse_sh_process(input, output, evalscript, fl)
 }
 ```
+
+If you like to use a graphical user interface to prepare your SentinelHub
+request, you can use the
+[Requests-Builder](https://shapps.dataspace.copernicus.eu/requests-builder/)
+in your web browser. You can create a request through the provided menu and
+it is shown in a text field. You can copy this text and submit it to SentinelHub
+with `dse_sh_use_requests_builder()`.
+
 ## Eval Scripts
 
-[Eval Scripts](https://docs.sentinel-hub.com/api/latest/evalscript/)
-TODO
+As mentioned above, there are many readily developed
+[Eval Scripts](https://docs.sentinel-hub.com/api/latest/evalscript/) available.
+You can list the available scripts on the repository using:
+
+```{r eval-scripts}
+dse_sh_custom_scripts()
+```
+
+As each script has a unique way of processing the raw data, you can quickly create
+different visualisations of the satellite information. Lets illustrate this
+by reusing the same `input` and `output` specifications as defined above.
+
 ```{r water-bodies}
+
 if (dse_has_client_info()) {
   evalscript <-
     dse_sh_get_custom_script("/sentinel-2/simple_water_bodies_mapping-swbm/")
@@ -79,6 +148,9 @@ a decent job, however some greenhouses show up as water
 bodies (i.e., false-positives). It must be noted that here the script
 was just used as is, and might need some tweaking of parameters for
 better performance.
+
+Below an example of how the same raw data can be visualised differently,
+using another dedicated EvalScript.
 
 ```{r land-use}
 if (dse_has_client_info()) {
