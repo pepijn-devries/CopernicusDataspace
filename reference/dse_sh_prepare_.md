@@ -105,7 +105,7 @@ A named `list` that can be used as `input` and `output` argument to
 
 ## References
 
-- <https://apps.sentinel-hub.com/requests-builder/>
+- <https://shapps.dataspace.copernicus.eu/requests-builder/>
 
 ## See also
 

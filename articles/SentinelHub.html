@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">CopernicusDataspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,61 +72,148 @@
 
     
     
-<div class="section level2">
-<h2 id="generic-workflow">Generic Workflow<a class="anchor" aria-label="anchor" href="#generic-workflow"></a>
-</h2>
-<p>TODO</p>
-</div>
+<p>Sentinel Hub functions as the core engine for accessing, processing,
+and visualizing massive amounts of satellite data. It acts as a
+cloud-based service that allows users to interact with the full archive
+of Sentinel and other Earth Observation (EO) data without needing to
+download large files to their local machines.</p>
+<p>The overall process involves identifying relevant data sets. The send
+the description of the input data together with a special script to
+process data to the server. The server processes the data and you can
+download the result.</p>
 <div class="section level2">
 <h2 id="data-exploration">Data Exploration<a class="anchor" aria-label="anchor" href="#data-exploration"></a>
 </h2>
+<p>A good point to start using SentinelHub is by listing the collections
+that are available for this service.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/pepijn-devries/CopernicusDataspace" class="external-link">CopernicusDataspace</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/stars/" class="external-link">stars</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading required package: abind</span></span>
-<span><span class="co">#&gt; Loading required package: sf</span></span>
-<span><span class="co">#&gt; Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/stars/" class="external-link">stars</a></span><span class="op">)</span> <span class="co">## required below for reading and plotting data</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span> <span class="co">## used for data manipulation below</span></span>
+<span><span class="fu"><a href="../reference/dse_sh_collections.html">dse_sh_collections</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 13</span></span></span>
+<span><span class="co">#&gt;    stac_version stac_extensions type      id    title description `sci:citation`</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1.0.0        <span style="color: #949494;">&lt;list [2]&gt;</span>      Collecti… sent… Sent… Sentinel 2… Modified Cope…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1.0.0        <span style="color: #949494;">&lt;list [3]&gt;</span>      Collecti… sent… Sent… Sentinel 3… Modified Cope…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1.0.0        <span style="color: #949494;">&lt;list [3]&gt;</span>      Collecti… land… Land… Landsat 8-… Landsat 8-9 p…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1.0.0        <span style="color: #949494;">&lt;list [3]&gt;</span>      Collecti… sent… Sent… Sentinel 3… Modified Cope…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1.0.0        <span style="color: #949494;">&lt;list [3]&gt;</span>      Collecti… sent… Sent… Sentinel 3… Modified Cope…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 1.0.0        <span style="color: #949494;">&lt;list [3]&gt;</span>      Collecti… sent… Sent… Sentinel 3… Modified Cope…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 1.0.0        <span style="color: #949494;">&lt;list [3]&gt;</span>      Collecti… sent… Sent… Sentinel 3… Modified Cope…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 1.0.0        <span style="color: #949494;">&lt;list [4]&gt;</span>      Collecti… sent… Sent… Sentinel 1… Modified Cope…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 1.0.0        <span style="color: #949494;">&lt;list [2]&gt;</span>      Collecti… sent… Sent… Sentinel 2… Modified Cope…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 1.0.0        <span style="color: #949494;">&lt;list [3]&gt;</span>      Collecti… sent… Sent… Sentinel 5… Modified Cope…</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 6 more variables: license &lt;chr&gt;, providers &lt;list&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   extent.spatial.bbox &lt;list&gt;, extent.temporal.interval &lt;list&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   summaries &lt;list&gt;, links &lt;list&gt;</span></span></span></code></pre></div>
+<p>You can also search products using SentinelHub by creating a
+<code><a href="../reference/dse_sh_search_request.html">dse_sh_search_request()</a></code>. You can add a narrow down the
+search with a tidyverse <code><a href="../reference/tidy_verbs.html">filter()</a></code>. You need to retrieve the
+search results by calling <code><a href="../reference/tidy_verbs.html">collect()</a></code>:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bounds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.261</span>, <span class="fl">52.680</span>, <span class="fl">5.319</span>, <span class="fl">52.715</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="../reference/dse_access_token.html">dse_has_client_info</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/dse_sh_search_request.html">dse_sh_search_request</a></span><span class="op">(</span></span>
+<span>    collection <span class="op">=</span> <span class="st">"sentinel-2-l2a"</span>,</span>
+<span>    bbox       <span class="op">=</span> <span class="va">bounds</span>,</span>
+<span>    datetime   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2025-01-01 UTC"</span>, <span class="st">"2025-01-31 UTC"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="../reference/tidy_verbs.html">filter</a></span><span class="op">(</span><span class="va">`eo:cloud_cover`</span> <span class="op">&lt;=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="../reference/tidy_verbs.html">collect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 21</span></span></span>
+<span><span class="co">#&gt;   stac_version stac_extensions id      type  geometry bbox   properties.datetime</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1.0.0        <span style="color: #949494;">&lt;list [2]&gt;</span>      S2B_MS… Feat… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;list&gt;</span> 2025-01-26T10:46:2…</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 14 more variables: properties.platform &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   properties.instruments &lt;list&gt;, properties.constellation &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   properties.gsd &lt;int&gt;, `properties.eo:cloud_cover` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `properties.proj:epsg` &lt;int&gt;, `properties.proj:bbox` &lt;list&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `properties.proj:geometry.type` &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `properties.proj:geometry.crs.type` &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `properties.proj:geometry.crs.properties.name` &lt;chr&gt;, …</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="data-downloading">Data Downloading<a class="anchor" aria-label="anchor" href="#data-downloading"></a>
 </h2>
-<p>TODO</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<p>SentinelHub is a processing service, meaning that you should not to
+attempt downloading raw data. Instead, you need to specify which subset
+of data you wish to process, how you wish to process it, and how you
+like to have your results.</p>
+<p>In order to specify your input data you can use the helper function
+<code><a href="../reference/dse_sh_prepare_.html">dse_sh_prepare_input()</a></code>. The function
+<code><a href="../reference/dse_sh_prepare_.html">dse_sh_prepare_output()</a></code> is to help you formulate your
+output specifications.</p>
+<p>For the processing of the data, SentinelHub uses JavaScript. It is
+referred to as <a href="https://docs.sentinel-hub.com/api/latest/evalscript/" class="external-link">EvalScript</a>.
+The <a href="https://docs.sentinel-hub.com/api/latest/evalscript/v3/" class="external-link">technical
+manual</a> describes what the script should look like.</p>
+<p>You can use <code><a href="../reference/dse_sh_get_custom_script.html">dse_sh_get_custom_script()</a></code> to retrieve
+existing custom scripts from the default <a href="https://custom-scripts.sentinel-hub.com/" class="external-link">repository</a>.</p>
+<p>The steps presented above are demonstrated below:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## prepare input data:</span></span>
+<span><span class="va">input</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/dse_sh_prepare_.html">dse_sh_prepare_input</a></span><span class="op">(</span></span>
+<span>    bounds <span class="op">=</span> <span class="va">bounds</span>,</span>
+<span>    time_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2025-06-01 UTC"</span>, <span class="st">"2025-07-01 UTC"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co">## prepare ouput format:</span></span>
+<span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dse_sh_prepare_.html">dse_sh_prepare_output</a></span><span class="op">(</span>bbox <span class="op">=</span> <span class="va">bounds</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## retrieve processing script:</span></span>
+<span><span class="va">evalscript</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dse_sh_get_custom_script.html">dse_sh_get_custom_script</a></span><span class="op">(</span><span class="st">"/sentinel-2/l2a_optimized/"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## destination file:</span></span>
+<span><span class="va">fl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".tiff"</span><span class="op">)</span></span></code></pre></div>
+<p>Once you have all these elements ready, you can submit your request
+to SentinelHub and retrieve the result, using
+<code><a href="../reference/dse_sh_process.html">dse_sh_process()</a></code>. In order to submit this request, you need
+an access token, which in turn requires a <code>client_id</code> and
+<code>client_secret</code>. For more information about this check out
+<code><a href="../articles/Authentication.html">vignette("Authentication")</a></code>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="../reference/dse_access_token.html">dse_has_client_info</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">bounds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.261</span>, <span class="fl">52.680</span>, <span class="fl">5.319</span>, <span class="fl">52.715</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="co">## prepare input data:</span></span>
-<span>  <span class="va">input</span> <span class="op">&lt;-</span></span>
-<span>    <span class="fu"><a href="../reference/dse_sh_prepare_.html">dse_sh_prepare_input</a></span><span class="op">(</span></span>
-<span>      bounds <span class="op">=</span> <span class="va">bounds</span>,</span>
-<span>      time_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2025-06-01 UTC"</span>, <span class="st">"2025-07-01 UTC"</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span></span>
-<span>  <span class="co">## prepare ouput format:</span></span>
-<span>  <span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dse_sh_prepare_.html">dse_sh_prepare_output</a></span><span class="op">(</span>bbox <span class="op">=</span> <span class="va">bounds</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="co">## retrieve processing script:</span></span>
-<span>  <span class="va">evalscript</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dse_sh_get_custom_script.html">dse_sh_get_custom_script</a></span><span class="op">(</span><span class="st">"/sentinel-2/l2a_optimized/"</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="co">## destination file:</span></span>
-<span>  <span class="va">fl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".tiff"</span><span class="op">)</span></span>
-<span>  </span>
 <span>  <span class="co">## send request and download result:</span></span>
 <span>  <span class="fu"><a href="../reference/dse_sh_process.html">dse_sh_process</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">evalscript</span>, <span class="va">fl</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">&lt;httr2_response&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">POST</span> https://sh.dataspace.copernicus.eu/api/v1/process</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">Status</span>: 200 OK</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">Content-Type</span>: image/tiff</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">Body</span>: On disk <span style="color: #0000BB;">/tmp/Rtmp9GL93M/file2154357fcd6b.tiff</span> (484658 bytes)</span></span></code></pre></div>
+<span><span class="op">}</span></span></code></pre></div>
+<p>If you like to use a graphical user interface to prepare your
+SentinelHub request, you can use the <a href="https://shapps.dataspace.copernicus.eu/requests-builder/" class="external-link">Requests-Builder</a>
+in your web browser. You can create a request through the provided menu
+and it is shown in a text field. You can copy this text and submit it to
+SentinelHub with <code><a href="../reference/dse_sh_use_requests_builder.html">dse_sh_use_requests_builder()</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="eval-scripts">Eval Scripts<a class="anchor" aria-label="anchor" href="#eval-scripts"></a>
 </h2>
-<p><a href="https://docs.sentinel-hub.com/api/latest/evalscript/" class="external-link">Eval
-Scripts</a> TODO</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="../reference/dse_access_token.html">dse_has_client_info</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<p>As mentioned above, there are many readily developed <a href="https://docs.sentinel-hub.com/api/latest/evalscript/" class="external-link">Eval
+Scripts</a> available. You can list the available scripts on the
+repository using:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dse_sh_custom_scripts.html">dse_sh_custom_scripts</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 361 × 2</span></span></span>
+<span><span class="co">#&gt;    title                                                                  relUrl</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Sentinel-2 L2A Scene Classification Map                                /sent…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> NDVI Anomaly Detection Script                                          /sent…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Simple RGB Composites (Sentinel-2)                                     /sent…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Land Use Visualization for Sentinel-2 Using Linear Discriminant Analy… /sent…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Multitemporal burnt area analysis                                      /sent…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Sentinel-2 L2A True Color Optimized                                    /sent…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> NDWI Normalized Difference Water Index                                 /sent…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Detecting Deep Moist Convection Script                                 /sent…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Sentinel-2 L1C True Color Optimized                                    /sent…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Water Bodies' Mapping - WBM Script                                     /sent…</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 351 more rows</span></span></span></code></pre></div>
+<p>As each script has a unique way of processing the raw data, you can
+quickly create different visualisations of the satellite information.
+Lets illustrate this by reusing the same <code>input</code> and
+<code>output</code> specifications as defined above.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="../reference/dse_access_token.html">dse_has_client_info</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">evalscript</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu"><a href="../reference/dse_sh_get_custom_script.html">dse_sh_get_custom_script</a></span><span class="op">(</span><span class="st">"/sentinel-2/simple_water_bodies_mapping-swbm/"</span><span class="op">)</span></span>
 <span>  </span>
@@ -146,7 +233,9 @@ does a decent job, however some greenhouses show up as water bodies
 (i.e., false-positives). It must be noted that here the script was just
 used as is, and might need some tweaking of parameters for better
 performance.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<p>Below an example of how the same raw data can be visualised
+differently, using another dedicated EvalScript.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="../reference/dse_access_token.html">dse_has_client_info</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">evalscript</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu"><a href="../reference/dse_sh_get_custom_script.html">dse_sh_get_custom_script</a></span><span class="op">(</span><span class="st">"/sentinel-2/land_use_with_linear_discriminant_analysis/"</span><span class="op">)</span></span>

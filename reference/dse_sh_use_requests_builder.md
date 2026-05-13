@@ -1,9 +1,9 @@
 # Use Requests Builder to Send Processing Request to SentinelHub
 
 Use [Sentinel Requests
-Builder](https://apps.sentinel-hub.com/requests-builder/) to compose a
-request. Copy the text from the 'Request Preview' panel and submit with
-this function. Use
+Builder](https://shapps.dataspace.copernicus.eu/requests-builder/) to
+compose a request. Copy the text from the 'Request Preview' panel and
+submit with this function. Use
 [`dse_sh_process()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_process.md)
 when you want to define a request in R, without using a web browser.
 
@@ -24,7 +24,8 @@ dse_sh_use_requests_builder(
 
   A `character` string copied from the Request Preview panel at
   [Sentinel Requests
-  Builder](https://apps.sentinel-hub.com/requests-builder/). See
+  Builder](https://shapps.dataspace.copernicus.eu/requests-builder/).
+  See
   `system.file("requests-builder.txt", package = "CopernicusDataspace")`
   for an example of such a text. When you omit this argument, this
   function will attempt to retrieve the text from the system's
@@ -53,7 +54,7 @@ A `httr2_response` class object obtained after sending the request.
 
 ## References
 
-- <https://apps.sentinel-hub.com/requests-builder/>
+- <https://shapps.dataspace.copernicus.eu/requests-builder/>
 
 ## See also
 
@@ -71,7 +72,7 @@ Other sentinelhub:
 
 ``` r
 ## Read text copied from 'Request Preview' panel on
-## <https://apps.sentinel-hub.com/requests-builder/>:
+## <https://shapps.dataspace.copernicus.eu/requests-builder/:
 requests_builder <-
   system.file("requests-builder.txt", package = "CopernicusDataspace") |>
     readLines(warn = FALSE) |>

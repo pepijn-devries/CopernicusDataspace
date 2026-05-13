@@ -15,7 +15,7 @@ to define a request in R, without using a web browser."><meta property="og:image
 
     <a class="navbar-brand me-2" href="../index.html">CopernicusDataspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +49,7 @@ to define a request in R, without using a web browser."><meta property="og:image
 
     <div class="ref-description section level2">
     <p>Use
-<a href="https://apps.sentinel-hub.com/requests-builder/" class="external-link">Sentinel Requests Builder</a>
+<a href="https://shapps.dataspace.copernicus.eu/requests-builder/" class="external-link">Sentinel Requests Builder</a>
 to compose a request. Copy the text from the 'Request Preview' panel
 and submit with this function. Use <code><a href="dse_sh_process.html">dse_sh_process()</a></code> when you want
 to define a request in R, without using a web browser.</p>
@@ -72,7 +72,7 @@ to define a request in R, without using a web browser.</p>
 <dl><dt id="arg-build">build<a class="anchor" aria-label="anchor" href="#arg-build"></a></dt>
 <dd><p>A <code>character</code> string copied from the Request Preview
 panel at
-<a href="https://apps.sentinel-hub.com/requests-builder/" class="external-link">Sentinel Requests Builder</a>.
+<a href="https://shapps.dataspace.copernicus.eu/requests-builder/" class="external-link">Sentinel Requests Builder</a>.
 See <code>system.file("requests-builder.txt", package = "CopernicusDataspace")</code>
 for an example of such a text. When you omit this argument, this function
 will attempt to retrieve the text from the system's clipboard.</p></dd>
@@ -100,7 +100,7 @@ an "access denied" error.</p></dd>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
 
-<ul><li><p><a href="https://apps.sentinel-hub.com/requests-builder/" class="external-link">https://apps.sentinel-hub.com/requests-builder/</a></p></li>
+<ul><li><p><a href="https://shapps.dataspace.copernicus.eu/requests-builder/" class="external-link">https://shapps.dataspace.copernicus.eu/requests-builder/</a></p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -118,7 +118,7 @@ an "access denied" error.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Read text copied from 'Request Preview' panel on</span></span></span>
-<span class="r-in"><span><span class="co">## &lt;https://apps.sentinel-hub.com/requests-builder/&gt;:</span></span></span>
+<span class="r-in"><span><span class="co">## &lt;https://shapps.dataspace.copernicus.eu/requests-builder/:</span></span></span>
 <span class="r-in"><span><span class="va">requests_builder</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"requests-builder.txt"</span>, package <span class="op">=</span> <span class="st">"CopernicusDataspace"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span>warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>

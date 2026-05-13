@@ -71,14 +71,14 @@ downloaded file at its `destination`.
 Use
 [`dse_sh_use_requests_builder()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_sh_use_requests_builder.md)
 if you want to use the graphical user interface at [Sentinel Requests
-Builder](https://apps.sentinel-hub.com/requests-builder/). to define a
-request.
+Builder](https://shapps.dataspace.copernicus.eu/requests-builder/). to
+define a request.
 
 ## References
 
 - <https://docs.sentinel-hub.com/api/latest/api/process/>
 
-- <https://apps.sentinel-hub.com/requests-builder/>
+- <https://shapps.dataspace.copernicus.eu/requests-builder/>
 
 - <https://custom-scripts.sentinel-hub.com/>
 
