@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">CopernicusDataspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9005</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9006</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,10 +72,162 @@
 
     
     
+<p>In the Copernicus Data Space Ecosystem (CDSE), <a href="https://stacspec.org/en" class="external-link">STAC stands for SpatioTemporal Asset
+Catalog</a>. It is a standardized, open-source metadata specification
+used to structure, search, and discover Earth Observation (EO) data.</p>
+<p>Instead of requiring users to download massive, raw satellite images,
+the CDSE STAC <a href="https://en.wikipedia.org/wiki/REST" class="external-link">RESTful
+API</a> allows developers to query precise metadata (e.g., location,
+time, cloud cover, and specific bands) to locate exact data assets.</p>
+<p>Key Functions of STAC:</p>
+<ul>
+<li>
+<em>Data Access</em>: It provides a direct path (such as S3 storage
+links) to cloud-hosted imagery, enabling tools to process a subset of
+data without full downloads.</li>
+<li>
+<em>System Interoperability</em>: It replaces satellite-specific
+extensions with a unified data model, allowing the same code or software
+to seamlessly handle diverse datasets like Sentinel-1 and
+Sentinel-2.</li>
+</ul>
+<p>The package also offers features for the complementary primary
+catalogue via OData. For more details on that read
+<code><a href="../articles/OData.html">vignette("OData")</a></code>.</p>
+<p>In general to understand which STAC client the server is offering,
+you can call <code><a href="../reference/dse_stac_client.html">dse_stac_client()</a></code>.</p>
+<div class="section level2">
+<h2 id="data-exploration">Data Exploration<a class="anchor" aria-label="anchor" href="#data-exploration"></a>
+</h2>
+<p>A good starting point of exploring data with STAC is being aware
+which collections of data are available in the first place. You can list
+them as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/pepijn-devries/CopernicusDataspace" class="external-link">CopernicusDataspace</a></span><span class="op">)</span></span></code></pre></div>
-<p>TODO</p>
-  </main>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/pepijn-devries/CopernicusDataspace" class="external-link">CopernicusDataspace</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/dse_stac_collections.html">dse_stac_collections</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 20</span></span></span>
+<span><span class="co">#&gt;    id            type  links  title assets   extent   license keywords providers</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> ccm-optical   Coll… <span style="color: #949494;">&lt;list&gt;</span> Cope… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;list&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> ccm-sar       Coll… <span style="color: #949494;">&lt;list&gt;</span> Cope… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;list&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> clms_ba_glob… Coll… <span style="color: #949494;">&lt;list&gt;</span> CLMS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;NULL&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> clms_ba_glob… Coll… <span style="color: #949494;">&lt;list&gt;</span> CLMS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;NULL&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> clms_ba_glob… Coll… <span style="color: #949494;">&lt;list&gt;</span> CLMS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;NULL&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> clms_ba_glob… Coll… <span style="color: #949494;">&lt;list&gt;</span> CLMS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;NULL&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> clms_ba_glob… Coll… <span style="color: #949494;">&lt;list&gt;</span> CLMS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;NULL&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> clms_ba_glob… Coll… <span style="color: #949494;">&lt;list&gt;</span> CLMS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;NULL&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> clms_ba_glob… Coll… <span style="color: #949494;">&lt;list&gt;</span> CLMS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;NULL&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> clms_ba_glob… Coll… <span style="color: #949494;">&lt;list&gt;</span> CLMS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;NULL&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 11 more variables: summaries &lt;list&gt;, description &lt;chr&gt;, item_assets &lt;list&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `auth:schemes` &lt;list&gt;, `ceosard:type` &lt;list&gt;, stac_version &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   stac_extensions &lt;list&gt;, `storage:schemes` &lt;list&gt;, bands &lt;list&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `sci:doi` &lt;list&gt;, contacts &lt;list&gt;</span></span></span></code></pre></div>
+<p>The returned <code>data.frame</code> contains descriptive information
+about each of the collections. It can help you focus your search. Once
+you have identified a collection, you can check which filter/search are
+available for further narrowing your exploration tour:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dse_stac_queryables.html">dse_stac_queryables</a></span><span class="op">(</span><span class="st">"sentinel-1-grd"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                      Length Class  Mode     </span></span>
+<span><span class="co">#&gt; $id                   1     -none- character</span></span>
+<span><span class="co">#&gt; type                  1     -none- character</span></span>
+<span><span class="co">#&gt; title                 1     -none- character</span></span>
+<span><span class="co">#&gt; $schema               1     -none- character</span></span>
+<span><span class="co">#&gt; properties           11     -none- list     </span></span>
+<span><span class="co">#&gt; additionalProperties  1     -none- logical</span></span></code></pre></div>
+<p>The example above shows 11 properties that can be used to focus the
+search. You can start an actual search by creating a STAC search request
+with: <code><a href="../reference/dse_stac_search_request.html">dse_stac_search_request()</a></code>. It creates a special class
+of <code>httr2</code> request object. In essence, it is a request to the
+API server, which you can modify with tidyverse operators. This sounds
+more complicated than it is.</p>
+<p>Once you have created the request, you can add tidyverse operators
+(like <code><a href="../reference/tidy_verbs.html">filter()</a></code>, <code><a href="../reference/tidy_verbs.html">arrange()</a></code> and
+<code><a href="../reference/tidy_verbs.html">slice_head()</a></code>), to modify this request. You can join those
+modifications with the pipe operator (<code>|&gt;</code> or
+<code>%&gt;%</code>). You can also query products that intersect with
+specific spatial features (<code>sf</code>) using
+<code><a href="../reference/geometry.html">st_intersects()</a></code>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     filter, lag</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE</span></span>
+<span></span>
+<span><span class="va">bbox</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="fl">5.261</span>, ymin <span class="op">=</span> <span class="fl">52.680</span>, xmax <span class="op">=</span> <span class="fl">5.319</span>, ymax <span class="op">=</span> <span class="fl">52.715</span><span class="op">)</span>,</span>
+<span>    crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/dse_stac_search_request.html">dse_stac_search_request</a></span><span class="op">(</span><span class="st">"sentinel-1-grd"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/tidy_verbs.html">filter</a></span><span class="op">(</span><span class="va">`sat:orbit_state`</span> <span class="op">==</span> <span class="st">"ascending"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/tidy_verbs.html">arrange</a></span><span class="op">(</span><span class="st">"id"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/geometry.html">st_intersects</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/tidy_verbs.html">collect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 56</span></span></span>
+<span><span class="co">#&gt;    id        bbox   type  links  assets   geometry collection properties.created</span></span>
+<span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> S1A_EW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-06-26T05:37:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> S1A_EW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-04-27T16:33:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> S1A_EW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-04-27T18:49:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> S1A_IW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-05-08T16:00:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> S1A_IW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-05-08T16:50:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> S1A_IW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-04-25T15:40:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> S1A_IW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-04-27T11:18:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> S1A_IW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-04-27T13:01:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> S1A_IW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-04-27T15:24:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> S1A_IW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-05-04T14:05:…</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 48 more variables: properties.updated &lt;chr&gt;, properties.datetime &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   properties.platform &lt;chr&gt;, properties.published &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   properties.instruments &lt;list&gt;, `properties.auth:schemes.s3.type` &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `properties.auth:schemes.oidc.type` &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `properties.auth:schemes.oidc.openIdConnectUrl` &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   properties.end_datetime &lt;chr&gt;, `properties.product:type` &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   `properties.view:azimuth` &lt;dbl&gt;, properties.constellation &lt;chr&gt;, …</span></span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="downloading-data">Downloading Data<a class="anchor" aria-label="anchor" href="#downloading-data"></a>
+</h2>
+<p>When downloading data, you could retrieve the Uniform Resource
+Identifier (URI) with <code><a href="../reference/dse_stac_get_uri.html">dse_stac_get_uri()</a></code>. To get an URI,
+you need at least the asset identifier and the specific asset. Both can
+be obtained with a search as shown above. The example below shows you
+how:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dse_stac_get_uri.html">dse_stac_get_uri</a></span><span class="op">(</span></span>
+<span>  asset_id <span class="op">=</span> <span class="st">"S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148"</span>,</span>
+<span>  asset <span class="op">=</span> <span class="st">"B01"</span>,</span>
+<span>  collection <span class="op">=</span> <span class="st">"sentinel-2-l1c"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "s3://eodata/Sentinel-2/MSI/L1C/2026/01/09/S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148.SAFE/GRANULE/L1C_T39XVL_A055105_20260109T132737/IMG_DATA/T39XVL_20260109T132741_B01.jp2"</span></span>
+<span><span class="co">#&gt; attr(,"local_path")</span></span>
+<span><span class="co">#&gt; [1] "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148.SAFE/GRANULE/L1C_T39XVL_A055105_20260109T132737/IMG_DATA/T39XVL_20260109T132741_B01.jp2"</span></span></code></pre></div>
+<p>This approach also needs the collection from which the asset is made
+available. If you don’t provide it, it will be guessed with
+<code><a href="../reference/dse_stac_guess_collection.html">dse_stac_guess_collection()</a></code>. This function is not 100%
+reliable, so it’s best practice to provide the collection manually.
+Instead of working with the URI yourself it is easier to call
+<code><a href="../reference/dse_stac_download.html">dse_stac_download()</a></code>. It will automatically takes care of
+required authentication for downloading the file (if properly provided).
+Check <code><a href="../articles/Authentication.html">vignette("Authentication")</a></code> for more information about
+the authentication process.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dse_stac_download.html">dse_stac_download</a></span><span class="op">(</span></span>
+<span>  asset_id <span class="op">=</span> <span class="st">"S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148"</span>,</span>
+<span>  asset <span class="op">=</span> <span class="st">"B01"</span>,</span>
+<span>  collection <span class="op">=</span> <span class="st">"sentinel-2-l1c"</span>,</span>
+<span>  destination <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

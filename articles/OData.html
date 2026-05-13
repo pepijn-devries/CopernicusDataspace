@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">CopernicusDataspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9005</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9006</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,6 +88,9 @@ the data files.</li>
 </ul>
 <p>This package provides convenient wrappers to access those features,
 and are described in this vignette.</p>
+<p>The package also offers features for the complementary alternative
+catalogue via STAC. For more details on that read
+<code><a href="../articles/STAC.html">vignette("STAC")</a></code>.</p>
 <div class="section level2">
 <h2 id="searching-products">Searching Products<a class="anchor" aria-label="anchor" href="#searching-products"></a>
 </h2>
@@ -102,7 +105,7 @@ more complicated than it is.</p>
 (like <code><a href="../reference/tidy_verbs.html">filter()</a></code>, <code><a href="../reference/tidy_verbs.html">arrange()</a></code> and
 <code><a href="../reference/tidy_verbs.html">slice_head()</a></code>), to modify this request. You can join those
 modifications with the pipe operator (<code>|&gt;</code> or
-<code>%&gt;%</code>). You can also query products that interset with
+<code>%&gt;%</code>). You can also query products that intersect with
 specific spatial features (<code>sf</code>) using
 <code><a href="../reference/geometry.html">st_intersects()</a></code>.</p>
 <p>Each collection will have specific fields which you can use to filter

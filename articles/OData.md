@@ -17,6 +17,10 @@ Key functions of OData in CDSE are:
 This package provides convenient wrappers to access those features, and
 are described in this vignette.
 
+The package also offers features for the complementary alternative
+catalogue via STAC. For more details on that read
+[`vignette("STAC")`](https://pepijn-devries.github.io/CopernicusDataspace/articles/STAC.md).
+
 ## Searching Products
 
 For searching products, you could simply use
@@ -34,8 +38,8 @@ Once you have created the request, you can add tidyverse operators (like
 and
 [`slice_head()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)),
 to modify this request. You can join those modifications with the pipe
-operator (`|>` or `%>%`). You can also query products that interset with
-specific spatial features (`sf`) using
+operator (`|>` or `%>%`). You can also query products that intersect
+with specific spatial features (`sf`) using
 [`st_intersects()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md).
 
 Each collection will have specific fields which you can use to filter
