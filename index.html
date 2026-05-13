@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="index.html">CopernicusDataspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9005</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -143,6 +143,7 @@ install.packages("CopernicusDataspace", repos = c('https://pepijn-devries.r-univ
 <div class="section level2">
 <h2 id="downloading-using-odata-api">Downloading Using OData API<a class="anchor" aria-label="anchor" href="#downloading-using-odata-api"></a>
 </h2>
+<p>The example below briefly demonstrate how to download data using with the OData API wrapped by this package. This produces a map of Lake Upemba in Congo. For more extensive information about the API and workflow check out <code><a href="articles/OData.html">vignette("OData")</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">## Only run this if client info is available:</span></span>
@@ -160,13 +161,11 @@ install.packages("CopernicusDataspace", repos = c('https://pepijn-devries.r-univ
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tile_odata</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">terrain.colors</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, axes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p><img src="reference/figures/README-download-odata-1.png" alt="Example of downloading with OData API" width="100%"></p>
-<p>This produces a map of Lake Upemba in Congo.</p>
-<p>TODO</p>
 </div>
 <div class="section level2">
 <h2 id="downloading-using-sentinelhub">Downloading Using SentinelHub<a class="anchor" aria-label="anchor" href="#downloading-using-sentinelhub"></a>
 </h2>
-<p>TODO</p>
+<p>SentinelHub is a service that remotely processes raw Sentinel data and returns the result. Below a quick demonstration of the process. For more detailed information check <code><a href="articles/SentinelHub.html">vignette("SentinelHub")</a></code></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Only run this if client info is available:</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="reference/dse_access_token.html">dse_has_client_info</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>

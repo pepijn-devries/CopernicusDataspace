@@ -82,6 +82,12 @@ This produces a tile in the Southern Ocean near Antarctica.
 
 ## Downloading Using OData API
 
+The example below briefly demonstrate how to download data using with
+the OData API wrapped by this package. This produces a map of Lake
+Upemba in Congo. For more extensive information about the API and
+workflow check out
+[`vignette("OData")`](https://pepijn-devries.github.io/CopernicusDataspace/articles/OData.md).
+
 ``` r
 
 
@@ -104,13 +110,12 @@ if (dse_has_password()) {
 ![Example of downloading with OData
 API](reference/figures/README-download-odata-1.png)
 
-This produces a map of Lake Upemba in Congo.
-
-TODO
-
 ## Downloading Using SentinelHub
 
-TODO
+SentinelHub is a service that remotely processes raw Sentinel data and
+returns the result. Below a quick demonstration of the process. For more
+detailed information check
+[`vignette("SentinelHub")`](https://pepijn-devries.github.io/CopernicusDataspace/articles/SentinelHub.md)
 
 ``` r
 
