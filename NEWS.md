@@ -1,4 +1,4 @@
-# CopernicusDataspace V0.0.0.9005
+# CopernicusDataspace V0.0.0.9006
 
 * Initial release which can explore the catalogues and download
   data, providing entry points for the following APIs:
