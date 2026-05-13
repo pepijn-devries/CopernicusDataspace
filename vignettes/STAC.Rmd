@@ -14,8 +14,105 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+In the Copernicus Data Space Ecosystem (CDSE),
+[STAC stands for SpatioTemporal Asset Catalog](https://stacspec.org/en).
+It is a standardized, open-source metadata specification used to structure, search,
+and discover Earth Observation (EO) data.
+
+Instead of requiring users to download massive, raw satellite images, the CDSE STAC
+[RESTful API](https://en.wikipedia.org/wiki/REST) allows developers to query precise
+metadata (e.g., location, time, cloud cover, and specific bands) to locate exact data
+assets.
+
+Key Functions of STAC:
+
+  * *Data Access*: It provides a direct path (such as S3 storage links) to cloud-hosted
+    imagery, enabling tools to process a subset of data without full downloads.
+  * *System Interoperability*: It replaces satellite-specific extensions with a
+    unified data model, allowing the same code or software to seamlessly handle diverse
+    datasets like Sentinel-1 and Sentinel-2.
+
+The package also offers features for the complementary primary catalogue via
+OData. For more details on that read `vignette("OData")`.
+
+In general to understand which STAC client the server is offering, you can
+call `dse_stac_client()`.
+
+## Data Exploration
+
+A good starting point of exploring data with STAC is being aware which collections
+of data are available in the first place. You can list them as follows:
+
+```{r stac-collections}
 library(CopernicusDataspace)
+dse_stac_collections()
 ```
 
-TODO
+The returned `data.frame` contains descriptive information about each of the collections.
+It can help you focus your search. Once you have identified a collection, you can
+check which filter/search are available for further narrowing your exploration tour:
+
+```{r queryables}
+dse_stac_queryables("sentinel-1-grd") |> summary()
+```
+
+The example above shows 11 properties that can be used to focus the search.
+You can start an actual search by creating a STAC search request with:
+`dse_stac_search_request()`.  It creates a special
+class of `httr2` request object. In essence, it is a request to the API
+server, which you can modify with tidyverse operators. This sounds more
+complicated than it is.
+
+Once you have created the request, you can add tidyverse operators (like
+`filter()`, `arrange()` and `slice_head()`), to modify this request.
+You can join those modifications with the pipe operator (`|>` or `%>%`).
+You can also query products that intersect with specific spatial features (`sf`)
+using `st_intersects()`.
+
+```{r stac-search}
+library(dplyr)
+library(sf)
+
+bbox <-
+  sf::st_bbox(
+    c(xmin = 5.261, ymin = 52.680, xmax = 5.319, ymax = 52.715),
+    crs = 4326)
+
+dse_stac_search_request("sentinel-1-grd") |>
+  filter(`sat:orbit_state` == "ascending") |>
+  arrange("id") |>
+  st_intersects(bbox) |>
+  collect()
+```
+
+## Downloading Data
+
+When downloading data, you could retrieve the Uniform Resource Identifier (URI) with
+`dse_stac_get_uri()`. To get an URI, you need at least the asset identifier and
+the specific asset. Both can be obtained with a search as shown above. The example
+below shows you how:
+
+```{r stac-uri}
+dse_stac_get_uri(
+  asset_id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
+  asset = "B01",
+  collection = "sentinel-2-l1c"
+)
+```
+
+This approach also needs the collection from which the asset is made available.
+If you don't provide it, it will be guessed with `dse_stac_guess_collection()`.
+This function is not 100% reliable, so it's best practice to provide the collection
+manually. Instead of working with the URI yourself it is easier to call
+`dse_stac_download()`. It will automatically takes care of required authentication
+for downloading the file (if properly provided). Check `vignette("Authentication")`
+for more information about the authentication process.
+
+```{r stac-download, eval=FALSE}
+dse_stac_download(
+  asset_id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
+  asset = "B01",
+  collection = "sentinel-2-l1c",
+  destination = tempdir()
+)
+```
