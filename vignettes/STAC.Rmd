@@ -12,6 +12,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+eval_chunks <-
+  CopernicusDataspace::dse_has_client_info() &&
+  CopernicusDataspace::dse_has_password() &&
+  CopernicusDataspace::dse_has_s3_secret()
 ```
 
 In the Copernicus Data Space Ecosystem (CDSE),
@@ -43,7 +47,7 @@ call `dse_stac_client()`.
 A good starting point of exploring data with STAC is being aware which collections
 of data are available in the first place. You can list them as follows:
 
-```{r stac-collections}
+```{r stac-collections, eval=eval_chunks}
 library(CopernicusDataspace)
 dse_stac_collections()
 ```
@@ -52,7 +56,7 @@ The returned `data.frame` contains descriptive information about each of the col
 It can help you focus your search. Once you have identified a collection, you can
 check which filter/search are available for further narrowing your exploration tour:
 
-```{r queryables}
+```{r queryables, eval=eval_chunks}
 dse_stac_queryables("sentinel-1-grd") |> summary()
 ```
 
@@ -69,7 +73,7 @@ You can join those modifications with the pipe operator (`|>` or `%>%`).
 You can also query products that intersect with specific spatial features (`sf`)
 using `st_intersects()`.
 
-```{r stac-search}
+```{r stac-search, eval=eval_chunks}
 library(dplyr)
 library(sf)
 
@@ -92,7 +96,7 @@ When downloading data, you could retrieve the Uniform Resource Identifier (URI) 
 the specific asset. Both can be obtained with a search as shown above. The example
 below shows you how:
 
-```{r stac-uri}
+```{r stac-uri, eval=eval_chunks}
 dse_stac_get_uri(
   asset_id = "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148",
   asset = "B01",
