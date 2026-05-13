@@ -13,8 +13,136 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-TODO
 
-```{r setup}
-library(CopernicusDataspace)
+Unfortunately, the authentication process is rather complex in the Copernicus Data Space
+Ecosystem (CDSE). Different services require different authentication schemes. This
+vignette attempts to address all relevant authentication methods, and which is needed
+where. And which steps you need to complete to obtain the required secrets.
+
+## Authentication methods
+
+In essence there are three authentication methods used in this package for the CDSE:
+
+ * Access Token; it needs:
+     * Client ID
+     * Client Secret
+ * Public Access Token; it needs:
+     * User identifier
+     * User password
+ * S3 key + secret
+
+Both access tokens are long pieces of encrypted codes that you can request with
+specific secrets that are associated with your CDSE account. Both access tokens
+are only valid for a short period of time (usually about 10 minutes), so you
+may need to obtain a fresh token once in a while.
+
+## What and Where?
+
+The list below shows which of the three authentication methods is required by which
+functions in this package:
+
+ * Access Token; required by:
+     * `dse_get_token_details()` For decoding the token
+     * `dse_set_gdal_token()` For making the token visible to the GDAL driver
+     * Account info
+       * `dse_usage()`
+       * `dse_user_statistics()`
+     * SentinelHub functions:
+       * `dse_sh_features()`
+       * `dse_sh_process()`
+       * `dse_sh_search_request()`
+       * `dse_sh_use_requests_builder()`
+       * `dse_sh_features()`
+ * Public Access Token; required by:
+     * `dse_get_token_details()`
+     * `dse_odata_download_path()`
+     * `dse_stac_download()` in case of a https download
+ * S3 key + secret; required by:
+     * `dse_stac_download()` in case of an S3 download
+     * `dse_odata_download()`
+     * `dse_s3_download()`
+
+## Setting up Authentication Methods
+
+### A CDSE Account
+
+All authentication methods share a commonality: They all require a CDSE user account.
+You can create one by visiting the
+[login page](https://identity.dataspace.copernicus.eu/auth/realms/CDSE/account/#/personal-info)
+and click "register". Fill out the form and follow the instructions.
+
+### A Public Access Token
+
+After completing this registration you will have a user id (usually your e-mail) and
+a password (created by yourself). You can use those to obtain a *public access token*,
+which you can use for the functions listed above. You can obtain such a token by
+calling `dse_public_access_token()`, with your user Id and password.
+
+### A Non-Public Access Token
+
+Getting a (non-public) *access token*, you need to complete additional steps.
+In order to retrieve such a key, you need to register a client.
+To register such a client, visit the
+[Sentinel Dashboard](https://shapps.dataspace.copernicus.eu/dashboard/) and go
+to "User settings". There you will have the option to create an OAuth client.
+Follow the instructions, and make sure to safely copy the client id and secret.
+The latter is only displayed once. More detailed instructions are provided by the
+[API documentation](https://documentation.dataspace.copernicus.eu/APIs/SentinelHub/Overview/Authentication.html#registering-oauth-client)
+
+You can now retrieve an access token (required by the functions listed above)
+by calling `dse_access_token()` with the client Id and client secret that you have
+created with the steps above.
+
+### S3 Key and Secret
+
+To create an S3 key and secret, you should visit the
+[s3-credentials page](https://eodata-s3keysmanager.dataspace.copernicus.eu/panel/s3-credentials),
+and log in with your CDSE account details. By clicking "add credential",
+you can create a new key and secret. Store them in a safe place, as the secret is
+only shown once. You can pass the key and secret as `s3_key` and `s3_secret` arguments
+to functions requesting them (see above).
+
+## Masking Secrets
+
+As you might want to share your R scripts that use the CopernicusDataspace package,
+but don't want to share personal secret information, there is a way around including
+them in your script.
+
+You can store them as
+[system environment variables](https://en.wikipedia.org/wiki/Environment_variable),
+which are automatically detected by this package.
+
+You can set them with `Sys.setenv()` at the start of each R session. You can
+also edit your `.renviron`, such that they are loaded automatically each new R
+session. The easiest way to do this is by calling `usethis::edit_r_environ()` and
+add the following lines.
+
 ```
+CDSE_API_USERNAME="<your_CDSE_username>"
+CDSE_API_PASSWORD="<your_CDSE_password>"
+CDSE_API_CLIENTID="<your_client_id>"
+CDSE_API_CLIENTSECRET="<your_client_secret>"
+CDSE_API_S3ID="<your_s3_key>"
+CDSE_API_S3SECRET="<your_s3_secret>"
+```
+
+Obviously, you need to replace the text between `<>` with your personal details.
+In a new R session, these environment variables are available, and
+you no longer have to pass secret information as arguments to the functions.
+They are obtained from the environment.
+
+## Memoise
+
+It is important to note that the functions `dse_access_token()` and
+`dse_public_access_token()` are both wrapped in `memoise::memoise()`.
+This means that the function result is stored in memory and when the function
+is called again, previous results are reused.
+
+One advantage is that it speeds up operations, when you have multiple sequential
+calls that need access tokens. It will also prevent rate limiting actions, where
+the server might block you when you accessively request tokens.
+
+A disadvantage is that you token might expire, and an old token is reused due to
+the memoise strategy. If this happens, you can wipe the memoised token by calling
+`memoise::forget(dse_access_token)` or `memoise::forget(dse_public_access_token)`,
+respectively. After that you will get a fresh token when calling the token functions.

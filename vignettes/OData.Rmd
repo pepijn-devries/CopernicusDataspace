@@ -12,6 +12,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+eval_chunks <-
+  CopernicusDataspace::dse_has_client_info() &&
+  CopernicusDataspace::dse_has_password() &&
+  CopernicusDataspace::dse_has_s3_secret()
 ```
 
 In the Copernicus Data Space Ecosystem (CDSE), OData (Open Data Protocol) is the
@@ -58,7 +62,7 @@ identifiers, and select only the first 5 results. By calling `collect()`
 we ensure that the request is performed and the result is returned in a
 human readable form (`data.frame`).
 
-```{r odata-search, message=FALSE}
+```{r odata-search, message=FALSE, eval=eval_chunks}
 library(CopernicusDataspace)
 library(dplyr) # Tidiverse package for data manipulation
 library(sf)    # package for handling simple (spatial) features
@@ -115,7 +119,7 @@ explore it. You need the product identifier (ID) to do so. With
 `dse_odata_product_nodes()` you can see which files are associated with the
 product:
 
-```{r odata-nodes}
+```{r odata-nodes, eval=eval_chunks}
 dse_odata_product_nodes("c8ed8edb-9bef-4717-abfd-1400a57171a4",
                         recursive = TRUE)
 ```

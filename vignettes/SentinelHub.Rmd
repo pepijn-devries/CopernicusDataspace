@@ -12,6 +12,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+eval_chunks <-
+  CopernicusDataspace::dse_has_client_info() &&
+  CopernicusDataspace::dse_has_password() &&
+  CopernicusDataspace::dse_has_s3_secret()
 ```
 
 Sentinel Hub functions as the core engine for accessing, processing, and
@@ -29,7 +33,7 @@ to the server. The server processes the data and you can download the result.
 A good point to start using SentinelHub is by listing the collections that
 are available for this service.
 
-```{r sh-collections, message=FALSE}
+```{r sh-collections, message=FALSE, eval=eval_chunks}
 library(CopernicusDataspace)
 library(stars) ## required below for reading and plotting data
 library(dplyr) ## used for data manipulation below
@@ -40,7 +44,7 @@ You can also search products using SentinelHub by creating a `dse_sh_search_requ
 You can add a narrow down the search with a tidyverse `filter()`. You need to retrieve
 the search results by calling `collect()`:
 
-```{r sh-search}
+```{r sh-search, eval=eval_chunks}
 bounds <- c(5.261, 52.680, 5.319, 52.715)
 if (dse_has_client_info()) {
   dse_sh_search_request(
@@ -73,7 +77,7 @@ the default [repository](https://custom-scripts.sentinel-hub.com/).
 
 The steps presented above are demonstrated below:
 
-```{r prepare-sentinelhub}
+```{r prepare-sentinelhub, eval=eval_chunks}
 ## prepare input data:
 input <-
   dse_sh_prepare_input(
@@ -117,7 +121,7 @@ As mentioned above, there are many readily developed
 [Eval Scripts](https://docs.sentinel-hub.com/api/latest/evalscript/) available.
 You can list the available scripts on the repository using:
 
-```{r eval-scripts}
+```{r eval-scripts, eval=eval_chunks}
 dse_sh_custom_scripts()
 ```
 
@@ -125,7 +129,7 @@ As each script has a unique way of processing the raw data, you can quickly crea
 different visualisations of the satellite information. Lets illustrate this
 by reusing the same `input` and `output` specifications as defined above.
 
-```{r water-bodies}
+```{r water-bodies, eval=eval_chunks}
 
 if (dse_has_client_info()) {
   evalscript <-
@@ -152,7 +156,7 @@ better performance.
 Below an example of how the same raw data can be visualised differently,
 using another dedicated EvalScript.
 
-```{r land-use}
+```{r land-use, eval=eval_chunks}
 if (dse_has_client_info()) {
   evalscript <-
     dse_sh_get_custom_script("/sentinel-2/land_use_with_linear_discriminant_analysis/")
