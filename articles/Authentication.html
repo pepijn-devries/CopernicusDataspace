@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">CopernicusDataspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9007</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,10 +72,180 @@
 
     
     
-<p>TODO</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/pepijn-devries/CopernicusDataspace" class="external-link">CopernicusDataspace</a></span><span class="op">)</span></span></code></pre></div>
-  </main>
+<p>Unfortunately, the authentication process is rather complex in the
+Copernicus Data Space Ecosystem (CDSE). Different services require
+different authentication schemes. This vignette attempts to address all
+relevant authentication methods, and which is needed where. And which
+steps you need to complete to obtain the required secrets.</p>
+<div class="section level2">
+<h2 id="authentication-methods">Authentication methods<a class="anchor" aria-label="anchor" href="#authentication-methods"></a>
+</h2>
+<p>In essence there are three authentication methods used in this
+package for the CDSE:</p>
+<ul>
+<li>Access Token; it needs:
+<ul>
+<li>Client ID</li>
+<li>Client Secret</li>
+</ul>
+</li>
+<li>Public Access Token; it needs:
+<ul>
+<li>User identifier</li>
+<li>User password</li>
+</ul>
+</li>
+<li>S3 key + secret</li>
+</ul>
+<p>Both access tokens are long pieces of encrypted codes that you can
+request with specific secrets that are associated with your CDSE
+account. Both access tokens are only valid for a short period of time
+(usually about 10 minutes), so you may need to obtain a fresh token once
+in a while.</p>
+</div>
+<div class="section level2">
+<h2 id="what-and-where">What and Where?<a class="anchor" aria-label="anchor" href="#what-and-where"></a>
+</h2>
+<p>The list below shows which of the three authentication methods is
+required by which functions in this package:</p>
+<ul>
+<li>Access Token; required by:
+<ul>
+<li>
+<code><a href="../reference/dse_get_token_details.html">dse_get_token_details()</a></code> For decoding the token</li>
+<li>
+<code><a href="../reference/dse_set_gdal_token.html">dse_set_gdal_token()</a></code> For making the token visible to
+the GDAL driver</li>
+<li>Account info
+<ul>
+<li><code><a href="../reference/dse_usage.html">dse_usage()</a></code></li>
+<li><code><a href="../reference/dse_usage.html">dse_user_statistics()</a></code></li>
+</ul>
+</li>
+<li>SentinelHub functions:
+<ul>
+<li><code><a href="../reference/dse_sh_features.html">dse_sh_features()</a></code></li>
+<li><code><a href="../reference/dse_sh_process.html">dse_sh_process()</a></code></li>
+<li><code><a href="../reference/dse_sh_search_request.html">dse_sh_search_request()</a></code></li>
+<li><code><a href="../reference/dse_sh_use_requests_builder.html">dse_sh_use_requests_builder()</a></code></li>
+<li><code><a href="../reference/dse_sh_features.html">dse_sh_features()</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Public Access Token; required by:
+<ul>
+<li><code><a href="../reference/dse_get_token_details.html">dse_get_token_details()</a></code></li>
+<li><code><a href="../reference/dse_odata_download_path.html">dse_odata_download_path()</a></code></li>
+<li>
+<code><a href="../reference/dse_stac_download.html">dse_stac_download()</a></code> in case of a https download</li>
+</ul>
+</li>
+<li>S3 key + secret; required by:
+<ul>
+<li>
+<code><a href="../reference/dse_stac_download.html">dse_stac_download()</a></code> in case of an S3 download</li>
+<li><code><a href="../reference/dse_odata_download.html">dse_odata_download()</a></code></li>
+<li><code><a href="../reference/dse_s3_download.html">dse_s3_download()</a></code></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="setting-up-authentication-methods">Setting up Authentication Methods<a class="anchor" aria-label="anchor" href="#setting-up-authentication-methods"></a>
+</h2>
+<div class="section level3">
+<h3 id="a-cdse-account">A CDSE Account<a class="anchor" aria-label="anchor" href="#a-cdse-account"></a>
+</h3>
+<p>All authentication methods share a commonality: They all require a
+CDSE user account. You can create one by visiting the <a href="https://identity.dataspace.copernicus.eu/auth/realms/CDSE/account/#/personal-info" class="external-link">login
+page</a> and click “register”. Fill out the form and follow the
+instructions.</p>
+</div>
+<div class="section level3">
+<h3 id="a-public-access-token">A Public Access Token<a class="anchor" aria-label="anchor" href="#a-public-access-token"></a>
+</h3>
+<p>After completing this registration you will have a user id (usually
+your e-mail) and a password (created by yourself). You can use those to
+obtain a <em>public access token</em>, which you can use for the
+functions listed above. You can obtain such a token by calling
+<code><a href="../reference/dse_access_token.html">dse_public_access_token()</a></code>, with your user Id and
+password.</p>
+</div>
+<div class="section level3">
+<h3 id="a-non-public-access-token">A Non-Public Access Token<a class="anchor" aria-label="anchor" href="#a-non-public-access-token"></a>
+</h3>
+<p>Getting a (non-public) <em>access token</em>, you need to complete
+additional steps. In order to retrieve such a key, you need to register
+a client. To register such a client, visit the <a href="https://shapps.dataspace.copernicus.eu/dashboard/" class="external-link">Sentinel
+Dashboard</a> and go to “User settings”. There you will have the option
+to create an OAuth client. Follow the instructions, and make sure to
+safely copy the client id and secret. The latter is only displayed once.
+More detailed instructions are provided by the <a href="https://documentation.dataspace.copernicus.eu/APIs/SentinelHub/Overview/Authentication.html#registering-oauth-client" class="external-link">API
+documentation</a></p>
+<p>You can now retrieve an access token (required by the functions
+listed above) by calling <code><a href="../reference/dse_access_token.html">dse_access_token()</a></code> with the client
+Id and client secret that you have created with the steps above.</p>
+</div>
+<div class="section level3">
+<h3 id="s3-key-and-secret">S3 Key and Secret<a class="anchor" aria-label="anchor" href="#s3-key-and-secret"></a>
+</h3>
+<p>To create an S3 key and secret, you should visit the <a href="https://eodata-s3keysmanager.dataspace.copernicus.eu/panel/s3-credentials" class="external-link">s3-credentials
+page</a>, and log in with your CDSE account details. By clicking “add
+credential”, you can create a new key and secret. Store them in a safe
+place, as the secret is only shown once. You can pass the key and secret
+as <code>s3_key</code> and <code>s3_secret</code> arguments to functions
+requesting them (see above).</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="masking-secrets">Masking Secrets<a class="anchor" aria-label="anchor" href="#masking-secrets"></a>
+</h2>
+<p>As you might want to share your R scripts that use the
+CopernicusDataspace package, but don’t want to share personal secret
+information, there is a way around including them in your script.</p>
+<p>You can store them as <a href="https://en.wikipedia.org/wiki/Environment_variable" class="external-link">system
+environment variables</a>, which are automatically detected by this
+package.</p>
+<p>You can set them with <code><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv()</a></code> at the start of each
+R session. You can also edit your <code>.renviron</code>, such that they
+are loaded automatically each new R session. The easiest way to do this
+is by calling <code>usethis::edit_r_environ()</code> and add the
+following lines.</p>
+<pre><code><span><span class="va">CDSE_API_USERNAME</span><span class="op">=</span><span class="st">"&lt;your_CDSE_username&gt;"</span></span>
+<span><span class="va">CDSE_API_PASSWORD</span><span class="op">=</span><span class="st">"&lt;your_CDSE_password&gt;"</span></span>
+<span><span class="va">CDSE_API_CLIENTID</span><span class="op">=</span><span class="st">"&lt;your_client_id&gt;"</span></span>
+<span><span class="va">CDSE_API_CLIENTSECRET</span><span class="op">=</span><span class="st">"&lt;your_client_secret&gt;"</span></span>
+<span><span class="va">CDSE_API_S3ID</span><span class="op">=</span><span class="st">"&lt;your_s3_key&gt;"</span></span>
+<span><span class="va">CDSE_API_S3SECRET</span><span class="op">=</span><span class="st">"&lt;your_s3_secret&gt;"</span></span></code></pre>
+<p>Obviously, you need to replace the text between <code>&lt;&gt;</code>
+with your personal details. In a new R session, these environment
+variables are available, and you no longer have to pass secret
+information as arguments to the functions. They are obtained from the
+environment.</p>
+</div>
+<div class="section level2">
+<h2 id="memoise">Memoise<a class="anchor" aria-label="anchor" href="#memoise"></a>
+</h2>
+<p>It is important to note that the functions
+<code><a href="../reference/dse_access_token.html">dse_access_token()</a></code> and
+<code><a href="../reference/dse_access_token.html">dse_public_access_token()</a></code> are both wrapped in
+<code><a href="https://memoise.r-lib.org/reference/memoise.html" class="external-link">memoise::memoise()</a></code>. This means that the function result is
+stored in memory and when the function is called again, previous results
+are reused.</p>
+<p>One advantage is that it speeds up operations, when you have multiple
+sequential calls that need access tokens. It will also prevent rate
+limiting actions, where the server might block you when you accessively
+request tokens.</p>
+<p>A disadvantage is that you token might expire, and an old token is
+reused due to the memoise strategy. If this happens, you can wipe the
+memoised token by calling <code>memoise::forget(dse_access_token)</code>
+or <code>memoise::forget(dse_public_access_token)</code>, respectively.
+After that you will get a fresh token when calling the token
+functions.</p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

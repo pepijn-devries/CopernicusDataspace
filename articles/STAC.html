@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">CopernicusDataspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9007</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,37 +104,13 @@ which collections of data are available in the first place. You can list
 them as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/pepijn-devries/CopernicusDataspace" class="external-link">CopernicusDataspace</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/dse_stac_collections.html">dse_stac_collections</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 20</span></span></span>
-<span><span class="co">#&gt;    id            type  links  title assets   extent   license keywords providers</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> ccm-optical   Coll… <span style="color: #949494;">&lt;list&gt;</span> Cope… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;list&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> ccm-sar       Coll… <span style="color: #949494;">&lt;list&gt;</span> Cope… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;list&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> clms_ba_glob… Coll… <span style="color: #949494;">&lt;list&gt;</span> CLMS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;NULL&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> clms_ba_glob… Coll… <span style="color: #949494;">&lt;list&gt;</span> CLMS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;NULL&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> clms_ba_glob… Coll… <span style="color: #949494;">&lt;list&gt;</span> CLMS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;NULL&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> clms_ba_glob… Coll… <span style="color: #949494;">&lt;list&gt;</span> CLMS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;NULL&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> clms_ba_glob… Coll… <span style="color: #949494;">&lt;list&gt;</span> CLMS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;NULL&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> clms_ba_glob… Coll… <span style="color: #949494;">&lt;list&gt;</span> CLMS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;NULL&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> clms_ba_glob… Coll… <span style="color: #949494;">&lt;list&gt;</span> CLMS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;NULL&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> clms_ba_glob… Coll… <span style="color: #949494;">&lt;list&gt;</span> CLMS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> other   <span style="color: #949494;">&lt;NULL&gt;</span>   <span style="color: #949494;">&lt;list&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 11 more variables: summaries &lt;list&gt;, description &lt;chr&gt;, item_assets &lt;list&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `auth:schemes` &lt;list&gt;, `ceosard:type` &lt;list&gt;, stac_version &lt;chr&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   stac_extensions &lt;list&gt;, `storage:schemes` &lt;list&gt;, bands &lt;list&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `sci:doi` &lt;list&gt;, contacts &lt;list&gt;</span></span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/dse_stac_collections.html">dse_stac_collections</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The returned <code>data.frame</code> contains descriptive information
 about each of the collections. It can help you focus your search. Once
 you have identified a collection, you can check which filter/search are
 available for further narrowing your exploration tour:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/dse_stac_queryables.html">dse_stac_queryables</a></span><span class="op">(</span><span class="st">"sentinel-1-grd"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                      Length Class  Mode     </span></span>
-<span><span class="co">#&gt; $id                   1     -none- character</span></span>
-<span><span class="co">#&gt; type                  1     -none- character</span></span>
-<span><span class="co">#&gt; title                 1     -none- character</span></span>
-<span><span class="co">#&gt; $schema               1     -none- character</span></span>
-<span><span class="co">#&gt; properties           11     -none- list     </span></span>
-<span><span class="co">#&gt; additionalProperties  1     -none- logical</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/dse_stac_queryables.html">dse_stac_queryables</a></span><span class="op">(</span><span class="st">"sentinel-1-grd"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The example above shows 11 properties that can be used to focus the
 search. You can start an actual search by creating a STAC search request
 with: <code><a href="../reference/dse_stac_search_request.html">dse_stac_search_request()</a></code>. It creates a special class
@@ -150,16 +126,7 @@ specific spatial features (<code>sf</code>) using
 <code><a href="../reference/geometry.html">st_intersects()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     filter, lag</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE</span></span>
 <span></span>
 <span><span class="va">bbox</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></span><span class="op">(</span></span>
@@ -170,27 +137,7 @@ specific spatial features (<code>sf</code>) using
 <span>  <span class="fu"><a href="../reference/tidy_verbs.html">filter</a></span><span class="op">(</span><span class="va">`sat:orbit_state`</span> <span class="op">==</span> <span class="st">"ascending"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/tidy_verbs.html">arrange</a></span><span class="op">(</span><span class="st">"id"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/geometry.html">st_intersects</a></span><span class="op">(</span><span class="va">bbox</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/tidy_verbs.html">collect</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 56</span></span></span>
-<span><span class="co">#&gt;    id        bbox   type  links  assets   geometry collection properties.created</span></span>
-<span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> S1A_EW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-06-26T05:37:…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> S1A_EW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-04-27T16:33:…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> S1A_EW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-04-27T18:49:…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> S1A_IW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-05-08T16:00:…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> S1A_IW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-05-08T16:50:…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> S1A_IW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-04-25T15:40:…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> S1A_IW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-04-27T11:18:…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> S1A_IW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-04-27T13:01:…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> S1A_IW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-04-27T15:24:…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> S1A_IW_G… <span style="color: #949494;">&lt;list&gt;</span> Feat… <span style="color: #949494;">&lt;list&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;tibble&gt;</span> sentinel-… 2023-05-04T14:05:…</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 48 more variables: properties.updated &lt;chr&gt;, properties.datetime &lt;chr&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   properties.platform &lt;chr&gt;, properties.published &lt;chr&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   properties.instruments &lt;list&gt;, `properties.auth:schemes.s3.type` &lt;chr&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `properties.auth:schemes.oidc.type` &lt;chr&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `properties.auth:schemes.oidc.openIdConnectUrl` &lt;chr&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   properties.end_datetime &lt;chr&gt;, `properties.product:type` &lt;chr&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   `properties.view:azimuth` &lt;dbl&gt;, properties.constellation &lt;chr&gt;, …</span></span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/tidy_verbs.html">collect</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="downloading-data">Downloading Data<a class="anchor" aria-label="anchor" href="#downloading-data"></a>
@@ -205,10 +152,7 @@ how:</p>
 <span>  asset_id <span class="op">=</span> <span class="st">"S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148"</span>,</span>
 <span>  asset <span class="op">=</span> <span class="st">"B01"</span>,</span>
 <span>  collection <span class="op">=</span> <span class="st">"sentinel-2-l1c"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "s3://eodata/Sentinel-2/MSI/L1C/2026/01/09/S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148.SAFE/GRANULE/L1C_T39XVL_A055105_20260109T132737/IMG_DATA/T39XVL_20260109T132741_B01.jp2"</span></span>
-<span><span class="co">#&gt; attr(,"local_path")</span></span>
-<span><span class="co">#&gt; [1] "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148.SAFE/GRANULE/L1C_T39XVL_A055105_20260109T132737/IMG_DATA/T39XVL_20260109T132741_B01.jp2"</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
 <p>This approach also needs the collection from which the asset is made
 available. If you don’t provide it, it will be guessed with
 <code><a href="../reference/dse_stac_guess_collection.html">dse_stac_guess_collection()</a></code>. This function is not 100%

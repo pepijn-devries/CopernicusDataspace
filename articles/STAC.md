@@ -37,23 +37,6 @@ as follows:
 
 library(CopernicusDataspace)
 dse_stac_collections()
-#> # A tibble: 10 × 20
-#>    id            type  links  title assets   extent   license keywords providers
-#>    <chr>         <chr> <list> <chr> <list>   <list>   <chr>   <list>   <list>   
-#>  1 ccm-optical   Coll… <list> Cope… <tibble> <tibble> other   <list>   <list>   
-#>  2 ccm-sar       Coll… <list> Cope… <tibble> <tibble> other   <list>   <list>   
-#>  3 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <NULL>   <list>   
-#>  4 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <NULL>   <list>   
-#>  5 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <NULL>   <list>   
-#>  6 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <NULL>   <list>   
-#>  7 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <NULL>   <list>   
-#>  8 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <NULL>   <list>   
-#>  9 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <NULL>   <list>   
-#> 10 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <NULL>   <list>   
-#> # ℹ 11 more variables: summaries <list>, description <chr>, item_assets <list>,
-#> #   `auth:schemes` <list>, `ceosard:type` <list>, stac_version <chr>,
-#> #   stac_extensions <list>, `storage:schemes` <list>, bands <list>,
-#> #   `sci:doi` <list>, contacts <list>
 ```
 
 The returned `data.frame` contains descriptive information about each of
@@ -64,13 +47,6 @@ for further narrowing your exploration tour:
 ``` r
 
 dse_stac_queryables("sentinel-1-grd") |> summary()
-#>                      Length Class  Mode     
-#> $id                   1     -none- character
-#> type                  1     -none- character
-#> title                 1     -none- character
-#> $schema               1     -none- character
-#> properties           11     -none- list     
-#> additionalProperties  1     -none- logical
 ```
 
 The example above shows 11 properties that can be used to focus the
@@ -94,16 +70,7 @@ with specific spatial features (`sf`) using
 ``` r
 
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 library(sf)
-#> Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE
 
 bbox <-
   sf::st_bbox(
@@ -115,26 +82,6 @@ dse_stac_search_request("sentinel-1-grd") |>
   arrange("id") |>
   st_intersects(bbox) |>
   collect()
-#> # A tibble: 10 × 56
-#>    id        bbox   type  links  assets   geometry collection properties.created
-#>  * <chr>     <list> <chr> <list> <list>   <list>   <chr>      <chr>             
-#>  1 S1A_EW_G… <list> Feat… <list> <tibble> <tibble> sentinel-… 2023-06-26T05:37:…
-#>  2 S1A_EW_G… <list> Feat… <list> <tibble> <tibble> sentinel-… 2023-04-27T16:33:…
-#>  3 S1A_EW_G… <list> Feat… <list> <tibble> <tibble> sentinel-… 2023-04-27T18:49:…
-#>  4 S1A_IW_G… <list> Feat… <list> <tibble> <tibble> sentinel-… 2023-05-08T16:00:…
-#>  5 S1A_IW_G… <list> Feat… <list> <tibble> <tibble> sentinel-… 2023-05-08T16:50:…
-#>  6 S1A_IW_G… <list> Feat… <list> <tibble> <tibble> sentinel-… 2023-04-25T15:40:…
-#>  7 S1A_IW_G… <list> Feat… <list> <tibble> <tibble> sentinel-… 2023-04-27T11:18:…
-#>  8 S1A_IW_G… <list> Feat… <list> <tibble> <tibble> sentinel-… 2023-04-27T13:01:…
-#>  9 S1A_IW_G… <list> Feat… <list> <tibble> <tibble> sentinel-… 2023-04-27T15:24:…
-#> 10 S1A_IW_G… <list> Feat… <list> <tibble> <tibble> sentinel-… 2023-05-04T14:05:…
-#> # ℹ 48 more variables: properties.updated <chr>, properties.datetime <chr>,
-#> #   properties.platform <chr>, properties.published <chr>,
-#> #   properties.instruments <list>, `properties.auth:schemes.s3.type` <chr>,
-#> #   `properties.auth:schemes.oidc.type` <chr>,
-#> #   `properties.auth:schemes.oidc.openIdConnectUrl` <chr>,
-#> #   properties.end_datetime <chr>, `properties.product:type` <chr>,
-#> #   `properties.view:azimuth` <dbl>, properties.constellation <chr>, …
 ```
 
 ## Downloading Data
@@ -153,9 +100,6 @@ dse_stac_get_uri(
   asset = "B01",
   collection = "sentinel-2-l1c"
 )
-#> [1] "s3://eodata/Sentinel-2/MSI/L1C/2026/01/09/S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148.SAFE/GRANULE/L1C_T39XVL_A055105_20260109T132737/IMG_DATA/T39XVL_20260109T132741_B01.jp2"
-#> attr(,"local_path")
-#> [1] "S2A_MSIL1C_20260109T132741_N0511_R024_T39XVL_20260109T142148.SAFE/GRANULE/L1C_T39XVL_A055105_20260109T132737/IMG_DATA/T39XVL_20260109T132741_B01.jp2"
 ```
 
 This approach also needs the collection from which the asset is made
