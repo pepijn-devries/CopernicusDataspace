@@ -14,7 +14,7 @@ dse_sh_use_requests_builder(
 \arguments{
 \item{build}{A \code{character} string copied from the Request Preview
 panel at
-\href{https://apps.sentinel-hub.com/requests-builder/}{Sentinel Requests Builder}.
+\href{https://shapps.dataspace.copernicus.eu/requests-builder/}{Sentinel Requests Builder}.
 See \code{system.file("requests-builder.txt", package = "CopernicusDataspace")}
 for an example of such a text. When you omit this argument, this function
 will attempt to retrieve the text from the system's clipboard.}
@@ -33,14 +33,14 @@ A \code{httr2_response} class object obtained after sending the request.
 }
 \description{
 Use
-\href{https://apps.sentinel-hub.com/requests-builder/}{Sentinel Requests Builder}
+\href{https://shapps.dataspace.copernicus.eu/requests-builder/}{Sentinel Requests Builder}
 to compose a request. Copy the text from the 'Request Preview' panel
 and submit with this function. Use \code{\link[=dse_sh_process]{dse_sh_process()}} when you want
 to define a request in R, without using a web browser.
 }
 \examples{
 ## Read text copied from 'Request Preview' panel on
-## <https://apps.sentinel-hub.com/requests-builder/>:
+## <https://shapps.dataspace.copernicus.eu/requests-builder/:
 requests_builder <-
   system.file("requests-builder.txt", package = "CopernicusDataspace") |>
     readLines(warn = FALSE) |>
@@ -53,7 +53,7 @@ if (interactive() && dse_has_client_info()) {
 }
 \references{
 \itemize{
-\item \url{https://apps.sentinel-hub.com/requests-builder/}
+\item \url{https://shapps.dataspace.copernicus.eu/requests-builder/}
 }
 }
 \seealso{
