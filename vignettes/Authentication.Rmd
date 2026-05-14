@@ -54,7 +54,7 @@ functions in this package:
        * `dse_sh_use_requests_builder()`
        * `dse_sh_features()`
  * Public Access Token; required by:
-     * `dse_get_token_details()`
+     * `dse_get_token_details()` For decoding the token
      * `dse_odata_download_path()`
      * `dse_stac_download()` in case of a https download
  * S3 key + secret; required by:
