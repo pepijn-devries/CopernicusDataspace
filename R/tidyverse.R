@@ -5,7 +5,7 @@ NULL
 #' 
 #' Implementation of tidy generics for features supported any of OData,
 #' SentinelHub or STAC API requests.
-#' They can be called on objects any of the classe: `odata_request`,
+#' They can be called on objects any of the classes: `odata_request`,
 #' `sentinel_request` or `stac_request`.
 #' The first is produced
 #' by [dse_odata_products_request()] and [dse_odata_bursts_request()];
@@ -34,7 +34,7 @@ NULL
 #' from its tidy standards. Most notably:
 #' 
 #'  * [dplyr::select()]: Cannot change the order of columns. It will only
-#'    affact which columns are selected. Also, tidy selection helpers like
+#'    affect which columns are selected. Also, tidy selection helpers like
 #'    [dplyr::any_of()] and [dplyr::all_of()] are NOT supported
 #'  * [dplyr::arrange()]: OData only allows to sort up to 32 columns.
 #'    Adding more columns will produce a warning.
