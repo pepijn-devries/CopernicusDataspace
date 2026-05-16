@@ -22,6 +22,22 @@ library(CopernicusDataspace)
 library(stars) ## required below for reading and plotting data
 library(dplyr) ## used for data manipulation below
 dse_sh_collections()
+#> # A tibble: 10 × 13
+#>    stac_version stac_extensions type      id    title description `sci:citation`
+#>    <chr>        <list>          <chr>     <chr> <chr> <chr>       <chr>         
+#>  1 1.0.0        <list [2]>      Collecti… sent… Sent… Sentinel 2… Modified Cope…
+#>  2 1.0.0        <list [3]>      Collecti… sent… Sent… Sentinel 3… Modified Cope…
+#>  3 1.0.0        <list [3]>      Collecti… land… Land… Landsat 8-… Landsat 8-9 p…
+#>  4 1.0.0        <list [3]>      Collecti… sent… Sent… Sentinel 3… Modified Cope…
+#>  5 1.0.0        <list [3]>      Collecti… sent… Sent… Sentinel 3… Modified Cope…
+#>  6 1.0.0        <list [3]>      Collecti… sent… Sent… Sentinel 3… Modified Cope…
+#>  7 1.0.0        <list [3]>      Collecti… sent… Sent… Sentinel 3… Modified Cope…
+#>  8 1.0.0        <list [4]>      Collecti… sent… Sent… Sentinel 1… Modified Cope…
+#>  9 1.0.0        <list [2]>      Collecti… sent… Sent… Sentinel 2… Modified Cope…
+#> 10 1.0.0        <list [3]>      Collecti… sent… Sent… Sentinel 5… Modified Cope…
+#> # ℹ 6 more variables: license <chr>, providers <list>,
+#> #   extent.spatial.bbox <list>, extent.temporal.interval <list>,
+#> #   summaries <list>, links <list>
 ```
 
 You can also search products using SentinelHub by creating a
@@ -43,6 +59,17 @@ if (dse_has_client_info()) {
     filter(`eo:cloud_cover` <= 10) |>
     collect()
 }
+#> # A tibble: 1 × 21
+#>   stac_version stac_extensions id      type  geometry bbox   properties.datetime
+#>   <chr>        <list>          <chr>   <chr> <list>   <list> <chr>              
+#> 1 1.0.0        <list [2]>      S2B_MS… Feat… <tibble> <list> 2025-01-26T10:46:2…
+#> # ℹ 14 more variables: properties.platform <chr>,
+#> #   properties.instruments <list>, properties.constellation <chr>,
+#> #   properties.gsd <int>, `properties.eo:cloud_cover` <dbl>,
+#> #   `properties.proj:epsg` <int>, `properties.proj:bbox` <list>,
+#> #   `properties.proj:geometry.type` <chr>,
+#> #   `properties.proj:geometry.crs.type` <chr>,
+#> #   `properties.proj:geometry.crs.properties.name` <chr>, …
 ```
 
 ## Data Downloading
@@ -124,6 +151,20 @@ available. You can list the available scripts on the repository using:
 ``` r
 
 dse_sh_custom_scripts()
+#> # A tibble: 361 × 2
+#>    title                                                                  relUrl
+#>    <chr>                                                                  <chr> 
+#>  1 Sentinel-2 L2A Scene Classification Map                                /sent…
+#>  2 NDVI Anomaly Detection Script                                          /sent…
+#>  3 Simple RGB Composites (Sentinel-2)                                     /sent…
+#>  4 Land Use Visualization for Sentinel-2 Using Linear Discriminant Analy… /sent…
+#>  5 Multitemporal burnt area analysis                                      /sent…
+#>  6 Sentinel-2 L2A True Color Optimized                                    /sent…
+#>  7 NDWI Normalized Difference Water Index                                 /sent…
+#>  8 Detecting Deep Moist Convection Script                                 /sent…
+#>  9 Sentinel-2 L1C True Color Optimized                                    /sent…
+#> 10 Water Bodies' Mapping - WBM Script                                     /sent…
+#> # ℹ 351 more rows
 ```
 
 As each script has a unique way of processing the raw data, you can
@@ -150,6 +191,8 @@ if (dse_has_client_info()) {
 }
 ```
 
+![](SentinelHub_files/figure-html/water-bodies-1.png)
+
 This maps shows water bodies in blue. In this particular case, it does a
 decent job, however some greenhouses show up as water bodies (i.e.,
 false-positives). It must be noted that here the script was just used as
@@ -175,3 +218,5 @@ if (dse_has_client_info()) {
   plot(landuse, rgb = 1:3, main = "Land use")
 }
 ```
+
+![](SentinelHub_files/figure-html/land-use-1.png)

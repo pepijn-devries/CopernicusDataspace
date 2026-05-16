@@ -143,7 +143,19 @@ result is returned in a human readable form
 <span>  <span class="co">## Only the first 5 hits:</span></span>
 <span>  <span class="fu"><a href="../reference/tidy_verbs.html">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co">## Collect the results:</span></span>
-<span>  <span class="fu"><a href="../reference/tidy_verbs.html">collect</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/tidy_verbs.html">collect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 16</span></span></span>
+<span><span class="co">#&gt;   Id                  Name  ContentType ContentLength OriginDate PublicationDate</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> ffff1bb2-405d-49c2… MCD4… applicatio…      54<span style="text-decoration: underline;">771</span>356 2025-04-3… 2025-11-09T22:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> fffec6a0-62da-45ef… c_gl… applicatio…       2<span style="text-decoration: underline;">281</span>083 2025-07-1… 2025-07-11T12:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> fffdd7f0-cd27-4c3e… S5P_… applicatio…      11<span style="text-decoration: underline;">349</span>305 2026-05-0… 2026-05-09T13:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> fffd6992-b724-4a5d… c_gl… applicatio…    <span style="text-decoration: underline;">1</span>080<span style="text-decoration: underline;">239</span>294 2026-02-2… 2026-02-23T02:…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> fffd6520-0f19-49fc… c_gl… applicatio…      11<span style="text-decoration: underline;">559</span>794 2025-10-3… 2025-10-31T16:…</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 10 more variables: ModificationDate &lt;chr&gt;, Online &lt;lgl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   EvictionDate &lt;chr&gt;, S3Path &lt;chr&gt;, Checksum &lt;list&gt;, ContentDate.Start &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ContentDate.End &lt;chr&gt;, Footprint &lt;chr&gt;, GeoFootprint.type &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   GeoFootprint.coordinates &lt;list&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="burst-data">Burst Data<a class="anchor" aria-label="anchor" href="#burst-data"></a>
@@ -177,7 +189,16 @@ further explore it. You need the product identifier (ID) to do so. With
 associated with the product:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dse_odata_product_nodes.html">dse_odata_product_nodes</a></span><span class="op">(</span><span class="st">"c8ed8edb-9bef-4717-abfd-1400a57171a4"</span>,</span>
-<span>                        recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span>                        recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
+<span><span class="co">#&gt;   Id                                Name  ContentLength ChildrenNumber Nodes.uri</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> S6A_P4_2__LR______20250110T11091… S6A_…             0              5 https://…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> EOPMetadata.xml                   EOPM…         <span style="text-decoration: underline;">13</span>800              0 https://…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> S6A_P4_2__LR_RED__NT_153_196_202… S6A_…       1<span style="text-decoration: underline;">410</span>175              0 https://…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> S6A_P4_2__LR_STD__NT_153_196_202… S6A_…      10<span style="text-decoration: underline;">670</span>647              0 https://…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> manifest.xml                      mani…          <span style="text-decoration: underline;">1</span>727              0 https://…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> xfdumanifest.xml                  xfdu…        <span style="text-decoration: underline;">126</span>456              0 https://…</span></span></code></pre></div>
 <p>If available you can also get a quick peek at your product by calling
 <code><a href="../reference/dse_odata_quicklook.html">dse_odata_quicklook()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
