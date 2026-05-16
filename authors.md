@@ -21,13 +21,13 @@ Source:
 [`DESCRIPTION`](https://github.com/pepijn-devries/CopernicusDataspace/blob/main/DESCRIPTION)
 
 de Vries P (2026). *CopernicusDataspace: Search Download and Handle Data
-from the Copernicus Data Space Ecosystem*. R package version 0.0.0.9008,
+from the Copernicus Data Space Ecosystem*. R package version 0.0.0.9009,
 <https://github.com/pepijn-devries/CopernicusDataspace>.
 
     @Manual{,
       title = {CopernicusDataspace: Search Download and Handle Data from the Copernicus Data Space Ecosystem},
       author = {Pepijn {de Vries}},
       year = {2026},
-      note = {R package version 0.0.0.9008},
+      note = {R package version 0.0.0.9009},
       url = {https://github.com/pepijn-devries/CopernicusDataspace},
     }

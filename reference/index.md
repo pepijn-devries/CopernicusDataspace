@@ -29,7 +29,7 @@ Authentication methods for Copernicus Dataspace Ecosystem services
   : Set Copernicus Data Space Ecosystem Access Token for GDAL Driver
 - [`dse_usage()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)
   [`dse_user_statistics()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)
-  : Get Dataspace Account Information
+  : Get Data Space Account Information
 
 ## STAC Functions
 

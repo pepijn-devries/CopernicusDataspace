@@ -15,7 +15,7 @@ dse_set_gdal_token(token = dse_access_token())
 
 - token:
 
-  For authentication, many of the Dataspace Ecosystem uses an access
+  For authentication, many of the Data Space Ecosystem uses an access
   token. Either provide your access token, or obtain one automatically
   with
   [`dse_access_token()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)

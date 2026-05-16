@@ -2,7 +2,7 @@
 
 Implementation of tidy generics for features supported any of OData,
 SentinelHub or STAC API requests. They can be called on objects any of
-the classe: `odata_request`, `sentinel_request` or `stac_request`. The
+the classes: `odata_request`, `sentinel_request` or `stac_request`. The
 first is produced by
 [`dse_odata_products_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_products_request.md)
 and
@@ -115,7 +115,7 @@ Due to limitations posed by the OData API, some tidyverse verbs deviate
 from its tidy standards. Most notably:
 
 - [`dplyr::select()`](https://dplyr.tidyverse.org/reference/select.html):
-  Cannot change the order of columns. It will only affact which columns
+  Cannot change the order of columns. It will only affect which columns
   are selected. Also, tidy selection helpers like
   [`dplyr::any_of()`](https://dplyr.tidyverse.org/reference/reexports.html)
   and

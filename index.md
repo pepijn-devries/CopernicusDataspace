@@ -154,7 +154,7 @@ API](reference/figures/README-download-sentinelhub-1.png)
 ## Function Names
 
 Understanding the naming logic of the functions in this package, will
-help you navigating through all features, and effictively use them.
+help you navigating through all features, and effectively use them.
 
 Most function names in this package start with the acronym `dse` (Data
 Space Ecosystem). This is done to avoid confusion with other Copernicus

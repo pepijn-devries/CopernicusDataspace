@@ -154,7 +154,7 @@ API](reference/figures/README-download-sentinelhub-1.png)
 ## Function Names
 
 Understanding the naming logic of the functions in this package, will
-help you navigating through all features, and effictively use them.
+help you navigating through all features, and effectively use them.
 
 Most function names in this package start with the acronym `dse` (Data
 Space Ecosystem). This is done to avoid confusion with other Copernicus
@@ -221,7 +221,7 @@ Authentication methods for Copernicus Dataspace Ecosystem services
   : Set Copernicus Data Space Ecosystem Access Token for GDAL Driver
 - [`dse_usage()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)
   [`dse_user_statistics()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_usage.md)
-  : Get Dataspace Account Information
+  : Get Data Space Account Information
 
 ## STAC Functions
 

@@ -52,11 +52,11 @@ dse_has_password(...)
 
 - username:
 
-  Your Copernicus Dataspace username (usually your e-mail address).
+  Your Copernicus Data Space username (usually your e-mail address).
 
 - password:
 
-  Your Copernicus Dataspace passeword for your account.
+  Your Copernicus Data Space password for your account.
 
 - value:
 

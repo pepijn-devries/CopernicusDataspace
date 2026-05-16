@@ -12,6 +12,7 @@ dse_odata_download_path(
   product,
   node_path = "",
   destination,
+  progress = TRUE,
   ...,
   token = dse_public_access_token()
 )
@@ -32,13 +33,17 @@ dse_odata_download_path(
 
   Path to a directory where to store the downloaded file
 
+- progress:
+
+  `logical` value. If `TRUE` shows download progress.
+
 - ...:
 
   Ignored
 
 - token:
 
-  For authentication, many of the Dataspace Ecosystem uses an access
+  For authentication, many of the Data Space Ecosystem uses an access
   token. Either provide your access token, or obtain one automatically
   with
   [`dse_access_token()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)

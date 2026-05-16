@@ -37,7 +37,7 @@ dse_sh_process(
 
   A `character` string containing a piece of JavaScript, that will be
   run on the Sentinel Hub server. It is used to translate satellite data
-  to pixel data in a georeferenced image. For more information on
+  to pixel data in a geo-referenced image. For more information on
   setting up such a script please consult [the API
   documentation](https://docs.sentinel-hub.com/api/latest/evalscript/).
   You can also use
@@ -54,7 +54,7 @@ dse_sh_process(
 
 - token:
 
-  For authentication, many of the Dataspace Ecosystem uses an access
+  For authentication, many of the Data Space Ecosystem uses an access
   token. Either provide your access token, or obtain one automatically
   with
   [`dse_access_token()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)

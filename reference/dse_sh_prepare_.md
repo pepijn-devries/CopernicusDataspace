@@ -95,7 +95,7 @@ dse_sh_prepare_output(
 
   You can optionally provide a bounding box (i.e., a copy of `bounds`)
   to calculate width and height with fixed aspect ratio. Width will be
-  512 be definition, the height is choosen such that it matches with the
+  512 be definition, the height is chosen such that it matches with the
   bounding box
 
 ## Value

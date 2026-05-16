@@ -142,7 +142,7 @@ function is called again, previous results are reused.
 
 One advantage is that it speeds up operations, when you have multiple
 sequential calls that need access tokens. It will also prevent rate
-limiting actions, where the server might block you when you accessively
+limiting actions, where the server might block you when you excessively
 request tokens.
 
 A disadvantage is that you token might expire, and an old token is
