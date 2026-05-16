@@ -84,7 +84,7 @@
 #' @family s3
 #' @export
 dse_s3_download <- function(
-    uri, destination, ..., s3_key = dse_s3_key(), s3_secret = dse_s3_secret()) {
+    uri, destination, ..., s3_key = dse_s3_get_key(), s3_secret = dse_s3_get_secret()) {
   if (!grepl("^[s|S]3://", uri, ignore.case = TRUE))
     rlang::abort(c(
       x = "Not a valid S3 URI",
@@ -165,7 +165,7 @@ dse_s3_uri_to_vsi <- function(uri, streaming = TRUE) {
 #' @export
 dse_s3_set_gdal_options <- function(
     region = "us-east-1", ...,
-    s3_key = dse_s3_key(), s3_secret = dse_s3_secret()) {
+    s3_key = dse_s3_get_key(), s3_secret = dse_s3_get_secret()) {
   Sys.setenv(AWS_REGION            = region) &&
     Sys.setenv(AWS_ACCESS_KEY_ID     = s3_key) &&
     Sys.setenv(AWS_SECRET_ACCESS_KEY = s3_secret) &&

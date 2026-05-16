@@ -16,8 +16,8 @@ NULL
   )
 }
 
-.dse_public_access_token <- function(username = dse_username(),
-                                     password = dse_password()) {
+.dse_public_access_token <- function(username = dse_get_username(),
+                                     password = dse_get_password()) {
   .authent_url |>
     httr2::request() |>
     httr2::req_headers(
@@ -34,8 +34,8 @@ NULL
     httr2::resp_body_json()
 }
 
-.dse_access_token <- function(client_id     = dse_client_id(),
-                              client_secret = dse_client_secret(), ...) {
+.dse_access_token <- function(client_id     = dse_get_client_id(),
+                              client_secret = dse_get_client_secret(), ...) {
   access_token <-
     .authent_url |>
     httr2::request() |>
@@ -62,7 +62,7 @@ NULL
 #' [dse_user_statistics()]).
 #' 
 #' Note that [Amazon Simple Storage Service (s3)](https://aws.amazon.com/s3/)
-#' has separate authentication requirements. See [dse_s3_key()] for details.
+#' has separate authentication requirements. See [dse_s3_get_key()] for details.
 #' 
 #' `r .roxygen_account()`
 #' 
@@ -78,12 +78,12 @@ NULL
 #' When you share R code, you probably don't want to share your account details.
 #' You can avoid using your `client_id` and `client_secret` in your script by
 #' setting them as environment variable. You can do this yourself manually by
-#' calling `dse_client_id()<-` and `dse_client_secret()<-` at the start of each session.
+#' calling `dse_set_client_id()` and `dse_set_client_secret()` at the start of each session.
 #' 
 #' You can download OData simply through https with just you username and
 #' password. You can also store those as environment variables for your convenience.
 #' If you name those `CDSE_API_USERNAME` and `CDSE_API_PASSWORD` respectively,
-#' they are picked up automatically with [dse_username()] and [dse_password()].
+#' they are picked up automatically with [dse_get_username()] and [dse_get_password()].
 #' OData needs a public access token which is generated with
 #' `dse_public_access_token()`, which needs your username and password.
 #' 
@@ -121,7 +121,7 @@ NULL
 #' @seealso [dse_usage()]
 #' @seealso [dse_user_statistics()]
 #' @references <https://documentation.dataspace.copernicus.eu/APIs/SentinelHub/Overview/Authentication.html>
-#' @returns In case of `dse_client_id()` and `dse_client_secret()`, you can get (or
+#' @returns In case of `dse_get_client_id()` and `dse_get_client_secret()`, you can get (or
 #' set) client details as environment variables. This way, they will persist
 #' throughout your R session.
 #' 
@@ -152,53 +152,53 @@ dse_public_access_token <- memoise::memoise(.dse_public_access_token) # Using me
 #' @rdname dse_access_token
 #' @family authentication
 #' @export
-dse_client_id <- function(...) {
+dse_get_client_id <- function(...) {
   Sys.getenv("CDSE_API_CLIENTID")
 }
 
 #' @rdname dse_access_token
 #' @family authentication
 #' @export
-`dse_client_id<-` <- function(..., value) {
+dse_set_client_id <- function(value, ...) {
   Sys.setenv(CDSE_API_CLIENTID = as.character(value))
 }
 
 #' @rdname dse_access_token
 #' @export
-`dse_username<-` <- function(..., value) {
+dse_set_username <- function(value, ...) {
   Sys.setenv(CDSE_API_USERNAME = as.character(value))
 }
 
 #' @rdname dse_access_token
 #' @family authentication
 #' @export
-`dse_password<-` <- function(..., value) {
+dse_set_password <- function(value, ...) {
   Sys.setenv(CDSE_API_PASSWORD = as.character(value))
 }
 
 #' @rdname dse_access_token
 #' @export
-dse_client_secret <- function(...) {
+dse_get_client_secret <- function(...) {
   Sys.getenv("CDSE_API_CLIENTSECRET")
 }
 
 #' @rdname dse_access_token
 #' @export
-dse_username <- function(...) {
+dse_get_username <- function(...) {
   Sys.getenv("CDSE_API_USERNAME")
 }
 
 #' @rdname dse_access_token
 #' @family authentication
 #' @export
-dse_password <- function(...) {
+dse_get_password <- function(...) {
   Sys.getenv("CDSE_API_PASSWORD")
 }
 
 #' @rdname dse_access_token
 #' @family authentication
 #' @export
-`dse_client_secret<-` <- function(..., value) {
+dse_set_client_secret <- function(value, ...) {
   Sys.setenv(CDSE_API_CLIENTSECRET = as.character(value))
 }
 
@@ -206,14 +206,14 @@ dse_password <- function(...) {
 #' @family authentication
 #' @export
 dse_has_client_info <- function(...) {
-  dse_client_id() != "" && dse_client_secret() != ""
+  dse_get_client_id() != "" && dse_get_client_secret() != ""
 }
 
 #' @rdname dse_access_token
 #' @family authentication
 #' @export
 dse_has_password <- function(...) {
-  dse_password() != ""
+  dse_get_password() != ""
 }
 
 #' Setup Amazon Simple Storage Service for the Data Space Ecosystem
@@ -242,7 +242,7 @@ dse_has_password <- function(...) {
 #' When you share R code, you probably don't want to share your account details.
 #' You can avoid using your `s3_key` and `s3_secret` in your script by
 #' setting them as environment variable. You can do this yourself manually by
-#' calling `dse_s3_key()<-` and `dse_s3_secret()<-` at the start of each session.
+#' calling `dse_s3_set_key()` and `dse_s3_set_secret()` at the start of each session.
 #' 
 #' You can also define them in your `.Rprofile` file with
 #' `Sys.setenv(CDSE_API_S3ID = "<your key>")` and
@@ -252,7 +252,7 @@ dse_has_password <- function(...) {
 #' @param ... Ignored
 #' @param value Replacement value for the `s3_key` or `s3_secret`.
 #' @returns
-#' [dse_s3_key()] and [dse_s3_secret()] will return the requested s3 details
+#' [dse_s3_get_key()] and [dse_s3_get_secret()] will return the requested s3 details
 #' if set as environment variable (see details).
 #' 
 #' [dse_has_s3_secret()] returns a logical value indicating whether s3 details
@@ -262,14 +262,14 @@ dse_has_password <- function(...) {
 #' @family s3
 #' @export
 dse_has_s3_secret <- function() {
-  dse_s3_key() != "" && dse_s3_secret() != ""
+  dse_s3_get_key() != "" && dse_s3_get_secret() != ""
 }
 
 #' @rdname dse_s3
 #' @family authentication
 #' @family s3
 #' @export
-dse_s3_key <- function(...) {
+dse_s3_get_key <- function(...) {
   Sys.getenv("CDSE_API_S3ID")
 }
 
@@ -277,7 +277,7 @@ dse_s3_key <- function(...) {
 #' @family authentication
 #' @family s3
 #' @export
-`dse_s3_key<-` <- function(..., value) {
+dse_s3_set_key <- function(value, ...) {
   Sys.setenv(CDSE_API_S3ID = as.character(value))
 }
 
@@ -285,7 +285,7 @@ dse_s3_key <- function(...) {
 #' @family authentication
 #' @family s3
 #' @export
-dse_s3_secret <- function(...) {
+dse_s3_get_secret <- function(...) {
   Sys.getenv("CDSE_API_S3SECRET")
 }
 
@@ -293,7 +293,7 @@ dse_s3_secret <- function(...) {
 #' @family authentication
 #' @family s3
 #' @export
-`dse_s3_secret<-` <- function(..., value) {
+dse_s3_set_secret <- function(value, ...) {
   Sys.setenv(CDSE_API_S3SECRET = as.character(value))
 }
 

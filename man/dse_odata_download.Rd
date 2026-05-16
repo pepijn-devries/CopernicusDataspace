@@ -8,8 +8,8 @@ dse_odata_download(
   request,
   destination,
   ...,
-  s3_key = dse_s3_key(),
-  s3_secret = dse_s3_secret()
+  s3_key = dse_s3_get_key(),
+  s3_secret = dse_s3_get_secret()
 )
 }
 \arguments{
