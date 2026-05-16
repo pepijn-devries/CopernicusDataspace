@@ -32,7 +32,7 @@ the collection id as a \code{character} string.}
 \item{s3_key, s3_secret}{The s3 key and secret registered under your Data Space
 Ecosystem account}
 
-\item{token}{For authentication, many of the Dataspace Ecosystem uses
+\item{token}{For authentication, many of the Data Space Ecosystem uses
 an access token. Either provide your access token, or obtain one automatically
 with \code{\link[=dse_access_token]{dse_access_token()}} (default). Without a valid token you will likely get
 an "access denied" error.}

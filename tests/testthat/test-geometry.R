@@ -77,10 +77,10 @@ test_that("Returned OData geometries intersect with request", {
         all()
     }
     # Test can only handle polygons, just skip in case of anything else
-    if (any(result1$GeoFootprint.type != "Polygon") || 
-        any(result2$GeoFootprint.type != "Polygon"))
-      return(TRUE)
-    test_fun(result1$GeoFootprint.coordinates) &&
-      test_fun(result2$GeoFootprint.coordinates) 
+    (any(result1$GeoFootprint.type != "Polygon") || 
+        any(result2$GeoFootprint.type != "Polygon")) || (
+          test_fun(result1$GeoFootprint.coordinates) &&
+            test_fun(result2$GeoFootprint.coordinates) 
+        )
   })
 })

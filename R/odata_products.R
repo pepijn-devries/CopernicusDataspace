@@ -248,6 +248,7 @@ dse_odata_download <- function(request, destination, ...,
 #' @param node_path Path to a specific file in the product. When left blank (`""`)
 #' The function will attempt to download the entire product as a zip archive.
 #' @param destination Path to a directory where to store the downloaded file
+#' @param progress `logical` value. If `TRUE` shows download progress.
 #' @param ... Ignored
 #' @inheritParams dse_usage
 #' @returns Returns a `httr2_response` class object. It's body will hold the filename
@@ -272,7 +273,7 @@ dse_odata_download <- function(request, destination, ...,
 #' @family odata
 #' @export
 dse_odata_download_path <- function(
-    product, node_path = "", destination, ...,
+    product, node_path = "", destination, progress = TRUE, ...,
     token = dse_public_access_token()) {
   .np_error(node_path)
   
@@ -286,11 +287,12 @@ dse_odata_download_path <- function(
     if (node_details$ChildrenNumber > 0) fn <- paste0(fn, ".zip")
   }
   
+  prog <- if (progress) httr2::req_progress else I
   .path_to_url(product, node_path) |>
     stringr::str_replace("\\/$", "") |>
     paste("$value", sep = "/") |>
     httr2::request() |>
-    httr2::req_progress() |>
+    prog() |>
     .add_token(token) |>
     ## Make sure that authentication is passed on to any redirect:
     httr2::req_options(unrestricted_auth = 1) |>

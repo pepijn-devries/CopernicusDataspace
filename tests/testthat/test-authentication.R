@@ -6,6 +6,14 @@ test_that("Access token can be obtained", {
   })
 })
 
+test_that("Public access token can be obtained", {
+  skip_if_offline()
+  skip_if_not(dse_has_password())
+  expect_no_error({
+    token <- dse_public_access_token()
+  })
+})
+
 test_that("Roxygen function produces text", {
   testthat::expect_type({
     CopernicusDataspace:::.roxygen_account()
@@ -28,4 +36,23 @@ test_that("User statistics are reported", {
     ustats <- dse_user_statistics()
     is.data.frame(ustats) && all(c("API", "CATALOG") %in% names(ustats))
   })
+})
+
+test_that("GDAL token can be set", {
+  skip_if_not(dse_has_client_info())
+  expect_true({
+    dse_set_gdal_token()
+  })
+})
+
+test_that("Token can be decrypted", {
+  skip_if_offline()
+  skip_if_not(dse_has_client_info())
+  skip_if_not_installed("jose")
+  expect_equal({
+    token_info <-
+      dse_access_token() |>
+      dse_get_token_details()
+    token_info$header$alg
+  }, "RS256")
 })

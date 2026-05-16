@@ -24,7 +24,7 @@ created with \code{\link[=dse_sh_prepare_output]{dse_sh_prepare_output()}}.}
 
 \item{evalscript}{A \code{character} string containing a piece of JavaScript,
 that will be run on the Sentinel Hub server. It is used to translate
-satellite data to pixel data in a georeferenced image. For more information
+satellite data to pixel data in a geo-referenced image. For more information
 on setting up such a script please consult
 \href{https://docs.sentinel-hub.com/api/latest/evalscript/}{the API documentation}.
 You can also use \code{\link[=dse_sh_get_custom_script]{dse_sh_get_custom_script()}} to obtain ready-to-go
@@ -34,7 +34,7 @@ scripts from the SentinelHub repository.}
 
 \item{...}{Ignored}
 
-\item{token}{For authentication, many of the Dataspace Ecosystem uses
+\item{token}{For authentication, many of the Data Space Ecosystem uses
 an access token. Either provide your access token, or obtain one automatically
 with \code{\link[=dse_access_token]{dse_access_token()}} (default). Without a valid token you will likely get
 an "access denied" error.}

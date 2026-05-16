@@ -7,7 +7,7 @@
 dse_set_gdal_token(token = dse_access_token())
 }
 \arguments{
-\item{token}{For authentication, many of the Dataspace Ecosystem uses
+\item{token}{For authentication, many of the Data Space Ecosystem uses
 an access token. Either provide your access token, or obtain one automatically
 with \code{\link[=dse_access_token]{dse_access_token()}} (default). Without a valid token you will likely get
 an "access denied" error.}

@@ -8,6 +8,7 @@ dse_odata_download_path(
   product,
   node_path = "",
   destination,
+  progress = TRUE,
   ...,
   token = dse_public_access_token()
 )
@@ -20,9 +21,11 @@ The function will attempt to download the entire product as a zip archive.}
 
 \item{destination}{Path to a directory where to store the downloaded file}
 
+\item{progress}{\code{logical} value. If \code{TRUE} shows download progress.}
+
 \item{...}{Ignored}
 
-\item{token}{For authentication, many of the Dataspace Ecosystem uses
+\item{token}{For authentication, many of the Data Space Ecosystem uses
 an access token. Either provide your access token, or obtain one automatically
 with \code{\link[=dse_access_token]{dse_access_token()}} (default). Without a valid token you will likely get
 an "access denied" error.}

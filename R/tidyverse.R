@@ -391,14 +391,17 @@ select.sentinel_request <-
       if (rlang::is_call(xpr)) {
         xpr1 <- if (rlang::is_quosure(xpr))
           rlang::quo_get_expr(xpr) else xpr[[1]]
+        
         result <- if (length(xpr) > 2 &&
                       ((identical(rlang::eval_tidy(xpr1, env = env), `[[`)) ||
                       (identical(rlang::eval_tidy(xpr1, env = env), `$`)) &&
-                      rlang::as_string(xpr[[2]]) == ".data"))
-          rlang::as_string(xpr[[3]]) else
-            if (rlang::is_string(xpr[[2]]))
-              rlang::eval_tidy(xpr[[2]]) else
-                rlang::as_string(xpr[[2]])
+                      rlang::as_string(xpr[[2]]) == ".data")) {
+          rlang::as_string(xpr[[3]])
+        } else {
+          if (rlang::is_quosure(xpr))
+            rlang::as_string(rlang::quo_get_expr(xpr)) else
+              rlang::eval_tidy(xpr)
+        }
         if (is.null(result))
           stop(sprintf("Sorry, '%s' is not implemented in this context",
                        rlang::as_string(xpr[[1]])))
@@ -422,6 +425,7 @@ select.sentinel_request <-
 .parse_select <- function(.data) {
   my_select <- .data$odata$select
   if (is.null(my_select)) return(.data)
+  
   sel <- .column_select(.data$odata$select)
   .data |>
     httr2::req_url_query(
