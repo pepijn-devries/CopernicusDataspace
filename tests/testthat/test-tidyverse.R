@@ -54,3 +54,38 @@ test_that("Complex stac request works with tidy verbs", {
       nrow(result) == n
   })
 })
+
+test_that("Tidyverse operators work on sentinel_request", {
+  skip_if_offline()
+  skip_if_not(dse_has_client_info())
+  expect_true({
+    result <-
+      dse_sh_search_request(
+        collection = "sentinel-2-l2a",
+        bbox       = c(5.261, 52.680, 5.319, 52.715),
+        datetime   = c("2020-01-01 UTC", "2025-01-31 UTC")
+      ) |>
+      filter(`eo:cloud_cover` <= 10) |>
+      slice_head(n = 5) |>
+      ## Note that `select` is always merged with
+      ## ["id", "type", "geometry", "bbox", "links", "assets", "properties.datetime"]
+      ## as per API specs
+      select(`properties.eo:cloud_cover`,
+             `properties.proj:geometry.type`) |>
+      collect()
+    nrow(result) == 5 &&
+      all(as.numeric(result$`properties.eo:cloud_cover`) <= 10)
+  })
+})
+
+test_that("Specifying multiple slices, produces warning", {
+  expect_warning({
+    dse_sh_search_request(
+      collection = "sentinel-2-l2a",
+      bbox       = c(5.261, 52.680, 5.319, 52.715),
+      datetime   = c("2020-01-01 UTC", "2025-01-31 UTC")
+    ) |>
+      slice_head(n=5) |>
+      slice_head(n=3)
+  }, "Previously")
+})

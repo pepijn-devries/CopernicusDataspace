@@ -58,7 +58,7 @@ test_that("Files can be downloaded via STAC S3", {
 
 test_that("Files can be downloaded via STAC https", {
   skip_if_offline()
-  skip_if_not(dse_has_password())
+  skip_if_not(dse_has_account())
   expect_no_error({
     fn <-
       dse_stac_download(

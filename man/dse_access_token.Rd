@@ -12,7 +12,7 @@
 \alias{dse_get_password}
 \alias{dse_set_client_secret}
 \alias{dse_has_client_info}
-\alias{dse_has_password}
+\alias{dse_has_account}
 \title{Client Information and Access Token for the Data Space Store API}
 \usage{
 dse_access_token(
@@ -44,7 +44,7 @@ dse_set_client_secret(value, ...)
 
 dse_has_client_info(...)
 
-dse_has_password(...)
+dse_has_account(...)
 }
 \arguments{
 \item{client_id}{ID of the client registered under your account.}
@@ -151,7 +151,7 @@ the R session.
 if (interactive() && dse_has_client_info()) {
   token <- dse_access_token()
 }
-if (interactive() && dse_has_password()) {
+if (interactive() && dse_has_account()) {
   token_public <- dse_public_access_token()
 }
 }

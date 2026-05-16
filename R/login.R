@@ -137,7 +137,7 @@ NULL
 #' if (interactive() && dse_has_client_info()) {
 #'   token <- dse_access_token()
 #' }
-#' if (interactive() && dse_has_password()) {
+#' if (interactive() && dse_has_account()) {
 #'   token_public <- dse_public_access_token()
 #' }
 #' @family authentication
@@ -212,8 +212,8 @@ dse_has_client_info <- function(...) {
 #' @rdname dse_access_token
 #' @family authentication
 #' @export
-dse_has_password <- function(...) {
-  dse_get_password() != ""
+dse_has_account <- function(...) {
+  dse_get_password() != "" && dse_get_username() != ""
 }
 
 #' Setup Amazon Simple Storage Service for the Data Space Ecosystem

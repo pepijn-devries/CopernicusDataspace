@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 eval_chunks <-
   CopernicusDataspace::dse_has_client_info() &&
-  CopernicusDataspace::dse_has_password() &&
+  CopernicusDataspace::dse_has_account() &&
   CopernicusDataspace::dse_has_s3_secret()
 ```
 

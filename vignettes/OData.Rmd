@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 eval_chunks <-
   CopernicusDataspace::dse_has_client_info() &&
-  CopernicusDataspace::dse_has_password() &&
+  CopernicusDataspace::dse_has_account() &&
   CopernicusDataspace::dse_has_s3_secret()
 ```
 
@@ -142,7 +142,7 @@ It will download all files in the specified node path. This is demonstrated
 below:
 
 ```{r odata-download-path, eval=FALSE}
-if (dse_has_password()) {
+if (dse_has_account()) {
   dse_odata_download_path(
     product     = "2f497806-0101-5eea-83fa-c8f68bc56b0c",
     node_path   =

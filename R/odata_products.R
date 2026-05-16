@@ -254,7 +254,7 @@ dse_odata_download <- function(request, destination, ...,
 #' @returns Returns a `httr2_response` class object. It's body will hold the filename
 #' of the downloaded file
 #' @examples
-#' if (interactive() && dse_has_password()) {
+#' if (interactive() && dse_has_account()) {
 #' 
 #'   dse_odata_download_path(
 #'     product     = "2f497806-0101-5eea-83fa-c8f68bc56b0c",
