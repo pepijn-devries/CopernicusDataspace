@@ -91,7 +91,7 @@ workflow check out
 
 
 ## Only run this if client info is available:
-if (dse_has_password()) {
+if (dse_has_account()) {
   response <-
     dse_odata_download_path(
     product     = "2f497806-0101-5eea-83fa-c8f68bc56b0c",

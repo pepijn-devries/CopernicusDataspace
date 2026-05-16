@@ -36,7 +36,7 @@ dse_set_client_secret(value, ...)
 
 dse_has_client_info(...)
 
-dse_has_password(...)
+dse_has_account(...)
 ```
 
 ## Arguments
@@ -229,7 +229,7 @@ Other authentication:
 if (interactive() && dse_has_client_info()) {
   token <- dse_access_token()
 }
-if (interactive() && dse_has_password()) {
+if (interactive() && dse_has_account()) {
   token_public <- dse_public_access_token()
 }
 ```

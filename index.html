@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="index.html">CopernicusDataspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9010</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9011</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -134,7 +134,7 @@ install.packages("CopernicusDataspace")
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">## Only run this if client info is available:</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="reference/dse_access_token.html">dse_has_password</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="reference/dse_access_token.html">dse_has_account</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">response</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu"><a href="reference/dse_odata_download_path.html">dse_odata_download_path</a></span><span class="op">(</span></span>
 <span>    product     <span class="op">=</span> <span class="st">"2f497806-0101-5eea-83fa-c8f68bc56b0c"</span>,</span>
