@@ -8,7 +8,7 @@ test_that("Access token can be obtained", {
 
 test_that("Public access token can be obtained", {
   skip_if_offline()
-  skip_if_not(dse_has_password())
+  skip_if_not(dse_has_account())
   expect_no_error({
     token <- dse_public_access_token()
   })
@@ -59,13 +59,14 @@ test_that("Token can be decrypted", {
 
 test_that("Secrets can be set", {
   skip_if_offline()
-  skip_if_not(dse_has_password())
+  skip_if_not(dse_has_account())
   skip_if_not(dse_has_client_info())
   skip_if_not(dse_has_s3_secret())
   expect_no_error({
     dse_set_username(dse_get_username())
     dse_set_password(dse_get_password())
     dse_set_client_id(dse_get_client_id())
+    dse_set_client_secret(dse_get_client_secret())
     dse_s3_set_key(dse_s3_get_key())
     dse_s3_set_secret(dse_s3_get_secret())
   })

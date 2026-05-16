@@ -51,7 +51,7 @@ test_that("OData attributes can be listed", {
 
 test_that("OData file can be downloaded through https", {
   skip_if_offline()
-  skip_if_not(dse_has_password())
+  skip_if_not(dse_has_account())
   skip_on_cran()
   expect_no_error({
     resp <-
@@ -87,7 +87,7 @@ test_that("OData zipped product can be downloaded through s3", {
 
 test_that("OData zipped product can be downloaded through https", {
   skip_if_offline()
-  skip_if_not(dse_has_password())
+  skip_if_not(dse_has_account())
   skip_on_cran()
   expect_no_error({
     resp <-

@@ -180,6 +180,7 @@ collect.odata_request <-
 #' @export collect.sentinel_request
 collect.sentinel_request <-
   function(x, skip = 0L, ...) {
+
     if (skip > 0)
       x <- httr2::req_body_json_modify(x, `next` = skip)
     x |>
@@ -237,14 +238,18 @@ arrange.stac_request <-
     i = "Use 'n' instead."))
 }
 
+.check_slice <- function(sl) {
+  if (!is.null(sl) && !is.na(sl))
+    rlang::warn("Previously defined slice will be replaced with latest")
+}
+
 #' @rdname tidy_verbs
 #' @name slice_head
 #' @family tidyverse
 #' @export slice_head.odata_request
 slice_head.odata_request <-
   function(.data, ..., n, prop, by = NULL) {
-    if (!is.null(.data$odata$slice_head))
-      warning("Previously defined slice will be replaced with latest")
+    .check_slice(.data$odata$slice_head)
     if (!missing(prop)) .prop_error("OData")
     .data$odata$slice_head <- n
     .data
@@ -256,7 +261,7 @@ slice_head.odata_request <-
 slice_head.stac_request <-
   function(.data, ..., n, prop, by = NULL) {
     if (!missing(prop)) .prop_error("STAC")
-    
+    .check_slice(.data$body$data$limit)
     httr2::req_body_json_modify(.data, limit = n)
   }
 
@@ -267,7 +272,7 @@ slice_head.stac_request <-
 slice_head.sentinel_request <-
   function(.data, ..., n, prop, by = NULL) {
     if (!missing(prop)) .prop_error("Sentinel")
-    
+    .check_slice(.data$body$data$limit)
     httr2::req_body_json_modify(.data, limit = n)
   }
 
@@ -286,7 +291,8 @@ select.odata_request <-
   new_select <-
     rlang::enquos(..., .named = TRUE) |>
     .column_select()
-  if (is.na(.data$body$data$fields)) .data$body$data$fields <- NULL
+  if (is.null(.data$body$data$fields) || is.na(.data$body$data$fields))
+    .data$body$data$fields <- NULL
   new_select <- c(.data$body$data$fields$include |> unlist(), new_select)
   .data$body$data$fields$include <- as.list(new_select)
   .data
@@ -358,11 +364,6 @@ select.sentinel_request <-
 .parse_slice <- function(.data) {
   my_slice <- .data$odata$slice_head
   if (is.null(my_slice)) return(.data)
-  if (length(my_slice) != 1)
-    rlang::abort(c(
-      x = "Multiple values for 'n' specified",
-      i = "Use only one value for 'n'"
-    ))
   my_slice <- as.integer(my_slice)
   .data |>
     httr2::req_url_query(
