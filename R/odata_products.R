@@ -219,7 +219,7 @@ dse_odata_attributes <- memoise::memoise(.dse_odata_attributes)
 #' @family odata
 #' @export
 dse_odata_download <- function(request, destination, ...,
-                              s3_key = dse_s3_key(), s3_secret = dse_s3_secret()) {
+                              s3_key = dse_s3_get_key(), s3_secret = dse_s3_get_secret()) {
   product_details <- request |> dplyr::collect()
 
   lapply(product_details$S3Path, .download_s3,

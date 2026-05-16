@@ -2,21 +2,21 @@
 % Please edit documentation in R/login.R
 \name{dse_has_s3_secret}
 \alias{dse_has_s3_secret}
-\alias{dse_s3_key}
-\alias{dse_s3_key<-}
-\alias{dse_s3_secret}
-\alias{dse_s3_secret<-}
+\alias{dse_s3_get_key}
+\alias{dse_s3_set_key}
+\alias{dse_s3_get_secret}
+\alias{dse_s3_set_secret}
 \title{Setup Amazon Simple Storage Service for the Data Space Ecosystem}
 \usage{
 dse_has_s3_secret()
 
-dse_s3_key(...)
+dse_s3_get_key(...)
 
-dse_s3_key(...) <- value
+dse_s3_set_key(value, ...)
 
-dse_s3_secret(...)
+dse_s3_get_secret(...)
 
-dse_s3_secret(...) <- value
+dse_s3_set_secret(value, ...)
 }
 \arguments{
 \item{...}{Ignored}
@@ -24,7 +24,7 @@ dse_s3_secret(...) <- value
 \item{value}{Replacement value for the \code{s3_key} or \code{s3_secret}.}
 }
 \value{
-\code{\link[=dse_s3_key]{dse_s3_key()}} and \code{\link[=dse_s3_secret]{dse_s3_secret()}} will return the requested s3 details
+\code{\link[=dse_s3_get_key]{dse_s3_get_key()}} and \code{\link[=dse_s3_get_secret]{dse_s3_get_secret()}} will return the requested s3 details
 if set as environment variable (see details).
 
 \code{\link[=dse_has_s3_secret]{dse_has_s3_secret()}} returns a logical value indicating whether s3 details
@@ -63,7 +63,7 @@ arguments (see below).
 When you share R code, you probably don't want to share your account details.
 You can avoid using your \code{s3_key} and \code{s3_secret} in your script by
 setting them as environment variable. You can do this yourself manually by
-calling \verb{dse_s3_key()<-} and \verb{dse_s3_secret()<-} at the start of each session.
+calling \code{dse_s3_set_key()} and \code{dse_s3_set_secret()} at the start of each session.
 
 You can also define them in your \code{.Rprofile} file with
 \code{Sys.setenv(CDSE_API_S3ID = "<your key>")} and

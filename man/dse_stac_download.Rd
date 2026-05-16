@@ -10,8 +10,8 @@ dse_stac_download(
   collection = dse_stac_guess_collection,
   destination,
   ...,
-  s3_key = dse_s3_key(),
-  s3_secret = dse_s3_secret(),
+  s3_key = dse_s3_get_key(),
+  s3_secret = dse_s3_get_secret(),
   token = dse_public_access_token()
 )
 }

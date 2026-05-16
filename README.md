@@ -5,8 +5,8 @@
 
 [![R-CMD-check](https://github.com/pepijn-devries/CopernicusDataspace/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pepijn-devries/CopernicusDataspace/actions/workflows/R-CMD-check.yaml)
 [![version](https://www.r-pkg.org/badges/version/CopernicusDataspace)](https://CRAN.R-project.org/package=CopernicusDataspace)
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CopernicusDataspace status
+badge](https://pepijn-devries.r-universe.dev/badges/CopernicusDataspace)](https://pepijn-devries.r-universe.dev/CopernicusDataspace)
 [![Codecov test
 coverage](https://codecov.io/gh/pepijn-devries/CopernicusDataspace/graph/badge.svg)](https://app.codecov.io/gh/pepijn-devries/CopernicusDataspace)
 <!-- badges: end -->
@@ -19,46 +19,35 @@ points to several APIs allowing users to access the data directly in R.
 
 ## Installation
 
-At the moment, the package is still only experimental. It can therefore
-only be installed from GitHub:
-
-``` r
-remotes::install_github("pepijn-devries/CopernicusDataspace")
-```
-
-<!-- TODO update installation procedure once available -->
-
 <!--
 Install CRAN release:
 &#10;
 ``` r
 install.packages("CopernicusDataspace")
 ```
-&#10;Install latest developmental version from R-Universe:
-&#10;
+-->
+
+Install latest developmental version from R-Universe:
+
 ``` r
 install.packages("CopernicusDataspace", repos = c('https://pepijn-devries.r-universe.dev', 'https://cloud.r-project.org'))
 ```
--->
 
 ## Introduction
 
 The Copernicus Data Space Ecosystem offers access to its services
 through several
 [APIs](https://documentation.dataspace.copernicus.eu/APIs.html). This
-package offers access via the following APIs:
+package offers access via the following APIs. This README shows only
+essential methods for downloading data. For more detailed information
+consult the respective vignettes:
 
 - [OData](https://documentation.dataspace.copernicus.eu/APIs/OData.html);
+  details in `vignette("OData")`,
 - [STAC](https://documentation.dataspace.copernicus.eu/APIs/STAC.html);
-  and
-- [SentinelHub](https://documentation.dataspace.copernicus.eu/APIs/SentinelHub.html).
-
-This README shows only essential methods for downloading data. For more
-detailed information consult the respective vignettes:
-
-- `vignette("OData")`;
-- `vignette("STAC")`; and
-- `vignette("SentinelHub")`
+  details in `vignette("STAC")`, and
+- [SentinelHub](https://documentation.dataspace.copernicus.eu/APIs/SentinelHub.html);
+  details in `vignette("SentinelHub")`.
 
 ## Authentication
 
