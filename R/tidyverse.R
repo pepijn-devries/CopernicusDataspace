@@ -5,7 +5,7 @@ NULL
 #' 
 #' Implementation of tidy generics for features supported any of OData,
 #' SentinelHub or STAC API requests.
-#' They can be called on objects any of the classe: `odata_request`,
+#' They can be called on objects any of the classes: `odata_request`,
 #' `sentinel_request` or `stac_request`.
 #' The first is produced
 #' by [dse_odata_products_request()] and [dse_odata_bursts_request()];
@@ -34,7 +34,7 @@ NULL
 #' from its tidy standards. Most notably:
 #' 
 #'  * [dplyr::select()]: Cannot change the order of columns. It will only
-#'    affact which columns are selected. Also, tidy selection helpers like
+#'    affect which columns are selected. Also, tidy selection helpers like
 #'    [dplyr::any_of()] and [dplyr::all_of()] are NOT supported
 #'  * [dplyr::arrange()]: OData only allows to sort up to 32 columns.
 #'    Adding more columns will produce a warning.
@@ -391,14 +391,17 @@ select.sentinel_request <-
       if (rlang::is_call(xpr)) {
         xpr1 <- if (rlang::is_quosure(xpr))
           rlang::quo_get_expr(xpr) else xpr[[1]]
+        
         result <- if (length(xpr) > 2 &&
                       ((identical(rlang::eval_tidy(xpr1, env = env), `[[`)) ||
                       (identical(rlang::eval_tidy(xpr1, env = env), `$`)) &&
-                      rlang::as_string(xpr[[2]]) == ".data"))
-          rlang::as_string(xpr[[3]]) else
-            if (rlang::is_string(xpr[[2]]))
-              rlang::eval_tidy(xpr[[2]]) else
-                rlang::as_string(xpr[[2]])
+                      rlang::as_string(xpr[[2]]) == ".data")) {
+          rlang::as_string(xpr[[3]])
+        } else {
+          if (rlang::is_quosure(xpr))
+            rlang::as_string(rlang::quo_get_expr(xpr)) else
+              rlang::eval_tidy(xpr)
+        }
         if (is.null(result))
           stop(sprintf("Sorry, '%s' is not implemented in this context",
                        rlang::as_string(xpr[[1]])))
@@ -422,6 +425,7 @@ select.sentinel_request <-
 .parse_select <- function(.data) {
   my_select <- .data$odata$select
   if (is.null(my_select)) return(.data)
+  
   sel <- .column_select(.data$odata$select)
   .data |>
     httr2::req_url_query(

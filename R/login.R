@@ -112,8 +112,8 @@ NULL
 #' the R session.
 #' @param client_id ID of the client registered under your account.
 #' @param client_secret Secret provided for the client registered under your account.
-#' @param username Your Copernicus Dataspace username (usually your e-mail address).
-#' @param password Your Copernicus Dataspace passeword for your account.
+#' @param username Your Copernicus Data Space username (usually your e-mail address).
+#' @param password Your Copernicus Data Space password for your account.
 #' @param value Assignment value for setting `username`, `password`, `client_id`
 #' or `client_secret` as environment variable. Once set, it will persist for
 #' the remainder of the R session.

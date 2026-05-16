@@ -165,7 +165,7 @@ dse_sh_queryables <- memoise::memoise(.dse_sh_queryables)
 #' created with [dse_sh_prepare_output()].
 #' @param evalscript A `character` string containing a piece of JavaScript,
 #' that will be run on the Sentinel Hub server. It is used to translate
-#' satellite data to pixel data in a georeferenced image. For more information
+#' satellite data to pixel data in a geo-referenced image. For more information
 #' on setting up such a script please consult
 #' [the API documentation](https://docs.sentinel-hub.com/api/latest/evalscript/).
 #' You can also use [dse_sh_get_custom_script()] to obtain ready-to-go
@@ -346,7 +346,7 @@ dse_sh_get_custom_script <-
 #' are ignored if `bbox` is specified.
 #' @param bbox You can optionally provide a bounding box (i.e., a
 #' copy of `bounds`) to calculate width and height with fixed
-#' aspect ratio. Width will be 512 be definition, the height is choosen
+#' aspect ratio. Width will be 512 be definition, the height is chosen
 #' such that it matches with the bounding box
 #' @param output_format File format for the output file. Should
 #' be one of `"tiff"` (default), `"jpeg"`, `"png"`, or `"json"`.

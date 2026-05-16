@@ -4,7 +4,7 @@ NULL
 .sh_api_url     <- "https://sh.dataspace.copernicus.eu/api/v1"
 .accounting_url <- paste0(.sh_api_url, "/accounting")
 
-#' Get Dataspace Account Information
+#' Get Data Space Account Information
 #' 
 #' In order to guarantee good performance for all users, the Sentinel Hub applies
 #' [rate limiting](https://docs.sentinel-hub.com/api/latest/api/overview/rate-limiting/).
@@ -17,7 +17,7 @@ NULL
 #' @param resolution Specifying a temporal resolution for the user statistics.
 #' should be one of `"DAILY"` (default), `"MONTHLY"`, or `"HOURLY"`.
 #' @param ... Ignored
-#' @param token For authentication, many of the Dataspace Ecosystem uses
+#' @param token For authentication, many of the Data Space Ecosystem uses
 #' an access token. Either provide your access token, or obtain one automatically
 #' with [dse_access_token()] (default). Without a valid token you will likely get
 #' an "access denied" error.

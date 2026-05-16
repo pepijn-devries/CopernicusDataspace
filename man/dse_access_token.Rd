@@ -50,9 +50,9 @@ dse_has_password(...)
 
 \item{...}{Ignored}
 
-\item{username}{Your Copernicus Dataspace username (usually your e-mail address).}
+\item{username}{Your Copernicus Data Space username (usually your e-mail address).}
 
-\item{password}{Your Copernicus Dataspace passeword for your account.}
+\item{password}{Your Copernicus Data Space password for your account.}
 
 \item{value}{Assignment value for setting \code{username}, \code{password}, \code{client_id}
 or \code{client_secret} as environment variable. Once set, it will persist for

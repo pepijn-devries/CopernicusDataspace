@@ -66,7 +66,7 @@ be one of \code{"tiff"} (default), \code{"jpeg"}, \code{"png"}, or \code{"json"}
 
 \item{bbox}{You can optionally provide a bounding box (i.e., a
 copy of \code{bounds}) to calculate width and height with fixed
-aspect ratio. Width will be 512 be definition, the height is choosen
+aspect ratio. Width will be 512 be definition, the height is chosen
 such that it matches with the bounding box}
 }
 \value{

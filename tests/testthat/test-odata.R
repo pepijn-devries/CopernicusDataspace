@@ -61,7 +61,8 @@ test_that("OData file can be downloaded through https", {
           paste("DEM1_SAR_DTE_90_20101213T034716_20130408T035028_ADS_000000_5033.DEM",
                 "Copernicus_DSM_30_S09_00_E026_00", "DEM",
                 "Copernicus_DSM_30_S09_00_E026_00_DEM.dt1", sep = "/"),
-        destination = tempdir()
+        destination = tempdir(),
+        progress = FALSE
       ) |>
       suppressMessages()
     on.exit({unlink(resp$body)})
