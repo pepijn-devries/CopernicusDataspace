@@ -79,6 +79,8 @@ test_that("Tidyverse operators work on sentinel_request", {
 })
 
 test_that("Specifying multiple slices, produces warning", {
+  skip_if_offline()
+  skip_if_not(dse_has_client_info())
   expect_warning({
     dse_sh_search_request(
       collection = "sentinel-2-l2a",
