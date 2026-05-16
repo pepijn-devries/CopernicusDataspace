@@ -24,10 +24,12 @@ jobs:
       CDSE_API_CLIENTSECRET: ${{ secrets.CDSE_API_CLIENTSECRET }}
       CDSE_API_S3ID: ${{ secrets.CDSE_API_S3ID }}
       CDSE_API_S3SECRET: ${{ secrets.CDSE_API_S3SECRET }}
+      CDSE_API_USERNAME: ${{ secrets.CDSE_API_USERNAME }}
+      CDSE_API_PASSWORD: ${{ secrets.CDSE_API_PASSWORD }}
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: r-lib/actions/setup-pandoc@v2
 
