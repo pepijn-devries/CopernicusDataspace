@@ -6,24 +6,24 @@ Authentication methods for Copernicus Dataspace Ecosystem services
 
 - [`dse_access_token()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
   [`dse_public_access_token()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
-  [`dse_client_id()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
-  [`` `dse_client_id<-`() ``](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
-  [`` `dse_username<-`() ``](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
-  [`` `dse_password<-`() ``](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
-  [`dse_client_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
-  [`dse_username()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
-  [`dse_password()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
-  [`` `dse_client_secret<-`() ``](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
+  [`dse_get_client_id()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
+  [`dse_set_client_id()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
+  [`dse_set_username()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
+  [`dse_set_password()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
+  [`dse_get_client_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
+  [`dse_get_username()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
+  [`dse_get_password()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
+  [`dse_set_client_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
   [`dse_has_client_info()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
   [`dse_has_password()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_access_token.md)
   : Client Information and Access Token for the Data Space Store API
 - [`dse_get_token_details()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_get_token_details.md)
   : Decode Access Token
 - [`dse_has_s3_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
-  [`dse_s3_key()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
-  [`` `dse_s3_key<-`() ``](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
-  [`dse_s3_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
-  [`` `dse_s3_secret<-`() ``](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
+  [`dse_s3_get_key()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
+  [`dse_s3_set_key()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
+  [`dse_s3_get_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
+  [`dse_s3_set_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
   : Setup Amazon Simple Storage Service for the Data Space Ecosystem
 - [`dse_set_gdal_token()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_set_gdal_token.md)
   : Set Copernicus Data Space Ecosystem Access Token for GDAL Driver
@@ -76,10 +76,10 @@ Functions for handling OData services
 Functions accessing the S3 buckets
 
 - [`dse_has_s3_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
-  [`dse_s3_key()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
-  [`` `dse_s3_key<-`() ``](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
-  [`dse_s3_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
-  [`` `dse_s3_secret<-`() ``](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
+  [`dse_s3_get_key()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
+  [`dse_s3_set_key()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
+  [`dse_s3_get_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
+  [`dse_s3_set_secret()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
   : Setup Amazon Simple Storage Service for the Data Space Ecosystem
 - [`dse_s3_download()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3_download.md)
   : Download Asset Through Uniform Resource Identifier
@@ -118,27 +118,27 @@ Specific implementations of Tidyverse generics
 
 - [`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
   : Perform a Request to Get a Response
-- [`filter.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`filter.sentinel_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`filter.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`compute.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`collect.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`collect.sentinel_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`collect.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`arrange.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`arrange.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`slice_head.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`slice_head.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`slice_head.sentinel_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`select.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`select.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
-  [`select.sentinel_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+- [`filter(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`filter(`*`<sentinel_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`filter(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`compute(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`collect(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`collect(`*`<sentinel_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`collect(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`arrange(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`arrange(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`slice_head(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`slice_head(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`slice_head(`*`<sentinel_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`select(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`select(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
+  [`select(`*`<sentinel_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/tidy_verbs.md)
   : Tidy Verbs for OData, SentinelHub and STAC API Requests
 
 ## Geometry Functions
 
 Functions for filtering geometries
 
-- [`st_intersects.odata_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
-  [`st_intersects.stac_request()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
+- [`st_intersects(`*`<odata_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
+  [`st_intersects(`*`<stac_request>`*`)`](https://pepijn-devries.github.io/CopernicusDataspace/reference/geometry.md)
   : Filter OData and STAC Requests Using Geometries

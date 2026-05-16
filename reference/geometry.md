@@ -5,9 +5,11 @@ Filters OData and STAC rows that intersect with spatial feature `y`.
 ## Usage
 
 ``` r
-st_intersects.odata_request(x, y, sparse = FALSE, ...)
+# S3 method for class 'odata_request'
+st_intersects(x, y, sparse = FALSE, ...)
 
-st_intersects.stac_request(x, y, sparse = FALSE, ...)
+# S3 method for class 'stac_request'
+st_intersects(x, y, sparse = FALSE, ...)
 ```
 
 ## Arguments

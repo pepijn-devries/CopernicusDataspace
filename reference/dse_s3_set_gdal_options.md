@@ -11,8 +11,8 @@ library. Most notably: `stars`, `terra`, and `gdalraster`.
 dse_s3_set_gdal_options(
   region = "us-east-1",
   ...,
-  s3_key = dse_s3_key(),
-  s3_secret = dse_s3_secret()
+  s3_key = dse_s3_get_key(),
+  s3_secret = dse_s3_get_secret()
 )
 ```
 

@@ -9,13 +9,13 @@ help you managing these details and setting up an s3 client.
 ``` r
 dse_has_s3_secret()
 
-dse_s3_key(...)
+dse_s3_get_key(...)
 
-dse_s3_key(...) <- value
+dse_s3_set_key(value, ...)
 
-dse_s3_secret(...)
+dse_s3_get_secret(...)
 
-dse_s3_secret(...) <- value
+dse_s3_set_secret(value, ...)
 ```
 
 ## Arguments
@@ -30,8 +30,8 @@ dse_s3_secret(...) <- value
 
 ## Value
 
-`dse_s3_key()` and `dse_s3_secret()` will return the requested s3
-details if set as environment variable (see details).
+`dse_s3_get_key()` and `dse_s3_get_secret()` will return the requested
+s3 details if set as environment variable (see details).
 
 `dse_has_s3_secret()` returns a logical value indicating whether s3
 details (key and secret) are set. It will not determine whether the
@@ -68,7 +68,7 @@ the R session and don't have to be passed as arguments (see below).
 When you share R code, you probably don't want to share your account
 details. You can avoid using your `s3_key` and `s3_secret` in your
 script by setting them as environment variable. You can do this yourself
-manually by calling `dse_s3_key()<-` and `dse_s3_secret()<-` at the
+manually by calling `dse_s3_set_key()` and `dse_s3_set_secret()` at the
 start of each session.
 
 You can also define them in your `.Rprofile` file with

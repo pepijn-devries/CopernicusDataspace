@@ -8,28 +8,31 @@ and information about your usage.
 
 ``` r
 dse_access_token(
-  client_id = dse_client_id(),
-  client_secret = dse_client_secret(),
+  client_id = dse_get_client_id(),
+  client_secret = dse_get_client_secret(),
   ...
 )
 
-dse_public_access_token(username = dse_username(), password = dse_password())
+dse_public_access_token(
+  username = dse_get_username(),
+  password = dse_get_password()
+)
 
-dse_client_id(...)
+dse_get_client_id(...)
 
-dse_client_id(...) <- value
+dse_set_client_id(value, ...)
 
-dse_username(...) <- value
+dse_set_username(value, ...)
 
-dse_password(...) <- value
+dse_set_password(value, ...)
 
-dse_client_secret(...)
+dse_get_client_secret(...)
 
-dse_username(...)
+dse_get_username(...)
 
-dse_password(...)
+dse_get_password(...)
 
-dse_client_secret(...) <- value
+dse_set_client_secret(value, ...)
 
 dse_has_client_info(...)
 
@@ -66,9 +69,9 @@ dse_has_password(...)
 
 ## Value
 
-In case of `dse_client_id()` and `dse_client_secret()`, you can get (or
-set) client details as environment variables. This way, they will
-persist throughout your R session.
+In case of `dse_get_client_id()` and `dse_get_client_secret()`, you can
+get (or set) client details as environment variables. This way, they
+will persist throughout your R session.
 
 The function `dse_has_client_info()` returns a `logical` value,
 indicating whether client details (id and secret) are available as
@@ -94,7 +97,7 @@ and
 Note that [Amazon Simple Storage Service
 (s3)](https://aws.amazon.com/s3/) has separate authentication
 requirements. See
-[`dse_s3_key()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
+[`dse_s3_get_key()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_s3.md)
 for details.
 
 ### Creating an Account
@@ -119,16 +122,16 @@ documentation](https://documentation.dataspace.copernicus.eu/APIs/SentinelHub/Ov
 When you share R code, you probably don't want to share your account
 details. You can avoid using your `client_id` and `client_secret` in
 your script by setting them as environment variable. You can do this
-yourself manually by calling `dse_client_id()<-` and
-`dse_client_secret()<-` at the start of each session.
+yourself manually by calling `dse_set_client_id()` and
+`dse_set_client_secret()` at the start of each session.
 
 You can download OData simply through https with just you username and
 password. You can also store those as environment variables for your
 convenience. If you name those `CDSE_API_USERNAME` and
 `CDSE_API_PASSWORD` respectively, they are picked up automatically with
-`dse_username()` and `dse_password()`. OData needs a public access token
-which is generated with `dse_public_access_token()`, which needs your
-username and password.
+`dse_get_username()` and `dse_get_password()`. OData needs a public
+access token which is generated with `dse_public_access_token()`, which
+needs your username and password.
 
 You can also define them in your `.Rprofile` file with
 `Sys.setenv(CDSE_API_CLIENTID = "<your id>")` and

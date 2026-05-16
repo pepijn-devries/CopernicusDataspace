@@ -8,12 +8,11 @@ points to several APIs allowing users to access the data directly in R.
 
 ## Installation
 
-At the moment, the package is still only experimental. It can therefore
-only be installed from GitHub:
+Install latest developmental version from R-Universe:
 
 ``` r
 
-remotes::install_github("pepijn-devries/CopernicusDataspace")
+install.packages("CopernicusDataspace", repos = c('https://pepijn-devries.r-universe.dev', 'https://cloud.r-project.org'))
 ```
 
 ## Introduction
@@ -21,20 +20,20 @@ remotes::install_github("pepijn-devries/CopernicusDataspace")
 The Copernicus Data Space Ecosystem offers access to its services
 through several
 [APIs](https://documentation.dataspace.copernicus.eu/APIs.html). This
-package offers access via the following APIs:
+package offers access via the following APIs. This README shows only
+essential methods for downloading data. For more detailed information
+consult the respective vignettes:
 
 - [OData](https://documentation.dataspace.copernicus.eu/APIs/OData.html);
+  details in
+  [`vignette("OData")`](https://pepijn-devries.github.io/CopernicusDataspace/articles/OData.md),
 - [STAC](https://documentation.dataspace.copernicus.eu/APIs/STAC.html);
+  details in
+  [`vignette("STAC")`](https://pepijn-devries.github.io/CopernicusDataspace/articles/STAC.md),
   and
-- [SentinelHub](https://documentation.dataspace.copernicus.eu/APIs/SentinelHub.html).
-
-This README shows only essential methods for downloading data. For more
-detailed information consult the respective vignettes:
-
-- [`vignette("OData")`](https://pepijn-devries.github.io/CopernicusDataspace/articles/OData.md);
-- [`vignette("STAC")`](https://pepijn-devries.github.io/CopernicusDataspace/articles/STAC.md);
-  and
-- [`vignette("SentinelHub")`](https://pepijn-devries.github.io/CopernicusDataspace/articles/SentinelHub.md)
+- [SentinelHub](https://documentation.dataspace.copernicus.eu/APIs/SentinelHub.html);
+  details in
+  [`vignette("SentinelHub")`](https://pepijn-devries.github.io/CopernicusDataspace/articles/SentinelHub.md).
 
 ## Authentication
 

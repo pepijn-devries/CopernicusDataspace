@@ -11,7 +11,7 @@ these details and setting up an s3 client."><meta property="og:image" content="h
 
     <a class="navbar-brand me-2" href="../index.html">CopernicusDataspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9009</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9010</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,13 +54,13 @@ these details and setting up an s3 client.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dse_has_s3_secret</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">dse_s3_key</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">dse_s3_get_key</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">dse_s3_key</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span><span class="fu">dse_s3_set_key</span><span class="op">(</span><span class="va">value</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">dse_s3_secret</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">dse_s3_get_secret</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">dse_s3_secret</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span></code></pre></div>
+<span><span class="fu">dse_s3_set_secret</span><span class="op">(</span><span class="va">value</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -77,7 +77,7 @@ these details and setting up an s3 client.</p>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>dse_s3_key()</code> and <code>dse_s3_secret()</code> will return the requested s3 details
+    <p><code>dse_s3_get_key()</code> and <code>dse_s3_get_secret()</code> will return the requested s3 details
 if set as environment variable (see details).</p>
 <p><code>dse_has_s3_secret()</code> returns a logical value indicating whether s3 details
 (key and secret) are set. It will not determine whether the details are valid.</p>
@@ -116,7 +116,7 @@ arguments (see below).</p>
 <p>When you share R code, you probably don't want to share your account details.
 You can avoid using your <code>s3_key</code> and <code>s3_secret</code> in your script by
 setting them as environment variable. You can do this yourself manually by
-calling <code>dse_s3_key()&lt;-</code> and <code>dse_s3_secret()&lt;-</code> at the start of each session.</p>
+calling <code>dse_s3_set_key()</code> and <code>dse_s3_set_secret()</code> at the start of each session.</p>
 <p>You can also define them in your <code>.Rprofile</code> file with
 <code>Sys.setenv(CDSE_API_S3ID = "&lt;your key&gt;")</code> and
 <code>Sys.setenv(CDSE_API_S3SECRET = "&lt;your secret&gt;")</code>. This way,
