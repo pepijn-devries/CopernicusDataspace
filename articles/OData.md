@@ -178,7 +178,7 @@ if (dse_has_account()) {
 ```
 
 The example above uses an alternative https route and requires a private
-access token, which in turn requires your Copernicus Dataspace user id
+access token, which in turn requires your Copernicus Data Space user id
 (usually your e-mail address) and password (see
 [`vignette("Authentication")`](https://pepijn-devries.github.io/CopernicusDataspace/articles/Authentication.md)).
 
