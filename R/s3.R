@@ -140,7 +140,7 @@ dse_s3_uri_to_vsi <- function(uri, streaming = TRUE) {
 #' @returns Returns a `logical` value. `TRUE` if all variables
 #' were successfully set. `FALSE` otherwise.
 #' @examples
-#' if (interactive() && dse_s3_has_secret() &&
+#' if (interactive() && dse_has_s3_secret() &&
 #'     requireNamespace("stars")) {
 #'   library(dplyr)
 #'

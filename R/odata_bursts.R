@@ -29,7 +29,7 @@ dse_odata_bursts_request <- function(...) {
 #' @param ... Ignored
 #' @returns Returns a `data.frame` with burst information.
 #' @examples
-#' if (interactive()) {
+#' if (interactive() && dse_has_s3_secret()) {
 #'   dse_odata_bursts(ParentProductId == "879d445c-2c67-5b30-8589-b1f478904269")
 #'   
 #'   burst_req <-

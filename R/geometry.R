@@ -28,8 +28,8 @@ NULL
 #'     sf::st_intersects(bbox) |>
 #'     dplyr::collect()
 #'
-#'   dse_stac_search_request() |>
-#'     st_intersects(bbox) |>
+#'   dse_stac_search_request("sentinel-2-l1c") |>
+#'     sf::st_intersects(bbox) |>
 #'     dplyr::collect()
 #' }
 #' @rdname geometry

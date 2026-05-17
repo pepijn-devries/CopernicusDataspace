@@ -28,8 +28,10 @@ NULL
     details <-
       resp |>
       httr2::resp_body_json()
+    if ("detail" %in% names(details)) details <- details[["detail"]]
+    names(details)[names(details) == "description"] <- "message"
     if ("code" %in% names(details))
-      return (sprintf("%s: %s", details$code, details$description))
+      return (sprintf("%s: %s", details$code, details$message))
     loc <- lapply(details$detail, \(x) do.call(paste, c(x$loc, sep = "/"))) |> unlist()
     msg <- lapply(details$detail,`[[`, "msg") |> unlist()
     cbind(loc, msg) |> apply(1, paste, collapse = ": ", simplify = FALSE) |> unlist()
