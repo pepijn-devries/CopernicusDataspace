@@ -28,7 +28,7 @@ Meaning that they are just added to the object and are only evaluated after
 calling either \code{\link[dplyr:compute]{dplyr::compute()}} or \code{\link[dplyr:compute]{dplyr::collect()}} (see examples).
 }
 \examples{
-if (interactive()) {
+if (interactive() && dse_has_s3_secret()) {
   dse_odata_bursts(ParentProductId == "879d445c-2c67-5b30-8589-b1f478904269")
   
   burst_req <-

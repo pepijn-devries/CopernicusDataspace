@@ -32,7 +32,7 @@ by any package depending on the GDAL library. Most notably:
 \code{stars}, \code{terra}, and \code{gdalraster}.
 }
 \examples{
-if (interactive() && dse_s3_has_secret() &&
+if (interactive() && dse_has_s3_secret() &&
     requireNamespace("stars")) {
   library(dplyr)
 
