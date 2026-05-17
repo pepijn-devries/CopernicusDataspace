@@ -191,7 +191,6 @@ test_that("Server error is passed on", {
   skip_on_cran()
   expect_error({
     dse_stac_search_request() |>
-      sf::st_intersects(bbox) |>
       dplyr::collect()
   }, "one collection")
 })
