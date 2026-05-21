@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="index.html">CopernicusDataspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.0001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,15 +73,11 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<!--
-Install CRAN release:
-&#10;
-``` r
-install.packages("CopernicusDataspace")
-```
--->
-<p>Install latest developmental version from R-Universe:</p>
+<p>Install CRAN release:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"CopernicusDataspace"</span><span class="op">)</span></span></code></pre></div>
+<p>Install latest developmental version from R-Universe:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"CopernicusDataspace"</span>, repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'https://pepijn-devries.r-universe.dev'</span>, <span class="st">'https://cloud.r-project.org'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -106,7 +102,7 @@ install.packages("CopernicusDataspace")
 <h2 id="downloading-using-stac-catalogue">Downloading Using STAC Catalogue<a class="anchor" aria-label="anchor" href="#downloading-using-stac-catalogue"></a>
 </h2>
 <p>When you know the STAC identifier (<code>asset_id</code>) and the asset name you wish to download, you can simply use the example shown below. It will often speed you request up if you include the <code>collection</code> id. When you don’t know these details, you should first explore the catalogue. Please see <code><a href="articles/STAC.html">vignette("STAC")</a></code> for more details on working with the STAC catalogue.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/pepijn-devries/CopernicusDataspace" class="external-link">CopernicusDataspace</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/stars/" class="external-link">stars</a></span><span class="op">)</span> <span class="co">## For reading and plotting the downloaded file</span></span>
 <span></span>
@@ -131,7 +127,7 @@ install.packages("CopernicusDataspace")
 <h2 id="downloading-using-odata-api">Downloading Using OData API<a class="anchor" aria-label="anchor" href="#downloading-using-odata-api"></a>
 </h2>
 <p>The example below briefly demonstrate how to download data using with the OData API wrapped by this package. This produces a map of Lake Upemba in Congo. For more extensive information about the API and workflow check out <code><a href="articles/OData.html">vignette("OData")</a></code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">## Only run this if client info is available:</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="reference/dse_access_token.html">dse_has_account</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -153,7 +149,7 @@ install.packages("CopernicusDataspace")
 <h2 id="downloading-using-sentinelhub">Downloading Using SentinelHub<a class="anchor" aria-label="anchor" href="#downloading-using-sentinelhub"></a>
 </h2>
 <p>SentinelHub is a service that remotely processes raw Sentinel data and returns the result. Below a quick demonstration of the process. For more detailed information check <code><a href="articles/SentinelHub.html">vignette("SentinelHub")</a></code></p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Only run this if client info is available:</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="reference/dse_access_token.html">dse_has_client_info</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">bounds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.261</span>, <span class="fl">52.680</span>, <span class="fl">5.319</span>, <span class="fl">52.715</span><span class="op">)</span></span>
@@ -190,6 +186,11 @@ install.packages("CopernicusDataspace")
 <p>Most function names in this package start with the acronym <code>dse</code> (Data Space Ecosystem). This is done to avoid confusion with other Copernicus packages (see below) and unintended masking of other functions.</p>
 <p>Exceptions are functions that (intentionally) mask functions from other packages (like <code><a href="reference/req_perform.html">req_perform()</a></code>), and functions that implement generic functions from tidyverse packages (see <code><a href="reference/tidy_verbs.html">?tidy_verbs</a></code>).</p>
 <p>Functions are also grouped to highlight the specific API they support. After the <code>dse</code> acronym, these function names contain a reference to the relevant API (<code>odata</code>, <code>stac</code> and <code>sh</code> (SentinelHub)). If a function name starts with <code>dse</code> but is not followed by a reference to a specific API, it will have a more generic purpose (like for instance authorisation).</p>
+</div>
+<div class="section level2">
+<h2 id="openeo">OpenEO<a class="anchor" aria-label="anchor" href="#openeo"></a>
+</h2>
+<p>OpenEO is and will not be supported by the package at hand. It has a dedicated R package on CRAN: (openeo)[<a href="https://doi.org/10.32614/CRAN.package.openeo" class="external-link uri">https://doi.org/10.32614/CRAN.package.openeo</a>], with additional documentation available at <a href="https://documentation.dataspace.copernicus.eu/APIs/openEO/R_Client/R.html" class="external-link">copernicus.eu</a>. <a href="https://openeo.org/about.html" class="external-link">OpenEO</a> allows to process data remotely and retrieve only processed data.</p>
 </div>
 <div class="section level2">
 <h2 id="more-of-copernicus">More of Copernicus<a class="anchor" aria-label="anchor" href="#more-of-copernicus"></a>
@@ -252,6 +253,7 @@ install.packages("CopernicusDataspace")
 <ul class="list-unstyled">
 <li><a href="https://github.com/pepijn-devries/CopernicusDataspace/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/pepijn-devries/CopernicusDataspace/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://CRAN.R-project.org/package=CopernicusDataspace" class="external-link"><img src="https://www.r-pkg.org/badges/version/CopernicusDataspace" alt="version"></a></li>
+<li><a href="https://cran.r-project.org/web/checks/check_results_CopernicusDataspace.html" class="external-link"><img src="https://badges.cranchecks.info/worst/CopernicusDataspace.svg" alt="cran checks"></a></li>
 <li><a href="https://pepijn-devries.r-universe.dev/CopernicusDataspace" class="external-link"><img src="https://pepijn-devries.r-universe.dev/badges/CopernicusDataspace" alt="CopernicusDataspace status badge"></a></li>
 <li><a href="https://app.codecov.io/gh/pepijn-devries/CopernicusDataspace" class="external-link"><img src="https://codecov.io/gh/pepijn-devries/CopernicusDataspace/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
