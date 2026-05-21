@@ -1,4 +1,4 @@
-# CopernicusDataspace V0.0.1.0001
+# CopernicusDataspace V0.0.1.0002
 
 * Updated documentation
 
