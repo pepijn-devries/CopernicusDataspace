@@ -1,3 +1,7 @@
+# CopernicusDataspace V0.0.1.0001
+
+* Updated documentation
+
 # CopernicusDataspace V0.0.1
 
 * Initial release which can explore the catalogues and download

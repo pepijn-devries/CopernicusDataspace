@@ -4,7 +4,10 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/pepijn-devries/CopernicusDataspace/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pepijn-devries/CopernicusDataspace/actions/workflows/R-CMD-check.yaml)
+![cranlogs](https://cranlogs.r-pkg.org/badges/CopernicusDataspace)
 [![version](https://www.r-pkg.org/badges/version/CopernicusDataspace)](https://CRAN.R-project.org/package=CopernicusDataspace)
+[![cran
+checks](https://badges.cranchecks.info/worst/CopernicusDataspace.svg)](https://cran.r-project.org/web/checks/check_results_CopernicusDataspace.html)
 [![CopernicusDataspace status
 badge](https://pepijn-devries.r-universe.dev/badges/CopernicusDataspace)](https://pepijn-devries.r-universe.dev/CopernicusDataspace)
 [![Codecov test
@@ -19,13 +22,11 @@ points to several APIs allowing users to access the data directly in R.
 
 ## Installation
 
-<!--
 Install CRAN release:
-&#10;
+
 ``` r
 install.packages("CopernicusDataspace")
 ```
--->
 
 Install latest developmental version from R-Universe:
 
@@ -174,6 +175,16 @@ relevant API (`odata`, `stac` and `sh` (SentinelHub)). If a function
 name starts with `dse` but is not followed by a reference to a specific
 API, it will have a more generic purpose (like for instance
 authorisation).
+
+## OpenEO
+
+OpenEO is and will not be supported by the package at hand. It has a
+dedicated R package on CRAN:
+(openeo)\[<https://doi.org/10.32614/CRAN.package.openeo>\], with
+additional documentation available at
+[copernicus.eu](https://documentation.dataspace.copernicus.eu/APIs/openEO/R_Client/R.html).
+[OpenEO](https://openeo.org/about.html) allows to process data remotely
+and retrieve only processed data.
 
 ## More of Copernicus
 
