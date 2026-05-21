@@ -184,8 +184,8 @@ authorisation).
 
 OpenEO is and will not be supported by the package at hand. It has a
 dedicated R package on CRAN:
-(openeo)\[<https://doi.org/10.32614/CRAN.package.openeo>\], with
-additional documentation available at
+[openeo](https://doi.org/10.32614/CRAN.package.openeo), with additional
+documentation available at
 [copernicus.eu](https://documentation.dataspace.copernicus.eu/APIs/openEO/R_Client/R.html).
 [OpenEO](https://openeo.org/about.html) allows to process data remotely
 and retrieve only processed data.
