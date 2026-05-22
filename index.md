@@ -210,4 +210,4 @@ By contributing to this project, you agree to abide by its terms.
 
 This software has been developed as part of the statutory task programme
 “fisheries research” and is subsidised by the [Dutch Ministry of
-Agriculture, Nature and Food Quality.](https://ror.org/03b1hdw57).
+Agriculture, Nature and Food Quality](https://ror.org/03b1hdw57).
