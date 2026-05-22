@@ -205,3 +205,9 @@ Please note that the CopernicusDataspace project is released with a
 [Contributor Code of
 Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.
+
+## Acknowledgement
+
+This software has been developed as part of the statutory task programme
+“fisheries research” and is subsidised by the [Dutch Ministry of
+Agriculture, Nature and Food Quality.](https://ror.org/03b1hdw57).
