@@ -4,11 +4,15 @@ Catalog
 CDSE
 CMD
 Codecov
+copernicus
 CopernicusClimate
 CopernicusMarine
+cran
+cranlogs
 EO
 EPSG
 EvalScript
+eu
 GCP
 GCPs
 GDAL
@@ -26,6 +30,8 @@ NDVI
 OAuth
 odata
 OData
+openeo
+OpenEO
 ORCID
 queryable
 Queryable
