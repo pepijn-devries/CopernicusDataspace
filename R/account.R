@@ -53,7 +53,7 @@ dse_usage <- function(..., token = dse_access_token()) {
 dse_user_statistics <- function(
     range = "DAYS-31",
     resolution = "DAILY",
-    token = dse_access_token()) {
+    token = dse_public_access_token()) {
   
   .res_args   <- c("HOURLY", "DAILY", "MONTHLY")
   .range_args <- c("SECONDS", "MINUTES", "HOURS", "DAYS")
