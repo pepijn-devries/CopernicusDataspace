@@ -223,7 +223,9 @@ dse_odata_download <- function(request, destination, ...,
   product_details <- request |> dplyr::collect()
 
   lapply(product_details$S3Path, .download_s3,
-         destination = destination, dse_s3(s3_key, s3_secret)) |> unlist()
+         destination = destination,
+         dse_s3(s3_key = s3_key, s3_secret = s3_secret)) |>
+    unlist()
 }
 
 .path_to_url <- function(product, node_path) {
