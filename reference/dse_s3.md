@@ -16,6 +16,13 @@ dse_s3_set_key(value, ...)
 dse_s3_get_secret(...)
 
 dse_s3_set_secret(value, ...)
+
+dse_s3(
+  region = "us-east-1",
+  ...,
+  s3_key = dse_s3_get_key(),
+  s3_secret = dse_s3_get_secret()
+)
 ```
 
 ## Arguments
@@ -27,6 +34,17 @@ dse_s3_set_secret(value, ...)
 - value:
 
   Replacement value for the `s3_key` or `s3_secret`.
+
+- region:
+
+  [AWS
+  Region](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/)
+  used in instantiating the client
+
+- s3_key, s3_secret:
+
+  The s3 key and secret registered under your Data Space Ecosystem
+  account
 
 ## Value
 

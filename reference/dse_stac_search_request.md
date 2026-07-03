@@ -24,7 +24,9 @@ dse_stac_search_request(collections, ids, ...)
 
 - collections:
 
-  Restrict the search to the collections listed here.
+  Restrict the search to the collections listed here. If missing, the
+  collection will be guessed from the `ids`, using
+  [`dse_stac_guess_collection()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_guess_collection.md).
 
 - ids:
 

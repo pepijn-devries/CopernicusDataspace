@@ -1,7 +1,9 @@
 # Changelog
 
-## CopernicusDataspace V0.0.1.0004
+## CopernicusDataspace V0.0.2
 
+- Switched back to paws dependency due to [this
+  issue](https://github.com/cloudyr/aws.signature/issues/68)
 - Updated documentation
 
 ## CopernicusDataspace V0.0.1

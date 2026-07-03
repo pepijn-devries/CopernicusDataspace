@@ -42,14 +42,14 @@ dse_stac_collections()
 #>    <chr>         <chr> <list> <chr> <list>   <list>   <chr>   <list>   <list>   
 #>  1 ccm-optical   Coll… <list> Cope… <tibble> <tibble> other   <list>   <list>   
 #>  2 ccm-sar       Coll… <list> Cope… <tibble> <tibble> other   <list>   <list>   
-#>  3 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <NULL>   <list>   
-#>  4 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <NULL>   <list>   
-#>  5 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <NULL>   <list>   
-#>  6 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <NULL>   <list>   
-#>  7 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <NULL>   <list>   
-#>  8 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <NULL>   <list>   
-#>  9 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <NULL>   <list>   
-#> 10 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <NULL>   <list>   
+#>  3 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <list>   <list>   
+#>  4 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <list>   <list>   
+#>  5 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <list>   <list>   
+#>  6 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <list>   <list>   
+#>  7 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <list>   <list>   
+#>  8 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <list>   <list>   
+#>  9 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <list>   <list>   
+#> 10 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <list>   <list>   
 #> # ℹ 11 more variables: summaries <list>, description <chr>, item_assets <list>,
 #> #   `auth:schemes` <list>, `ceosard:type` <list>, stac_version <chr>,
 #> #   stac_extensions <list>, `storage:schemes` <list>, bands <list>,

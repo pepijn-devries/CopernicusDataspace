@@ -15,7 +15,7 @@ dse_usage(..., token = dse_access_token())
 dse_user_statistics(
   range = "DAYS-31",
   resolution = "DAILY",
-  token = dse_access_token()
+  token = dse_public_access_token()
 )
 ```
 

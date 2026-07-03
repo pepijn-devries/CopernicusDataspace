@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">CopernicusDataspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.0004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -114,13 +114,9 @@ required by which functions in this package:</p>
 <ul>
 <li>
 <code><a href="../reference/dse_get_token_details.html">dse_get_token_details()</a></code> For decoding the token</li>
-<li>
-<code><a href="../reference/dse_set_gdal_token.html">dse_set_gdal_token()</a></code> For making the token visible to
-the GDAL driver</li>
 <li>Account info
 <ul>
 <li><code><a href="../reference/dse_usage.html">dse_usage()</a></code></li>
-<li><code><a href="../reference/dse_usage.html">dse_user_statistics()</a></code></li>
 </ul>
 </li>
 <li>SentinelHub functions:
@@ -137,10 +133,18 @@ the GDAL driver</li>
 <li>Public Access Token; required by:
 <ul>
 <li>
+<code><a href="../reference/dse_set_gdal_token.html">dse_set_gdal_token()</a></code> For making the token visible to
+the GDAL driver</li>
+<li>
 <code><a href="../reference/dse_get_token_details.html">dse_get_token_details()</a></code> For decoding the token</li>
 <li><code><a href="../reference/dse_odata_download_path.html">dse_odata_download_path()</a></code></li>
 <li>
 <code><a href="../reference/dse_stac_download.html">dse_stac_download()</a></code> in case of a https download</li>
+<li>Account info
+<ul>
+<li><code><a href="../reference/dse_usage.html">dse_user_statistics()</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 <li>S3 key + secret; required by:

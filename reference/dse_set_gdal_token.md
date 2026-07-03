@@ -8,7 +8,7 @@ GDAL library. Most notably: `stars`, `terra`, and `gdalraster`.
 ## Usage
 
 ``` r
-dse_set_gdal_token(token = dse_access_token())
+dse_set_gdal_token(token = dse_public_access_token())
 ```
 
 ## Arguments
