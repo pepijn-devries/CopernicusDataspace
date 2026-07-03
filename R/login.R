@@ -327,7 +327,7 @@ dse_s3_set_secret <- function(value, ...) {
 #' }
 #' @family authentication
 #' @export
-dse_set_gdal_token  <- function(token = dse_access_token()) {
+dse_set_gdal_token  <- function(token = dse_public_access_token()) {
   Sys.setenv(GDAL_HTTP_AUTH = "BEARER") &&
     Sys.setenv(GDAL_HTTP_BEARER = token$access_token)
 }
