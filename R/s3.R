@@ -1,53 +1,36 @@
 #' @include login.R
 
-.download_s3 <- function(s3_path, destination, s3_key, s3_secret) {
-  base_url    <- gsub("^https://", "", .odata_s3_endpoint)
-  s3_path     <- paste0("s3:/", s3_path)
-  bucket      <- aws.s3::get_bucketname(s3_path)
-  object_key  <- aws.s3::get_objectkey(s3_path)
-  
-  bucket_list <- aws.s3::get_bucket_df(
-    bucket   = bucket,
-    prefix   = object_key,
-    base_url = base_url,
-    region   = "",
-    key      = s3_key,
-    secret   = s3_secret,
-    max = Inf
+#' @rdname dse_s3
+#' @export
+dse_s3 <- function(region    = "us-east-1", ...,
+                   s3_key    = dse_s3_get_key(),
+                   s3_secret = dse_s3_get_secret()) {
+  paws::s3(
+    credentials = list(
+      creds = list(
+        access_key_id     = s3_key,
+        secret_access_key = s3_secret
+      )
+    ),
+    endpoint = .odata_s3_endpoint,
+    region   = region
   )
-  keys <- bucket_list$Key
+}
 
-  result <- character(0)
-  cli::cli_progress_bar(
-    total = sum(as.numeric(bucket_list$Size)),
-    format = "Downloading file {i} of {nrow(bucket_list)} | {cli::pb_bar} {cli::pb_percent} | {cli::pb_eta_str}",
-    format_done = "Done")
-  for (i in seq_along(bucket_list$Key)) {
-    fn   <- gsub(paste0(dirname(object_key), "[/]"), "", bucket_list$Key[i])
+.download_s3 <- function(s3_path, destination, ps3) {
+  prefix  <- gsub("^/eodata/", "", s3_path)
+  objects <- ps3$list_objects("eodata", Prefix = prefix)
+  keys    <- lapply(objects$Contents, `[[`, "Key") |> unlist()
+  lapply(keys, \(k) {
+    fn   <- gsub(paste0(dirname(prefix), "[/]"), "", k)
     dest <- file.path(destination, fn)
     if (!dir.exists(dirname(dest))) {
       dirresult <- dir.create(dirname(dest), recursive = TRUE)
       if (!dirresult) stop("Failed to create subdirectory for download file")
     }
-    con_in <- aws.s3::s3connection(
-      bucket   = bucket,
-      object   = aws.s3::get_objectkey(keys[[i]]),
-      base_url = base_url,
-      region   = "",
-      key      = s3_key,
-      secret   = s3_secret
-    )
-    con_out <- file(dest, open = "wb")
-    repeat {
-      buffer <- readBin(con_in, "raw", 10*1024*1024)
-      if (length(buffer) == 0) break
-      writeBin(buffer, con_out)
-      cli::cli_progress_update(inc = length(buffer))
-    }
-    close(con_in); close(con_out)
-    result <- c(result, fn)
-  }
-  result
+    ps3$download_file("eodata", k, dest)
+    return(fn)
+  })
 }
 
 #' Download Asset Through Uniform Resource Identifier
@@ -91,7 +74,7 @@ dse_s3_download <- function(
       i = "Make sure the path starts with 's3://'"
     ))
   uri <- gsub("^[s|S]3\\:\\/", "", uri)
-  .download_s3(uri, destination, s3_key, s3_secret)
+  .download_s3(uri, destination, dse_s3(s3_key, s3_secret))
 }
 
 #' Convert Uniform Resource Identifier to Virtual System Identifier
@@ -172,4 +155,24 @@ dse_s3_set_gdal_options <- function(
     Sys.setenv(AWS_VIRTUAL_HOSTING   = "FALSE") &&
     Sys.setenv(AWS_S3_ENDPOINT       =
                  gsub("^https://", "", .odata_s3_endpoint))
+}
+
+#' @examples
+#' if (interactive() && dse_has_s3_secret()) {
+#'   my_s3 <- dse_s3()
+#'   my_s3$get_object(Bucket = "", Key = "") |> summary()
+#' }
+#' @export
+dse_s3 <- function(region = "us-east-1", ...,
+                   s3_key = dse_s3_get_key(), s3_secret = dse_s3_get_secret()) {
+  paws::s3(
+    credentials = list(
+      creds = list(
+        access_key_id     = s3_key,
+        secret_access_key = s3_secret
+      )
+    ),
+    endpoint = .odata_s3_endpoint,
+    region   = region
+  )
 }
