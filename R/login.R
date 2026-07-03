@@ -251,6 +251,10 @@ dse_has_account <- function(...) {
 #' @references <https://documentation.dataspace.copernicus.eu/APIs/S3.html>
 #' @param ... Ignored
 #' @param value Replacement value for the `s3_key` or `s3_secret`.
+#' @param region [AWS Region](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/)
+#' used in instantiating the client
+#' @param s3_key,s3_secret The s3 key and secret registered under your Data Space
+#' Ecosystem account
 #' @returns
 #' [dse_s3_get_key()] and [dse_s3_get_secret()] will return the requested s3 details
 #' if set as environment variable (see details).
@@ -323,7 +327,7 @@ dse_s3_set_secret <- function(value, ...) {
 #' }
 #' @family authentication
 #' @export
-dse_set_gdal_token  <- function(token = dse_access_token()) {
+dse_set_gdal_token  <- function(token = dse_public_access_token()) {
   Sys.setenv(GDAL_HTTP_AUTH = "BEARER") &&
     Sys.setenv(GDAL_HTTP_BEARER = token$access_token)
 }

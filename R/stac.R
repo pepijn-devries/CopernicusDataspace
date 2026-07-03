@@ -164,6 +164,8 @@ dse_stac_collections <- memoise::memoise(.dse_stac_collections)
 #' If you prefer a graphical user interface, you can alternatively use
 #' the [STAC web browser](https://browser.stac.dataspace.copernicus.eu/).
 #' @param collections Restrict the search to the collections listed here.
+#' If missing, the collection will be guessed from the `ids`,
+#' using [`dse_stac_guess_collection()`].
 #' @param ids Restrict the search to ids listed here.
 #' @param ... Arguments appended to search filter request body.
 #' @returns Returns a `data.frame` with search results.
@@ -190,7 +192,14 @@ dse_stac_collections <- memoise::memoise(.dse_stac_collections)
 #' @family stac
 #' @export
 dse_stac_search_request <- function(collections, ids, ...) {
-  if (missing(collections)) collections <- NA
+  if (missing(collections)) {
+    if (missing(ids)) {
+      collections <- NA
+    } else {
+      collections <- lapply(ids, dse_stac_guess_collection) |>
+        unlist()
+    }
+  }
   if (missing(ids)) ids <- NA
   filt <- .dse_stac_search_filter(collections = collections, ids = ids, ...)
   filt$intersects <- NULL # Mutually exclusive. Added by st_intersects()

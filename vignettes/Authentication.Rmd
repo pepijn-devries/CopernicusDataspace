@@ -43,10 +43,8 @@ functions in this package:
 
  * Access Token; required by:
      * `dse_get_token_details()` For decoding the token
-     * `dse_set_gdal_token()` For making the token visible to the GDAL driver
      * Account info
        * `dse_usage()`
-       * `dse_user_statistics()`
      * SentinelHub functions:
        * `dse_sh_features()`
        * `dse_sh_process()`
@@ -54,9 +52,12 @@ functions in this package:
        * `dse_sh_use_requests_builder()`
        * `dse_sh_features()`
  * Public Access Token; required by:
+     * `dse_set_gdal_token()` For making the token visible to the GDAL driver
      * `dse_get_token_details()` For decoding the token
      * `dse_odata_download_path()`
      * `dse_stac_download()` in case of a https download
+     * Account info
+       * `dse_user_statistics()`
  * S3 key + secret; required by:
      * `dse_stac_download()` in case of an S3 download
      * `dse_odata_download()`

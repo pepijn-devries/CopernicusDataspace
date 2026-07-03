@@ -4,7 +4,7 @@
 \alias{dse_set_gdal_token}
 \title{Set Copernicus Data Space Ecosystem Access Token for GDAL Driver}
 \usage{
-dse_set_gdal_token(token = dse_access_token())
+dse_set_gdal_token(token = dse_public_access_token())
 }
 \arguments{
 \item{token}{For authentication, many of the Data Space Ecosystem uses

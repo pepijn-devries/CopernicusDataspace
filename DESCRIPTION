@@ -1,6 +1,6 @@
 Package: CopernicusDataspace
 Title: Search Download and Handle Data from the Copernicus Data Space Ecosystem
-Version: 0.0.1.0004
+Version: 0.0.2
 Authors@R: 
     c(
       person("Pepijn", "de Vries", role = c("aut", "cre"),
@@ -24,14 +24,13 @@ Description:
 Depends:
     R (>= 4.1.0)
 Imports:
-    aws.s3,
-    cli,
     dplyr,
     httr2,
     jsonlite,
     lubridate,
     memoise,
     methods,
+    paws,
     rlang,
     sf,
     stringr,

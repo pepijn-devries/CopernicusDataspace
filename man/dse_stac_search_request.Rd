@@ -7,7 +7,9 @@
 dse_stac_search_request(collections, ids, ...)
 }
 \arguments{
-\item{collections}{Restrict the search to the collections listed here.}
+\item{collections}{Restrict the search to the collections listed here.
+If missing, the collection will be guessed from the \code{ids},
+using \code{\link[=dse_stac_guess_collection]{dse_stac_guess_collection()}}.}
 
 \item{ids}{Restrict the search to ids listed here.}
 

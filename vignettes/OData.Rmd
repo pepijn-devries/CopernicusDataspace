@@ -159,7 +159,7 @@ private access token, which in turn requires your Copernicus Data Space
 user id (usually your e-mail address) and password (see
 `vignette("Authentication")`).
 
-The formal OData route uses [S3 buckets](https://en.wikipedia.org/wiki/Amazon_S3
+The formal OData route uses [S3 buckets](https://en.wikipedia.org/wiki/Amazon_S3)
 and requires S3 authentication (see `vignette("Authentication")`).
 You can perform such downloads with `dse_odata_downloads()` as shown below
 
