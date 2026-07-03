@@ -25,13 +25,6 @@ dse_s3(
   s3_key = dse_s3_get_key(),
   s3_secret = dse_s3_get_secret()
 )
-
-dse_s3(
-  region = "us-east-1",
-  ...,
-  s3_key = dse_s3_get_key(),
-  s3_secret = dse_s3_get_secret()
-)
 }
 \arguments{
 \item{...}{Ignored}
@@ -40,11 +33,11 @@ dse_s3(
 
 \item{region}{\href{https://aws.amazon.com/about-aws/global-infrastructure/regions_az/}{AWS Region}
 used in instantiating the client}
+
+\item{s3_key, s3_secret}{The s3 key and secret registered under your Data Space
+Ecosystem account}
 }
 \value{
-\code{\link[=dse_s3]{dse_s3()}} returns a client for the Data Space Ecosystem s3 service.
-For more details see \code{\link[paws:s3]{paws::s3()}}.
-
 \code{\link[=dse_s3_get_key]{dse_s3_get_key()}} and \code{\link[=dse_s3_get_secret]{dse_s3_get_secret()}} will return the requested s3 details
 if set as environment variable (see details).
 
@@ -90,16 +83,6 @@ You can also define them in your \code{.Rprofile} file with
 \code{Sys.setenv(CDSE_API_S3ID = "<your key>")} and
 \code{Sys.setenv(CDSE_API_S3SECRET = "<your secret>")}. This way,
 they are set each time you start a new R session.
-}
-}
-\examples{
-if (interactive() && dse_has_s3_secret()) {
-  my_s3 <- dse_s3()
-  my_s3$get_object(Bucket = "", Key = "") |> summary()
-}
-if (interactive() && dse_has_s3_secret()) {
-  my_s3 <- dse_s3()
-  my_s3$get_object(Bucket = "", Key = "") |> summary()
 }
 }
 \references{

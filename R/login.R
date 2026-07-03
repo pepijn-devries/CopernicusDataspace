@@ -249,13 +249,13 @@ dse_has_account <- function(...) {
 #' `Sys.setenv(CDSE_API_S3SECRET = "<your secret>")`. This way,
 #' they are set each time you start a new R session.
 #' @references <https://documentation.dataspace.copernicus.eu/APIs/S3.html>
-#' @param region [AWS Region](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/)
-#' used in instantiating the client
 #' @param ... Ignored
 #' @param value Replacement value for the `s3_key` or `s3_secret`.
-#' @returns [dse_s3()] returns a client for the Data Space Ecosystem s3 service.
-#' For more details see [paws::s3()].
-#' 
+#' @param region [AWS Region](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/)
+#' used in instantiating the client
+#' @param s3_key,s3_secret The s3 key and secret registered under your Data Space
+#' Ecosystem account
+#' @returns
 #' [dse_s3_get_key()] and [dse_s3_get_secret()] will return the requested s3 details
 #' if set as environment variable (see details).
 #' 
@@ -264,11 +264,6 @@ dse_has_account <- function(...) {
 #' @rdname dse_s3
 #' @family authentication
 #' @family s3
-#' @examples
-#' if (interactive() && dse_has_s3_secret()) {
-#'   my_s3 <- dse_s3()
-#'   my_s3$get_object(Bucket = "", Key = "") |> summary()
-#' }
 #' @export
 dse_has_s3_secret <- function() {
   dse_s3_get_key() != "" && dse_s3_get_secret() != ""

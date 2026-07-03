@@ -24,7 +24,6 @@ Description:
 Depends:
     R (>= 4.1.0)
 Imports:
-    cli,
     dplyr,
     httr2,
     jsonlite,

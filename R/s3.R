@@ -43,8 +43,7 @@ dse_s3 <- function(region    = "us-east-1", ...,
 #' [dse_stac_search_request()] (see example).
 #' @param destination Destination path to a directory where to store the downloaded file(s)
 #' @param ... Ignored
-#' @param s3_key,s3_secret The s3 key and secret registered under your Data Space
-#' Ecosystem account
+#' @inheritParams dse_s3
 #' @returns A vector of file names stored at `destination`
 #' @examples
 #' if (interactive() && dse_has_s3_secret()) {
@@ -155,24 +154,4 @@ dse_s3_set_gdal_options <- function(
     Sys.setenv(AWS_VIRTUAL_HOSTING   = "FALSE") &&
     Sys.setenv(AWS_S3_ENDPOINT       =
                  gsub("^https://", "", .odata_s3_endpoint))
-}
-
-#' @examples
-#' if (interactive() && dse_has_s3_secret()) {
-#'   my_s3 <- dse_s3()
-#'   my_s3$get_object(Bucket = "", Key = "") |> summary()
-#' }
-#' @export
-dse_s3 <- function(region = "us-east-1", ...,
-                   s3_key = dse_s3_get_key(), s3_secret = dse_s3_get_secret()) {
-  paws::s3(
-    credentials = list(
-      creds = list(
-        access_key_id     = s3_key,
-        secret_access_key = s3_secret
-      )
-    ),
-    endpoint = .odata_s3_endpoint,
-    region   = region
-  )
 }
