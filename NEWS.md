@@ -1,4 +1,4 @@
-# CopernicusDataspace V0.0.2
+# CopernicusDataspace V0.0.3
 
 * Switched back to paws dependency due to
   [this issue](https://github.com/cloudyr/aws.signature/issues/68)

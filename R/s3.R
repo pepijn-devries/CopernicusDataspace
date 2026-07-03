@@ -73,7 +73,8 @@ dse_s3_download <- function(
       i = "Make sure the path starts with 's3://'"
     ))
   uri <- gsub("^[s|S]3\\:\\/", "", uri)
-  .download_s3(uri, destination, dse_s3(s3_key, s3_secret))
+  .download_s3(uri, destination,
+               dse_s3(s3_key = s3_key, s3_secret = s3_secret))
 }
 
 #' Convert Uniform Resource Identifier to Virtual System Identifier
