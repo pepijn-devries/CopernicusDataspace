@@ -23,7 +23,7 @@ In order to perform a search using the STAC API, you first need to
 create a request using \code{\link[=dse_stac_search_request]{dse_stac_search_request()}}. This creates
 a \code{\link[httr2:request]{httr2::request()}} to which tidy verbs \code{?tidy_verbs} can be applied
 (e.g., \code{\link[dplyr:select]{dplyr::select()}}, \code{\link[dplyr:filter]{dplyr::filter()}} and \code{\link[dplyr:arrange]{dplyr::arrange()}}.
-Results are retrieved by calling \code{\link[dplyr:compute]{dplyr::collect()}} on the request.
+Results are retrieved by calling \code{\link[dplyr:collect]{dplyr::collect()}} on the request.
 }
 \details{
 If you prefer a graphical user interface, you can alternatively use
@@ -51,12 +51,12 @@ if (interactive()) {
 }
 }
 \seealso{
-Other stac: 
-\code{\link{dse_stac_client}()},
-\code{\link{dse_stac_collections}()},
-\code{\link{dse_stac_download}()},
-\code{\link{dse_stac_get_uri}()},
-\code{\link{dse_stac_guess_collection}()},
-\code{\link{dse_stac_queryables}()}
+Other stac:
+\code{\link[=dse_stac_client]{dse_stac_client()}},
+\code{\link[=dse_stac_collections]{dse_stac_collections()}},
+\code{\link[=dse_stac_download]{dse_stac_download()}},
+\code{\link[=dse_stac_get_uri]{dse_stac_get_uri()}},
+\code{\link[=dse_stac_guess_collection]{dse_stac_guess_collection()}},
+\code{\link[=dse_stac_queryables]{dse_stac_queryables()}}
 }
 \concept{stac}

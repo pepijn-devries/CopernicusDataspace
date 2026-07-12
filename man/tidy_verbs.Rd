@@ -92,7 +92,7 @@ by \code{\link[=dse_stac_search_request]{dse_stac_search_request()}}.
 }
 \details{
 These special request class objects use lazy evaluation.
-This means that functions are only evaluated after calling \code{\link[dplyr:compute]{dplyr::collect()}}
+This means that functions are only evaluated after calling \code{\link[dplyr:collect]{dplyr::collect()}}
 on a request.
 
 Note that you should not call the functions exported in this package directly.
@@ -105,7 +105,7 @@ In order to manage server traffic, the OData API never returns more than
 to specify the \code{skip} argument.
 
 The Sentinel and STAC API limits its results to the first 10 rows. You can expand that limit
-with \code{\link[dplyr:slice]{dplyr::slice_head()}}. For STAC the number of rows is capped at 10,000 records.
+with \code{\link[dplyr:slice_head]{dplyr::slice_head()}}. For STAC the number of rows is capped at 10,000 records.
 For SentinelHub this number is capped at 100.
 }
 
@@ -116,7 +116,7 @@ from its tidy standards. Most notably:
 \itemize{
 \item \code{\link[dplyr:select]{dplyr::select()}}: Cannot change the order of columns. It will only
 affect which columns are selected. Also, tidy selection helpers like
-\code{\link[dplyr:reexports]{dplyr::any_of()}} and \code{\link[dplyr:reexports]{dplyr::all_of()}} are NOT supported
+\code{\link[dplyr:any_of]{dplyr::any_of()}} and \code{\link[dplyr:all_of]{dplyr::all_of()}} are NOT supported
 \item \code{\link[dplyr:arrange]{dplyr::arrange()}}: OData only allows to sort up to 32 columns.
 Adding more columns will produce a warning.
 \item Grouping is not supported
@@ -155,37 +155,7 @@ if (interactive()) {
 }
 }
 \seealso{
-Other tidyverse: 
-\code{\link{req_perform}()}
-
-Other tidyverse: 
-\code{\link{req_perform}()}
-
-Other tidyverse: 
-\code{\link{req_perform}()}
-
-Other tidyverse: 
-\code{\link{req_perform}()}
-
-Other tidyverse: 
-\code{\link{req_perform}()}
-
-Other tidyverse: 
-\code{\link{req_perform}()}
-
-Other tidyverse: 
-\code{\link{req_perform}()}
-
-Other tidyverse: 
-\code{\link{req_perform}()}
-
-Other tidyverse: 
-\code{\link{req_perform}()}
-
-Other tidyverse: 
-\code{\link{req_perform}()}
-
-Other tidyverse: 
-\code{\link{req_perform}()}
+Other tidyverse:
+\code{\link[=req_perform]{req_perform()}}
 }
 \concept{tidyverse}

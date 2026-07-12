@@ -23,10 +23,10 @@ if (interactive() && dse_has_client_info()) {
 }
 }
 \seealso{
-Other authentication: 
-\code{\link{dse_access_token}()},
-\code{\link{dse_has_s3_secret}()},
-\code{\link{dse_set_gdal_token}()},
-\code{\link{dse_usage}()}
+Other authentication:
+\code{\link[=dse_access_token]{dse_access_token()}},
+\code{\link[=dse_has_s3_secret]{dse_has_s3_secret()}},
+\code{\link[=dse_set_gdal_token]{dse_set_gdal_token()}},
+\code{\link[=dse_usage]{dse_usage()}}
 }
 \concept{authentication}

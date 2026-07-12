@@ -26,14 +26,14 @@ if (interactive()) {
 }
 }
 \seealso{
-Other sentinelhub: 
-\code{\link{dse_sh_collections}()},
-\code{\link{dse_sh_custom_scripts}()},
-\code{\link{dse_sh_features}()},
-\code{\link{dse_sh_prepare_input}()},
-\code{\link{dse_sh_process}()},
-\code{\link{dse_sh_queryables}()},
-\code{\link{dse_sh_search_request}()},
-\code{\link{dse_sh_use_requests_builder}()}
+Other sentinelhub:
+\code{\link[=dse_sh_collections]{dse_sh_collections()}},
+\code{\link[=dse_sh_custom_scripts]{dse_sh_custom_scripts()}},
+\code{\link[=dse_sh_features]{dse_sh_features()}},
+\code{\link[=dse_sh_prepare_input]{dse_sh_prepare_input()}},
+\code{\link[=dse_sh_process]{dse_sh_process()}},
+\code{\link[=dse_sh_queryables]{dse_sh_queryables()}},
+\code{\link[=dse_sh_search_request]{dse_sh_search_request()}},
+\code{\link[=dse_sh_use_requests_builder]{dse_sh_use_requests_builder()}}
 }
 \concept{sentinelhub}

@@ -53,9 +53,13 @@ NULL
 #' @export
 dse_stac_client <- memoise::memoise(.dse_stac_client)
 
-.dse_stac_collections <- function(collection, ...) {
+.dse_stac_collections <- function(collection, limit = 1000L, ...) {
   arg <- "collections"
-  if (!missing(collection)) arg <- paste(arg, collection, sep = "/")
+  if (missing(collection)) {
+    arg <- paste0(arg, "?limit=", limit)
+  } else {
+    arg <- paste(arg, collection, sep = "/")
+  }
   result  <- .stac_get(arg)
   if (any(names(result) == "collections")) {
     attribs <- result[names(result) != "collections"]
@@ -73,6 +77,7 @@ dse_stac_client <- memoise::memoise(.dse_stac_client)
 #' from the interface.
 #' @param collection A specific collection for which to obtain summary information.
 #' If missing (default), all collections are returned.
+#' @param limit Maximum number of collections to be returned.
 #' @param ... Ignored
 #' @returns Returns a `data.frame` with the requested information
 #' @examples

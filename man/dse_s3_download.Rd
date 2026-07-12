@@ -52,9 +52,9 @@ if (interactive() && dse_has_s3_secret()) {
 }
 }
 \seealso{
-Other s3: 
-\code{\link{dse_has_s3_secret}()},
-\code{\link{dse_s3_set_gdal_options}()},
-\code{\link{dse_s3_uri_to_vsi}()}
+Other s3:
+\code{\link[=dse_has_s3_secret]{dse_has_s3_secret()}},
+\code{\link[=dse_s3_set_gdal_options]{dse_s3_set_gdal_options()}},
+\code{\link[=dse_s3_uri_to_vsi]{dse_s3_uri_to_vsi()}}
 }
 \concept{s3}

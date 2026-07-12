@@ -32,7 +32,7 @@ an "access denied" error.}
 }
 \value{
 Returns a \code{sentinel_request} class object, which inherits
-from the \code{httr2::request} class. Call \code{\link[dplyr:compute]{dplyr::collect()}} on it to
+from the \code{httr2::request} class. Call \code{\link[dplyr:collect]{dplyr::collect()}} on it to
 retrieve results.
 }
 \description{
@@ -40,7 +40,7 @@ In order to perform a search using the STAC API, you first need to
 create a request using \code{\link[=dse_sh_search_request]{dse_sh_search_request()}}. This creates
 a \code{\link[httr2:request]{httr2::request()}} to which tidy verbs \code{?tidy_verbs} can be applied
 (e.g., \code{\link[dplyr:select]{dplyr::select()}} and \code{\link[dplyr:filter]{dplyr::filter()}}.
-Results are retrieved by calling \code{\link[dplyr:compute]{dplyr::collect()}} on the request.
+Results are retrieved by calling \code{\link[dplyr:collect]{dplyr::collect()}} on the request.
 }
 \examples{
 if (interactive() && dse_has_client_info()) {
@@ -61,14 +61,14 @@ if (interactive() && dse_has_client_info()) {
 }
 }
 \seealso{
-Other sentinelhub: 
-\code{\link{dse_sh_collections}()},
-\code{\link{dse_sh_custom_scripts}()},
-\code{\link{dse_sh_features}()},
-\code{\link{dse_sh_get_custom_script}()},
-\code{\link{dse_sh_prepare_input}()},
-\code{\link{dse_sh_process}()},
-\code{\link{dse_sh_queryables}()},
-\code{\link{dse_sh_use_requests_builder}()}
+Other sentinelhub:
+\code{\link[=dse_sh_collections]{dse_sh_collections()}},
+\code{\link[=dse_sh_custom_scripts]{dse_sh_custom_scripts()}},
+\code{\link[=dse_sh_features]{dse_sh_features()}},
+\code{\link[=dse_sh_get_custom_script]{dse_sh_get_custom_script()}},
+\code{\link[=dse_sh_prepare_input]{dse_sh_prepare_input()}},
+\code{\link[=dse_sh_process]{dse_sh_process()}},
+\code{\link[=dse_sh_queryables]{dse_sh_queryables()}},
+\code{\link[=dse_sh_use_requests_builder]{dse_sh_use_requests_builder()}}
 }
 \concept{sentinelhub}

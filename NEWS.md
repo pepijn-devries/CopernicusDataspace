@@ -1,3 +1,7 @@
+# CopernicusDataspace V0.0.3.0001
+
+ * You can now set the limit for `dse_stac_collections()`
+
 # CopernicusDataspace V0.0.3
 
 * Switched back to paws dependency due to

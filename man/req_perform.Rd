@@ -51,7 +51,7 @@ A wrapper around \code{\link[httr2:req_perform]{httr2::req_perform()}}, which ca
 for details.
 }
 \seealso{
-Other tidyverse: 
+Other tidyverse:
 \code{\link{tidy_verbs}}
 }
 \concept{tidyverse}

@@ -54,12 +54,12 @@ if (interactive() && (dse_has_s3_secret() || dse_has_client_info())) {
 }
 }
 \seealso{
-Other stac: 
-\code{\link{dse_stac_client}()},
-\code{\link{dse_stac_collections}()},
-\code{\link{dse_stac_get_uri}()},
-\code{\link{dse_stac_guess_collection}()},
-\code{\link{dse_stac_queryables}()},
-\code{\link{dse_stac_search_request}()}
+Other stac:
+\code{\link[=dse_stac_client]{dse_stac_client()}},
+\code{\link[=dse_stac_collections]{dse_stac_collections()}},
+\code{\link[=dse_stac_get_uri]{dse_stac_get_uri()}},
+\code{\link[=dse_stac_guess_collection]{dse_stac_guess_collection()}},
+\code{\link[=dse_stac_queryables]{dse_stac_queryables()}},
+\code{\link[=dse_stac_search_request]{dse_stac_search_request()}}
 }
 \concept{stac}

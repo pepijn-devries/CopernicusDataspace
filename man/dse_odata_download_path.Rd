@@ -58,12 +58,12 @@ if (interactive() && dse_has_account()) {
 }
 }
 \seealso{
-Other odata: 
-\code{\link{dse_odata_attributes}()},
-\code{\link{dse_odata_bursts_request}()},
-\code{\link{dse_odata_download}()},
-\code{\link{dse_odata_product_nodes}()},
-\code{\link{dse_odata_products_request}()},
-\code{\link{dse_odata_quicklook}()}
+Other odata:
+\code{\link[=dse_odata_attributes]{dse_odata_attributes()}},
+\code{\link[=dse_odata_bursts_request]{dse_odata_bursts_request()}},
+\code{\link[=dse_odata_download]{dse_odata_download()}},
+\code{\link[=dse_odata_product_nodes]{dse_odata_product_nodes()}},
+\code{\link[=dse_odata_products_request]{dse_odata_products_request()}},
+\code{\link[=dse_odata_quicklook]{dse_odata_quicklook()}}
 }
 \concept{odata}
