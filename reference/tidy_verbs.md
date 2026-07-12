@@ -117,9 +117,9 @@ from its tidy standards. Most notably:
 - [`dplyr::select()`](https://dplyr.tidyverse.org/reference/select.html):
   Cannot change the order of columns. It will only affect which columns
   are selected. Also, tidy selection helpers like
-  [`dplyr::any_of()`](https://dplyr.tidyverse.org/reference/reexports.html)
+  [`dplyr::any_of()`](https://tidyselect.r-lib.org/reference/all_of.html)
   and
-  [`dplyr::all_of()`](https://dplyr.tidyverse.org/reference/reexports.html)
+  [`dplyr::all_of()`](https://tidyselect.r-lib.org/reference/all_of.html)
   are NOT supported
 
 - [`dplyr::arrange()`](https://dplyr.tidyverse.org/reference/arrange.html):
@@ -136,36 +136,6 @@ from its tidy standards. Most notably:
   `data.frame`, which can be manipulated further.
 
 ## See also
-
-Other tidyverse:
-[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
-
-Other tidyverse:
-[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
-
-Other tidyverse:
-[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
-
-Other tidyverse:
-[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
-
-Other tidyverse:
-[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
-
-Other tidyverse:
-[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
-
-Other tidyverse:
-[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
-
-Other tidyverse:
-[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
-
-Other tidyverse:
-[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
-
-Other tidyverse:
-[`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)
 
 Other tidyverse:
 [`req_perform()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/req_perform.md)

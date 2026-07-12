@@ -6,7 +6,7 @@ interface.
 ## Usage
 
 ``` r
-dse_stac_collections(collection, ...)
+dse_stac_collections(collection, limit = 1000L, ...)
 ```
 
 ## Arguments
@@ -15,6 +15,10 @@ dse_stac_collections(collection, ...)
 
   A specific collection for which to obtain summary information. If
   missing (default), all collections are returned.
+
+- limit:
+
+  Maximum number of collections to be returned.
 
 - ...:
 

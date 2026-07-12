@@ -37,23 +37,25 @@ as follows:
 
 library(CopernicusDataspace)
 dse_stac_collections()
-#> # A tibble: 10 × 20
-#>    id            type  links  title assets   extent   license keywords providers
-#>    <chr>         <chr> <list> <chr> <list>   <list>   <chr>   <list>   <list>   
-#>  1 ccm-optical   Coll… <list> Cope… <tibble> <tibble> other   <list>   <list>   
-#>  2 ccm-sar       Coll… <list> Cope… <tibble> <tibble> other   <list>   <list>   
-#>  3 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <list>   <list>   
-#>  4 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <list>   <list>   
-#>  5 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <list>   <list>   
-#>  6 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <list>   <list>   
-#>  7 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <list>   <list>   
-#>  8 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <list>   <list>   
-#>  9 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <list>   <list>   
-#> 10 clms_ba_glob… Coll… <list> CLMS… <tibble> <tibble> other   <list>   <list>   
-#> # ℹ 11 more variables: summaries <list>, description <chr>, item_assets <list>,
+#> # A tibble: 383 × 23
+#>    id        type  links  title assets       extent   license keywords providers
+#>    <chr>     <chr> <list> <chr> <list>       <list>   <chr>   <list>   <list>   
+#>  1 ccm-opti… Coll… <list> Cope… <named list> <tibble> other   <list>   <list>   
+#>  2 ccm-sar   Coll… <list> Cope… <named list> <tibble> other   <list>   <list>   
+#>  3 clms_ba_… Coll… <list> CLMS… <named list> <tibble> other   <list>   <list>   
+#>  4 clms_ba_… Coll… <list> CLMS… <named list> <tibble> other   <list>   <list>   
+#>  5 clms_ba_… Coll… <list> CLMS… <named list> <tibble> other   <list>   <list>   
+#>  6 clms_ba_… Coll… <list> CLMS… <named list> <tibble> other   <list>   <list>   
+#>  7 clms_ba_… Coll… <list> CLMS… <named list> <tibble> other   <list>   <list>   
+#>  8 clms_ba_… Coll… <list> CLMS… <named list> <tibble> other   <list>   <list>   
+#>  9 clms_ba_… Coll… <list> CLMS… <named list> <tibble> other   <list>   <list>   
+#> 10 clms_ba_… Coll… <list> CLMS… <named list> <tibble> other   <list>   <list>   
+#> # ℹ 373 more rows
+#> # ℹ 14 more variables: summaries <list>, description <chr>, item_assets <list>,
 #> #   `auth:schemes` <list>, `ceosard:type` <list>, stac_version <chr>,
 #> #   stac_extensions <list>, `storage:schemes` <list>, bands <list>,
-#> #   `sci:doi` <list>, contacts <list>
+#> #   `sci:doi` <list>, contacts <list>, `sci:citation` <list>,
+#> #   `ceosard:specification` <list>, `ceosard:specification_version` <list>
 ```
 
 The returned `data.frame` contains descriptive information about each of

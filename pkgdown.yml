@@ -1,5 +1,5 @@
 pandoc: 3.8.3
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   Authentication: Authentication.html
@@ -7,7 +7,7 @@ articles:
   reading-data: reading-data.html
   SentinelHub: SentinelHub.html
   STAC: STAC.html
-last_built: 2026-07-03T16:04Z
+last_built: 2026-07-12T13:37Z
 urls:
   reference: https://pepijn-devries.github.io/CopernicusDataspace/reference
   article: https://pepijn-devries.github.io/CopernicusDataspace/articles

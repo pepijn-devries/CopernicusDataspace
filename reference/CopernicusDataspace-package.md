@@ -22,6 +22,11 @@ Useful links:
 **Maintainer**: Pepijn de Vries <pepijn.devries@outlook.com>
 ([ORCID](https://orcid.org/0000-0002-7961-6646))
 
+Authors:
+
+- Pepijn de Vries <pepijn.devries@outlook.com>
+  ([ORCID](https://orcid.org/0000-0002-7961-6646))
+
 Other contributors:
 
 - Alicia Hamer <alicia.hamer@wur.nl>

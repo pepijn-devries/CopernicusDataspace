@@ -1,6 +1,13 @@
 # Changelog
 
+## CopernicusDataspace V0.0.3.0001
+
+- You can now set the limit for
+  [`dse_stac_collections()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_collections.md)
+
 ## CopernicusDataspace V0.0.3
+
+CRAN release: 2026-07-03
 
 - Switched back to paws dependency due to [this
   issue](https://github.com/cloudyr/aws.signature/issues/68)
