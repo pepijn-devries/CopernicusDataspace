@@ -16,7 +16,7 @@ to embedded \code{\link[dplyr:filter]{dplyr::filter()}} in case of \code{dse_oda
 \item{expand}{Additional information to be appended to the result.
 Should be any of \code{"Attributes"}, \code{"Assets"}, or \code{"Locations"}. Note that,
 these columns are not affected by \code{\link[dplyr:select]{dplyr::select()}} calls (before calling
-\code{\link[dplyr:compute]{dplyr::collect()}}).}
+\code{\link[dplyr:collect]{dplyr::collect()}}).}
 }
 \value{
 Returns an \code{odata_request} class object in case of
@@ -34,7 +34,7 @@ supports several tidyverse methods for filtering and arranging the data.
 You can apply some tidyverse functions (see \link{tidy_verbs}) to \code{odata_request}
 object returned by \code{\link[=dse_odata_products_request]{dse_odata_products_request()}}. These apply lazy evaluation.
 Meaning that they are just added to the object and are only evaluated after
-calling either \code{\link[dplyr:compute]{dplyr::compute()}} or \code{\link[dplyr:compute]{dplyr::collect()}} (see examples).
+calling either \code{\link[dplyr:compute]{dplyr::compute()}} or \code{\link[dplyr:collect]{dplyr::collect()}} (see examples).
 }
 \examples{
 if (interactive()) {
@@ -57,20 +57,12 @@ if (interactive()) {
 \url{https://documentation.dataspace.copernicus.eu/APIs/OData.html}
 }
 \seealso{
-Other odata: 
-\code{\link{dse_odata_attributes}()},
-\code{\link{dse_odata_bursts_request}()},
-\code{\link{dse_odata_download}()},
-\code{\link{dse_odata_download_path}()},
-\code{\link{dse_odata_product_nodes}()},
-\code{\link{dse_odata_quicklook}()}
-
-Other odata: 
-\code{\link{dse_odata_attributes}()},
-\code{\link{dse_odata_bursts_request}()},
-\code{\link{dse_odata_download}()},
-\code{\link{dse_odata_download_path}()},
-\code{\link{dse_odata_product_nodes}()},
-\code{\link{dse_odata_quicklook}()}
+Other odata:
+\code{\link[=dse_odata_attributes]{dse_odata_attributes()}},
+\code{\link[=dse_odata_bursts_request]{dse_odata_bursts_request()}},
+\code{\link[=dse_odata_download]{dse_odata_download()}},
+\code{\link[=dse_odata_download_path]{dse_odata_download_path()}},
+\code{\link[=dse_odata_product_nodes]{dse_odata_product_nodes()}},
+\code{\link[=dse_odata_quicklook]{dse_odata_quicklook()}}
 }
 \concept{odata}

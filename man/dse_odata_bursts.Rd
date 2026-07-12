@@ -25,7 +25,7 @@ For more details about bursts check the
 You can apply some tidyverse functions (see \link{tidy_verbs}) to \code{odata_request}
 object returned by \code{\link[=dse_odata_bursts_request]{dse_odata_bursts_request()}}. These apply lazy evaluation.
 Meaning that they are just added to the object and are only evaluated after
-calling either \code{\link[dplyr:compute]{dplyr::compute()}} or \code{\link[dplyr:compute]{dplyr::collect()}} (see examples).
+calling either \code{\link[dplyr:compute]{dplyr::compute()}} or \code{\link[dplyr:collect]{dplyr::collect()}} (see examples).
 }
 \examples{
 if (interactive() && dse_has_s3_secret()) {
@@ -42,20 +42,12 @@ if (interactive() && dse_has_s3_secret()) {
 }
 }
 \seealso{
-Other odata: 
-\code{\link{dse_odata_attributes}()},
-\code{\link{dse_odata_download}()},
-\code{\link{dse_odata_download_path}()},
-\code{\link{dse_odata_product_nodes}()},
-\code{\link{dse_odata_products_request}()},
-\code{\link{dse_odata_quicklook}()}
-
-Other odata: 
-\code{\link{dse_odata_attributes}()},
-\code{\link{dse_odata_download}()},
-\code{\link{dse_odata_download_path}()},
-\code{\link{dse_odata_product_nodes}()},
-\code{\link{dse_odata_products_request}()},
-\code{\link{dse_odata_quicklook}()}
+Other odata:
+\code{\link[=dse_odata_attributes]{dse_odata_attributes()}},
+\code{\link[=dse_odata_download]{dse_odata_download()}},
+\code{\link[=dse_odata_download_path]{dse_odata_download_path()}},
+\code{\link[=dse_odata_product_nodes]{dse_odata_product_nodes()}},
+\code{\link[=dse_odata_products_request]{dse_odata_products_request()}},
+\code{\link[=dse_odata_quicklook]{dse_odata_quicklook()}}
 }
 \concept{odata}

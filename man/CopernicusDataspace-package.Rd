@@ -6,6 +6,8 @@
 \alias{CopernicusDataspace-package}
 \title{CopernicusDataspace: Search Download and Handle Data from the Copernicus Data Space Ecosystem}
 \description{
+\if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
+
 The Copernicus Data Space Ecosystem, is an open ecosystem that provides free instant access to a wide range of data and services from the Copernicus Sentinel missions and more on our planet’s land, oceans and atmosphere. This package provides entry points to several APIs allowing users to access the data directly in R.
 }
 \seealso{
@@ -19,6 +21,11 @@ Useful links:
 }
 \author{
 \strong{Maintainer}: Pepijn de Vries \email{pepijn.devries@outlook.com} (\href{https://orcid.org/0000-0002-7961-6646}{ORCID})
+
+Authors:
+\itemize{
+  \item Pepijn de Vries \email{pepijn.devries@outlook.com} (\href{https://orcid.org/0000-0002-7961-6646}{ORCID})
+}
 
 Other contributors:
 \itemize{

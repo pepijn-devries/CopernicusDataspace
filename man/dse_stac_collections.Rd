@@ -4,11 +4,13 @@
 \alias{dse_stac_collections}
 \title{Get a Summary of all Data Space Ecosystem Collections}
 \usage{
-dse_stac_collections(collection, ...)
+dse_stac_collections(collection, limit = 1000L, ...)
 }
 \arguments{
 \item{collection}{A specific collection for which to obtain summary information.
 If missing (default), all collections are returned.}
+
+\item{limit}{Maximum number of collections to be returned.}
 
 \item{...}{Ignored}
 }
@@ -26,12 +28,12 @@ if (interactive()) {
 }
 }
 \seealso{
-Other stac: 
-\code{\link{dse_stac_client}()},
-\code{\link{dse_stac_download}()},
-\code{\link{dse_stac_get_uri}()},
-\code{\link{dse_stac_guess_collection}()},
-\code{\link{dse_stac_queryables}()},
-\code{\link{dse_stac_search_request}()}
+Other stac:
+\code{\link[=dse_stac_client]{dse_stac_client()}},
+\code{\link[=dse_stac_download]{dse_stac_download()}},
+\code{\link[=dse_stac_get_uri]{dse_stac_get_uri()}},
+\code{\link[=dse_stac_guess_collection]{dse_stac_guess_collection()}},
+\code{\link[=dse_stac_queryables]{dse_stac_queryables()}},
+\code{\link[=dse_stac_search_request]{dse_stac_search_request()}}
 }
 \concept{stac}

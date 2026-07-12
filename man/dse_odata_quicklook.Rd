@@ -28,12 +28,12 @@ if (interactive()) {
 }
 }
 \seealso{
-Other odata: 
-\code{\link{dse_odata_attributes}()},
-\code{\link{dse_odata_bursts_request}()},
-\code{\link{dse_odata_download}()},
-\code{\link{dse_odata_download_path}()},
-\code{\link{dse_odata_product_nodes}()},
-\code{\link{dse_odata_products_request}()}
+Other odata:
+\code{\link[=dse_odata_attributes]{dse_odata_attributes()}},
+\code{\link[=dse_odata_bursts_request]{dse_odata_bursts_request()}},
+\code{\link[=dse_odata_download]{dse_odata_download()}},
+\code{\link[=dse_odata_download_path]{dse_odata_download_path()}},
+\code{\link[=dse_odata_product_nodes]{dse_odata_product_nodes()}},
+\code{\link[=dse_odata_products_request]{dse_odata_products_request()}}
 }
 \concept{odata}

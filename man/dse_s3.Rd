@@ -89,60 +89,16 @@ they are set each time you start a new R session.
 \url{https://documentation.dataspace.copernicus.eu/APIs/S3.html}
 }
 \seealso{
-Other authentication: 
-\code{\link{dse_access_token}()},
-\code{\link{dse_get_token_details}()},
-\code{\link{dse_set_gdal_token}()},
-\code{\link{dse_usage}()}
+Other authentication:
+\code{\link[=dse_access_token]{dse_access_token()}},
+\code{\link[=dse_get_token_details]{dse_get_token_details()}},
+\code{\link[=dse_set_gdal_token]{dse_set_gdal_token()}},
+\code{\link[=dse_usage]{dse_usage()}}
 
-Other s3: 
-\code{\link{dse_s3_download}()},
-\code{\link{dse_s3_set_gdal_options}()},
-\code{\link{dse_s3_uri_to_vsi}()}
-
-Other authentication: 
-\code{\link{dse_access_token}()},
-\code{\link{dse_get_token_details}()},
-\code{\link{dse_set_gdal_token}()},
-\code{\link{dse_usage}()}
-
-Other s3: 
-\code{\link{dse_s3_download}()},
-\code{\link{dse_s3_set_gdal_options}()},
-\code{\link{dse_s3_uri_to_vsi}()}
-
-Other authentication: 
-\code{\link{dse_access_token}()},
-\code{\link{dse_get_token_details}()},
-\code{\link{dse_set_gdal_token}()},
-\code{\link{dse_usage}()}
-
-Other s3: 
-\code{\link{dse_s3_download}()},
-\code{\link{dse_s3_set_gdal_options}()},
-\code{\link{dse_s3_uri_to_vsi}()}
-
-Other authentication: 
-\code{\link{dse_access_token}()},
-\code{\link{dse_get_token_details}()},
-\code{\link{dse_set_gdal_token}()},
-\code{\link{dse_usage}()}
-
-Other s3: 
-\code{\link{dse_s3_download}()},
-\code{\link{dse_s3_set_gdal_options}()},
-\code{\link{dse_s3_uri_to_vsi}()}
-
-Other authentication: 
-\code{\link{dse_access_token}()},
-\code{\link{dse_get_token_details}()},
-\code{\link{dse_set_gdal_token}()},
-\code{\link{dse_usage}()}
-
-Other s3: 
-\code{\link{dse_s3_download}()},
-\code{\link{dse_s3_set_gdal_options}()},
-\code{\link{dse_s3_uri_to_vsi}()}
+Other s3:
+\code{\link[=dse_s3_download]{dse_s3_download()}},
+\code{\link[=dse_s3_set_gdal_options]{dse_s3_set_gdal_options()}},
+\code{\link[=dse_s3_uri_to_vsi]{dse_s3_uri_to_vsi()}}
 }
 \concept{authentication}
 \concept{s3}
