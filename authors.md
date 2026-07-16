@@ -2,7 +2,9 @@
 
 ## Authors
 
-- **Pepijn de Vries**. Author, maintainer.
+- **[![Pepijn de
+  Vries](https://avatars.githubusercontent.com/u/13707449) Pepijn de
+  Vries](https://github.com/pepijn-devries/)**. Author, maintainer.
   [](https://orcid.org/0000-0002-7961-6646)
 
 - **Alicia Hamer**. Research team member.
@@ -21,13 +23,13 @@ Source:
 [`DESCRIPTION`](https://github.com/pepijn-devries/CopernicusDataspace/blob/main/DESCRIPTION)
 
 de Vries P (2026). *CopernicusDataspace: Search Download and Handle Data
-from the Copernicus Data Space Ecosystem*. R package version 0.0.3.0002,
+from the Copernicus Data Space Ecosystem*. R package version 0.0.3.0003,
 <https://github.com/pepijn-devries/CopernicusDataspace>.
 
     @Manual{,
       title = {CopernicusDataspace: Search Download and Handle Data from the Copernicus Data Space Ecosystem},
       author = {Pepijn {de Vries}},
       year = {2026},
-      note = {R package version 0.0.3.0002},
+      note = {R package version 0.0.3.0003},
       url = {https://github.com/pepijn-devries/CopernicusDataspace},
     }
