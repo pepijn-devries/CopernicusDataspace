@@ -112,10 +112,8 @@ filter.odata_request <-
       op = "and"
     )
   }
-  .data |>
-    httr2::req_body_json_modify(
-      filter = new_filter
-    )
+  .data$body$data$filter <- new_filter
+  .data
 }
 
 #' @rdname tidy_verbs
@@ -181,8 +179,7 @@ collect.odata_request <-
 collect.sentinel_request <-
   function(x, skip = 0L, ...) {
 
-    if (skip > 0)
-      x <- httr2::req_body_json_modify(x, `next` = skip)
+    if (skip > 0) x$body$data[["next"]] <- skip
     x |>
       httr2::req_perform() |>
       httr2::resp_body_json() |>
@@ -226,10 +223,8 @@ arrange.stac_request <-
     })
     
     if (is.na(.data$body$data$sortby)) .data$body$data$sortby <- NULL
-    httr2::req_body_json_modify(
-      .data,
-      sortby = c(.data$body$data$sortby, my_arrange)
-    )
+    .data$body$sortby <- c(.data$body$data$sortby, my_arrange)
+    .data
   }
 
 .prop_error <- function(class) {
@@ -262,7 +257,8 @@ slice_head.stac_request <-
   function(.data, ..., n, prop, by = NULL) {
     if (!missing(prop)) .prop_error("STAC")
     .check_slice(.data$body$data$limit)
-    httr2::req_body_json_modify(.data, limit = n)
+    .data$body$data$limit <- n
+    .data
   }
 
 #' @rdname tidy_verbs
@@ -273,7 +269,8 @@ slice_head.sentinel_request <-
   function(.data, ..., n, prop, by = NULL) {
     if (!missing(prop)) .prop_error("Sentinel")
     .check_slice(.data$body$data$limit)
-    httr2::req_body_json_modify(.data, limit = n)
+    .data$body$data$limit <- n
+    .data
   }
 
 #' @rdname tidy_verbs
