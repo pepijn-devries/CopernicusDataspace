@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "short_name": "",
+  "name": "CopernicusDataspace",
+  "short_name": "CopernicusDataspace",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
