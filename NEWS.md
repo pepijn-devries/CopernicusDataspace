@@ -1,9 +1,10 @@
-# CopernicusDataspace V0.0.3.0003
+# CopernicusDataspace V0.0.3.0004
 
  * You can now set the limit for `dse_stac_collections()`
  * Fixed problem with stacking tidyverse operators, due to
    issues with `httr2::req_body_json_modify()`
  * Updated documentation
+ * Redesigned logo
 
 # CopernicusDataspace V0.0.3
 
