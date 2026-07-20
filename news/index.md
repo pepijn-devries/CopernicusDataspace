@@ -1,6 +1,8 @@
 # Changelog
 
-## CopernicusDataspace V0.0.3.0004
+## CopernicusDataspace V0.0.4
+
+CRAN release: 2026-07-20
 
 - You can now set the limit for
   [`dse_stac_collections()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_stac_collections.md)
