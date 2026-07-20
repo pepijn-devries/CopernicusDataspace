@@ -1,4 +1,4 @@
-# CopernicusDataspace V0.0.3.0004
+# CopernicusDataspace V0.0.4
 
  * You can now set the limit for `dse_stac_collections()`
  * Fixed problem with stacking tidyverse operators, due to
