@@ -24,7 +24,8 @@ NULL
 }
 
 .stac_error <- function(resp) {
-  if (httr2::resp_content_type(resp) == "application/json") {
+  if (grepl("application/json",
+            httr2::resp_content_type(resp), fixed = TRUE)) {
     details <-
       resp |>
       httr2::resp_body_json()
@@ -32,11 +33,13 @@ NULL
     names(details)[names(details) == "description"] <- "message"
     if ("code" %in% names(details))
       return (sprintf("%s: %s", details$code, details$message))
+    if (length(details) == 0)
+      return("No error details returned by server")
     loc <- lapply(details$detail, \(x) do.call(paste, c(x$loc, sep = "/"))) |> unlist()
     msg <- lapply(details$detail,`[[`, "msg") |> unlist()
     cbind(loc, msg) |> apply(1, paste, collapse = ": ", simplify = FALSE) |> unlist()
   } else {
-    return("No error details returned by server")
+    return("No error details returned by server") # nocov
   }
 }
 

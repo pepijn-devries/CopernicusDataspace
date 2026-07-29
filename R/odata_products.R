@@ -18,7 +18,7 @@ NULL
       c("Ensure that you have specified a token",
         "Ensure your token hasn't expired (call `memoise::forget(dse_access_token)`)")
     } else {
-      "Details not returned"
+      "Details not returned" # nocov
     }
   } else {
     if (rlang::is_named(result)) result$message else as.character(result)
@@ -336,7 +336,7 @@ dse_odata_quicklook <- function(product, destination, ...) {
     httr2::request() |>
     httr2::req_perform(path = destination)
   if (requireNamespace("rstudioapi") && rstudioapi::isAvailable()) {
-    rstudioapi::viewer(destination)
+    rstudioapi::viewer(destination) # nocov
   } else {
     file.show(destination)
   }

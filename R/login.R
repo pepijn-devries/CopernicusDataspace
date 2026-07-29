@@ -352,6 +352,6 @@ dse_get_token_details <- function(token = dse_access_token()) {
     rlang::abort(c(
       x = "Namespace 'jose' not found",
       i = "Install package 'jose' and try again"
-    ))
+    )) # nocov
   }
 }
