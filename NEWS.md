@@ -1,3 +1,9 @@
+# CopernicusDataspace V0.0.4.0001
+
+ * Switched from `paws` to `paws.storage`, this
+   reduces the dependency footprint
+ * Fixed bug in `dse_odata_product_nodes()`
+
 # CopernicusDataspace V0.0.4
 
  * You can now set the limit for `dse_stac_collections()`

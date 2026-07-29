@@ -5,7 +5,7 @@
 dse_s3 <- function(region    = "us-east-1", ...,
                    s3_key    = dse_s3_get_key(),
                    s3_secret = dse_s3_get_secret()) {
-  paws::s3(
+  paws.storage::s3(
     credentials = list(
       creds = list(
         access_key_id     = s3_key,

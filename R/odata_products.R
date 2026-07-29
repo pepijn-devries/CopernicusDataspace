@@ -124,6 +124,7 @@ dse_odata_product_nodes <- function(product, node_path = "", recursive = FALSE, 
   
   result <-
     .path_to_url(product, node_path) |>
+    stringr::str_remove("/+$") |>
     paste("Nodes", sep = "/") |>
     httr2::request() |>
     httr2::req_error(body = .odata_error) |>
