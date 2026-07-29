@@ -35,9 +35,11 @@ NULL
       return (sprintf("%s: %s", details$code, details$message))
     if (length(details) == 0)
       return("No error details returned by server")
+    # nocov start
     loc <- lapply(details$detail, \(x) do.call(paste, c(x$loc, sep = "/"))) |> unlist()
     msg <- lapply(details$detail,`[[`, "msg") |> unlist()
     cbind(loc, msg) |> apply(1, paste, collapse = ": ", simplify = FALSE) |> unlist()
+    # nocov end
   } else {
     return("No error details returned by server") # nocov
   }
