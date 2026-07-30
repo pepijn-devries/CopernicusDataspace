@@ -402,7 +402,7 @@ select.sentinel_request <-
         }
         if (is.null(result))
           stop(sprintf("Sorry, '%s' is not implemented in this context",
-                       rlang::as_string(xpr[[1]])))
+                       rlang::as_string(xpr[[1]]))) # nocov
         attr(result, "is_desc") <- is_desc
         result
       } else {

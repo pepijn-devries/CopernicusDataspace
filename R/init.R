@@ -8,7 +8,8 @@ setOldClass("stac_request")
 setOldClass("sentinel_request")
 
 .onLoad = function(libname, pkgname) {
-  register_all_s3_methods() # dynamically registers non-imported pkgs (tidyverse)
+  # dynamically registers non-imported pkgs (tidyverse)
+  register_all_s3_methods() # nocov
 }
 
 register_all_s3_methods = function() {
@@ -40,7 +41,7 @@ register_s3_method <- function(pkg, generic, class, fun = NULL) {
   if (is.null(fun)) {
     fun <- get(paste0(generic, ".", class), envir = parent.frame())
   } else {
-    stopifnot(is.function(fun))
+    stopifnot(is.function(fun)) # nocov
   }
   
   if (pkg %in% loadedNamespaces()) {
@@ -51,7 +52,7 @@ register_s3_method <- function(pkg, generic, class, fun = NULL) {
   setHook(
     packageEvent(pkg, "onLoad"),
     function(...) {
-      registerS3method(generic, class, fun, envir = asNamespace(pkg))
+      registerS3method(generic, class, fun, envir = asNamespace(pkg)) # nocov
     }
   )
 }

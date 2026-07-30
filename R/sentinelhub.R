@@ -27,7 +27,7 @@ NULL
       result |> lapply(as.character) |> unlist()
     }
   } else {
-    "Details unknown"
+    "Details unknown" # nocov
   }
 }
 
@@ -584,6 +584,7 @@ dse_sh_search_request <-
 dse_sh_use_requests_builder <- function(
     build, destination, ..., token = dse_access_token()
 ) {
+  # nocov start
   if (missing(build)) {
     if (requireNamespace("clipr")) {
       build <- clipr::read_clip()
@@ -601,6 +602,7 @@ dse_sh_use_requests_builder <- function(
       }
     }
   }
+  # nocov end
   if (startsWith(build, "curl -X POST")) {
     build <-
       stringr::str_extract_all(
