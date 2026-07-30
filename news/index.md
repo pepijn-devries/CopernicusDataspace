@@ -1,11 +1,12 @@
 # Changelog
 
-## CopernicusDataspace V0.0.4.0001
+## CopernicusDataspace V0.0.4.0002
 
 - Switched from `paws` to `paws.storage`, this reduces the dependency
   footprint
 - Fixed bug in
   [`dse_odata_product_nodes()`](https://pepijn-devries.github.io/CopernicusDataspace/reference/dse_odata_product_nodes.md)
+- Improved test coverage
 
 ## CopernicusDataspace V0.0.4
 
