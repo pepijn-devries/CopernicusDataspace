@@ -138,7 +138,7 @@ test_that("Non existing assets produce error on STAC", {
   skip_if_not(dse_has_client_info())
   expect_error({
     dse_stac_download("foo", "bar", "foobar")
-  }, "Asset not found")
+  }, "collections do not exist")
 })
 
 test_that("Warning is thrown when collection id cannot be guessed", {

@@ -1,3 +1,7 @@
+# CopernicusDataspace V0.0.5.0001
+
+ * Fixed broken test
+
 # CopernicusDataspace V0.0.5
 
  * Switched from `paws` to `paws.storage`, this
