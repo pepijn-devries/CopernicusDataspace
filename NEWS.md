@@ -1,4 +1,4 @@
-# CopernicusDataspace V0.0.4.0002
+# CopernicusDataspace V0.0.5
 
  * Switched from `paws` to `paws.storage`, this
    reduces the dependency footprint
