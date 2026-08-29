@@ -137,11 +137,11 @@ dse_odata_product_nodes("c8ed8edb-9bef-4717-abfd-1400a57171a4",
 #>   Id                                Name  Nodes.uri ContentLength ChildrenNumber
 #>   <chr>                             <chr> <chr>             <int>          <int>
 #> 1 S6A_P4_2__LR______20250110T11091… S6A_… https://…             0              5
-#> 2 xfdumanifest.xml                  xfdu… https://…        126456              0
-#> 3 EOPMetadata.xml                   EOPM… https://…         13800              0
-#> 4 S6A_P4_2__LR_RED__NT_153_196_202… S6A_… https://…       1410175              0
-#> 5 S6A_P4_2__LR_STD__NT_153_196_202… S6A_… https://…      10670647              0
-#> 6 manifest.xml                      mani… https://…          1727              0
+#> 2 EOPMetadata.xml                   EOPM… https://…         13800              0
+#> 3 S6A_P4_2__LR_RED__NT_153_196_202… S6A_… https://…       1410175              0
+#> 4 S6A_P4_2__LR_STD__NT_153_196_202… S6A_… https://…      10670647              0
+#> 5 manifest.xml                      mani… https://…          1727              0
+#> 6 xfdumanifest.xml                  xfdu… https://…        126456              0
 ```
 
 If available you can also get a quick peek at your product by calling

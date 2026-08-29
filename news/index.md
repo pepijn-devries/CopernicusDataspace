@@ -1,6 +1,12 @@
 # Changelog
 
-## CopernicusDataspace V0.0.4.0002
+## CopernicusDataspace V0.0.5.0001
+
+- Fixed broken test
+
+## CopernicusDataspace V0.0.5
+
+CRAN release: 2026-08-28
 
 - Switched from `paws` to `paws.storage`, this reduces the dependency
   footprint

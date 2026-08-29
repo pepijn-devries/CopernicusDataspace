@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">CopernicusDataspace</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4.0002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5.0001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -194,20 +194,20 @@ Scripts</a> available. You can list the available scripts on the
 repository using:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dse_sh_custom_scripts.html">dse_sh_custom_scripts</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 361 × 2</span></span></span>
-<span><span class="co">#&gt;    title                                                                  relUrl</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Sentinel-2 L2A Scene Classification Map                                /sent…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> NDVI Anomaly Detection Script                                          /sent…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Simple RGB Composites (Sentinel-2)                                     /sent…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Land Use Visualization for Sentinel-2 Using Linear Discriminant Analy… /sent…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Multitemporal burnt area analysis                                      /sent…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Sentinel-2 L2A True Color Optimized                                    /sent…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> NDWI Normalized Difference Water Index                                 /sent…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Detecting Deep Moist Convection Script                                 /sent…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Sentinel-2 L1C True Color Optimized                                    /sent…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Water Bodies' Mapping - WBM Script                                     /sent…</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 351 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 362 × 2</span></span></span>
+<span><span class="co">#&gt;    title                                            relUrl                      </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Contributing with AI assistants                  /contribute/agents/         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Sentinel-5P Sulphur Dioxide - SO2                /sentinel-5p/sulphur-dioxid…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Sentinel-5P Aerosol concentrations 340/380 nm    /sentinel-5p/aer-ai-340-380/</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Sentinel-5P Effective Radiometric Cloud Fraction /sentinel-5p/cloud-radiomet…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Sentinel-5P Cloud Optical Thickness              /sentinel-5p/cloud-optical-…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> NO2 Monthly mean                                 /sentinel-5p/no2_monthly_me…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Sentinel-5P Ozone - O3                           /sentinel-5p/ozone/         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Sentinel-5P Nitrogen Dioxide tropospheric column /sentinel-5p/nitrogen_dioxi…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Sentinel-5P Formaldehyde - HCHO                  /sentinel-5p/formaldehyde/  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Sentinel-5P Cloud Base Pressure                  /sentinel-5p/cloud-base-pre…</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 352 more rows</span></span></span></code></pre></div>
 <p>As each script has a unique way of processing the raw data, you can
 quickly create different visualisations of the satellite information.
 Lets illustrate this by reusing the same <code>input</code> and
